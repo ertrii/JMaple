@@ -29,7 +29,12 @@
     flex-direction: $direction;
     justify-content: $jc;
     align-items: $ai;
-
+}
+@mixin flex-cl-center($jc : center, $ai : center){
+    display: flex;
+    flex-direction: column;
+    justify-content: $jc;
+    align-items: $ai;
 }
 .maple-message-container{@include vh-center();}
 

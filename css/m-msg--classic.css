@@ -182,8 +182,9 @@
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: flex-end;
+  flex-direction: row;
   justify-content: flex-end;
+  align-items: flex-end;
 }
 
 .m-msg__body__dialog__btn-interrogate button {
