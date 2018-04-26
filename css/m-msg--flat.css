@@ -1,0 +1,204 @@
+/*
+ ==========Flat=========
+*/
+/*
+ ==========Classic=========
+*/
+/*
+==========Modern=========
+*/
+@font-face {
+  font-family: roboto-light;
+  src: url(../source/font/Roboto-Light.ttf);
+}
+
+@font-face {
+  font-family: open-sans-light;
+  src: url(../source/font/Roboto-Light.ttf);
+}
+
+@font-face {
+  font-family: montserrat-light;
+  src: url(../source/font/Roboto-Light.ttf);
+}
+
+@font-face {
+  font-family: inconsolata-regular;
+  src: url(../source/font/Roboto-Light.ttf);
+}
+
+@font-face {
+  font-family: encode-sans-light;
+  src: url(../source/font/EncodeSans-Light.ttf);
+}
+
+*, *::after, *::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.maple-message-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.m-msg__bold {
+  color: #3839CC;
+}
+
+.m-msg {
+  width: 524px;
+  min-height: 200px;
+  background-color: #F6F4F5;
+  border-radius: 10px;
+  box-shadow: 0px 0px 0px 1px #999, 0px 0px 0px 2px white, 0px 0px 0px 3px #aaa, 1px 1px 10px 2px #999;
+}
+
+.m-msg__body__dialog button, .m-msg__footer button {
+  font-family: encode-sans-light, sans-serif;
+  font-size: 7pt;
+  padding: 1px 10px 2px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  outline: none;
+}
+
+.m-msg__body__dialog button:active, .m-msg__footer button:active {
+  box-shadow: inset 0px 0px 4px -1px black;
+}
+
+.m-msg__head {
+  border-radius: 10px 10px 0 0;
+  background-color: #A1B4CB;
+  width: 100%;
+  height: 12px;
+  cursor: move;
+  border-bottom: 1px solid #999;
+}
+
+.m-msg__body, .m-msg__footer {
+  display: flex;
+}
+
+.m-msg__body {
+  padding: 10px 7px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #DFDCD2;
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 9px;
+  border-radius: 4px;
+  box-shadow: 0px 0px 0px 4px #898785, 0px 0px 0px 5px black, 0px 0px 0px 6px white;
+  -webkit-transform: translate(0px, -3px);
+          transform: translate(0px, -3px);
+}
+
+.m-msg__body__npc {
+  width: 126px;
+  border-right: 1px solid #fff;
+  box-shadow: inset 7px 0px 0px 2px #DFDCD2, inset -4px -2px 10px -4px #999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.m-msg__body__npc__name {
+  width: 120px;
+  padding: 1px;
+  margin-right: 7px;
+  background-color: #223356;
+  color: white;
+  box-shadow: 0px 0px 0px 1px wihte;
+  text-align: center;
+  font-size: 9pt;
+  font-family: inconsolata-regular, sans-serif;
+  -webkit-transform: translate(0px, -4px);
+          transform: translate(0px, -4px);
+}
+
+.m-msg__body__dialog {
+  width: 355px;
+  background-color: #F6F4F5;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.m-msg__body__dialog--info, .m-msg__body__dialog--alternatives {
+  font-size: 9pt;
+  font-family: inconsolata-regular, sans-serif;
+}
+
+.m-msg__body__dialog--info {
+  padding-bottom: 10px;
+}
+
+.m-msg__body__dialog--alternatives {
+  list-style: none;
+  color: #3839CC;
+  cursor: pointer;
+  padding-left: 20px;
+}
+
+.m-msg__body__dialog li {
+  margin-bottom: 4px;
+}
+
+.m-msg__body__dialog li::before {
+  content: url("../source/svg/heart-mouse-leave.svg");
+  width: 7px;
+  height: 7px;
+  position: absolute;
+  -webkit-transform: rotate(-90deg);
+          transform: rotate(-90deg);
+  text-decoration: none;
+  margin-top: 2px;
+  margin-left: -14px;
+}
+
+.m-msg__body__dialog li:hover {
+  text-decoration: underline;
+}
+
+.m-msg__body__dialog li:hover::before {
+  content: url("../source/svg/heart-mouse-hover.svg");
+}
+
+.m-msg__body__dialog__btn-interrogate {
+  width: 100%;
+  text-align: right;
+}
+
+.m-msg__body__dialog__btn-interrogate button {
+  background-color: #2884CD;
+}
+
+.m-msg__footer {
+  background-color: #A1B4CB;
+  height: 100%;
+  padding: 1px 10px 4px;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #999;
+  border-radius: 0 0 10px 10px;
+}
+
+.m-msg__footer__btn-exit button {
+  padding: 1px 20px 2px;
+  background-color: #ADC817;
+}
+
+.m-msg__footer__btn-interrogate button {
+  background-color: #FF9C52;
+}

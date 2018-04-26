@@ -1,5 +1,53 @@
-$first-color    :   red;
-$second-color   :   blue;
-$third-color    :   green;
-$dark-color     :   black;
-$text-color     :   black;
+
+//colors text
+$text-color--light              :   white;
+$text-color--bold               :   #3839CC;
+$text-color--dark               :   black;
+
+
+/*
+ ==========Flat=========
+*/
+//colors maple-message
+$f-bg-color--primary            :   #F6F4F5;
+$f-bg-color--bar                :   #A1B4CB;
+$f-bg-color--texture            :   #DFDCD2;
+$f-bg-color--name               :   #223356;
+$f-bg-color--dark               :   #898785;
+
+//colors buttons
+$f-btn-color--exit              :   #ADC817;
+$f-btn-color--interrogative-1   :   #FF9C52;
+$f-btn-color--interrogative-2   :   #2884CD;
+
+
+/*
+ ==========Classic=========
+*/
+//colors maple-message
+$c-bg-color--primary            :   #F6F4F5;
+$c-bg-color--bar                :   #A1B4CB;
+$c-bg-color--texture            :   #DFDCD2;
+$c-bg-color--name               :   #223356;
+$c-bg-color--dark               :   #898785;
+
+//colors buttons
+$c-btn-color--exit              :   #CFDA50;
+$c-btn-color--interrogative-1   :   #FF9C52;
+$c-btn-color--interrogative-2   :   #2884CD;
+
+
+/*
+==========Modern=========
+*/
+//colors maple-message
+$m-bg-color--primary            :   #F6F4F5;
+$m-bg-color--bar                :   #A1B4CB;
+$m-bg-color--texture            :   #DFDCD2;
+$m-bg-color--name               :   #223356;
+$m-bg-color--dark               :   #898785;
+
+//colors buttons
+$m-btn-color--exit              :   #CFDA50;
+$m-btn-color--interrogative-1   :   #FF9C52;
+$m-btn-color--interrogative-2   :   #2884CD;

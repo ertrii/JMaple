@@ -1,0 +1,46 @@
+@import 'config';
+
+//Fonts
+@font-face{
+    font-family: roboto-light;
+    src: url(../source/font/Roboto-Light.ttf);
+}
+@font-face{
+    font-family: open-sans-light;
+    src: url(../source/font/Roboto-Light.ttf);
+}
+@font-face{
+    font-family: montserrat-light;
+    src: url(../source/font/Roboto-Light.ttf);
+}
+@font-face{
+    font-family: inconsolata-regular;
+    src: url(../source/font/Roboto-Light.ttf);
+}
+@font-face{
+    font-family: encode-sans-light;
+    src: url(../source/font/EncodeSans-Light.ttf);
+}
+*, *::after, *::before{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+@mixin vh-center(){
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+}
+@mixin flex-center($direction, $jc : center, $ai : center){
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $jc;
+    align-items: $ai;
+
+}
+.maple-message-container{@include vh-center();}
+
+.m-msg__bold{color: $text-color--bold}
