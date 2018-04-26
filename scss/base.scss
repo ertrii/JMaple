@@ -2,18 +2,6 @@
 
 //Fonts
 @font-face{
-    font-family: roboto-light;
-    src: url(../source/font/Roboto-Light.ttf);
-}
-@font-face{
-    font-family: open-sans-light;
-    src: url(../source/font/Roboto-Light.ttf);
-}
-@font-face{
-    font-family: montserrat-light;
-    src: url(../source/font/Roboto-Light.ttf);
-}
-@font-face{
     font-family: inconsolata-regular;
     src: url(../source/font/Roboto-Light.ttf);
 }
@@ -21,6 +9,8 @@
     font-family: encode-sans-light;
     src: url(../source/font/EncodeSans-Light.ttf);
 }
+
+
 *, *::after, *::before{
     box-sizing: border-box;
     margin: 0;

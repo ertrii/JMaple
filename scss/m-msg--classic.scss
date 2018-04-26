@@ -1,0 +1,141 @@
+@import 'base';
+
+.m-msg{
+    width: 524px;
+    min-height: 200px;    
+    background-color: $c-bg-color--primary;
+    border-radius: 10px;
+    box-shadow: 0px 0px 0px 1px #999,
+                0px 0px 0px 2px white,
+                0px 0px 0px 3px #aaa,
+                1px 1px 10px 2px #999;
+    //buttons
+    &__body__dialog button, &__footer button{
+        font-family: encode-sans-light, sans-serif;
+        font-size: 6pt;
+        padding: 2px 10px 1px;
+        border: none;
+        cursor: pointer;
+        color: $text-color--light;        
+        outline: none;
+        text-shadow: 0px 0px 2px black;
+        border-radius: 1px;        
+        box-shadow: 0px 0px 2px 1px #222, 1px 1px 1px 2px white;
+        &:active{box-shadow: 0px 0px 2px 1px #222, 1px 1px 1px 2px white, inset 0px 0px 4px -1px black}
+    }
+    //=================
+    &__head{
+        border-radius: 10px 10px 0 0;
+        background-image: $c-bg-color--bar;
+        width: 100%;
+        height: 12px;
+        cursor: move;
+        border-bottom: 1px solid #999;
+    }
+    &__body, &__footer{
+        display: flex;
+    }
+    &__body{
+        padding: 10px 7px;
+        display: flex;
+        justify-content: space-between;
+        background-image: $c-bg-color--texture;
+        width: 500px;
+        min-height: 160px;//>-------remember
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 9px;
+        border-radius: 4px;
+        box-shadow: 0px 0px 0px 4px $c-bg-color--dark,
+                    0px 0px 0px 5px black,
+                    0px 0px 0px 6px white;
+        transform: translate(0px, -3px);
+        &__npc{
+            width: 126px;
+            border-right: 1px solid #fff;
+            box-shadow: inset 7px 0px 0px 2px #DFDCD2,
+                        inset -4px -2px 10px -4px #999;
+            @include flex-center(column);            
+            &__img{
+                max-height: 100px;//r
+                max-width: 110px;//r
+                @include flex-center(row, center, flex-end);//r
+                img{width: 100%;}//r
+            } 
+            &__name{                
+                width: 90%;//remember
+                padding: 1px;
+                border-radius: 1px;
+                margin-right: 8px;//remember
+                background-color: $c-bg-color--name;
+                color: $text-color--light;
+                box-shadow: 0px 0px 0px 1px white,
+                            0px 0px 0px 2px $c-bg-color--name;
+                text-align: center;
+                font-size: 8pt;
+                font-family: inconsolata-regular, sans-serif;
+                transform: translate(0px, 1px);//r
+            }                        
+        }        
+        &__dialog{
+            width: 355px;
+            background-color: $c-bg-color--primary;
+            padding: 10px;
+            border-radius: 5px;
+            @include flex-center(column, center, flex-start);
+            &--info, &--alternatives{
+                font-size: 9pt;
+                font-family: inconsolata-regular, sans-serif;
+            }
+            &--info{
+                padding-bottom: 10px;
+            }
+            &--alternatives{
+                list-style: none;
+                color: $text-color--bold;
+                cursor: pointer;
+                padding-left: 20px;
+                }
+                li{margin-bottom: 4px;}
+                li::before{
+                    content: url('../source/svg/heart-mouse-leave.svg');
+                    width: 7px;
+                    height: 7px;
+                    position: absolute;                    
+                    transform: rotate(-90deg);
+                    text-decoration: none;
+                    margin-top: 2px;
+                    margin-left: -14px;
+                }                
+                li:hover{
+                    text-decoration: underline;
+                    &::before{content: url('../source/svg/heart-mouse-hover.svg');}
+                }
+            &__btn-interrogate{
+                width: 100%;
+                //remember
+                height: 100%;
+                display: flex;
+                align-items: flex-end;
+                justify-content: flex-end;
+                button{background-image: $c-btn-color--interrogative-2}
+                button:nth-child(2){margin-left: 4px}//remember
+            }
+        }
+    }
+    &__footer{
+        background-image: $c-bg-color--bar;
+        height: 100%;        
+        padding: 1px 10px 4px;        
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid #6A87A5;
+        box-shadow: 0px -5px 5px -5px #6A87A5;
+        border-radius: 0 0 10px 10px;
+        &__btn-exit button{
+            padding: 2px 20px 1px;
+            background-image: $c-btn-color--exit;
+        }
+        &__btn-interrogate button{background-image: $c-btn-color--interrogative-1}
+    }    
+}
