@@ -1,53 +1,55 @@
 
 //colors text
-$text-color--light              :   white;
-$text-color--bold               :   #3839CC;
-$text-color--dark               :   black;
+$text-color--light                  :   white;
+$text-color--bold                   :   #3839CC;
+$text-color--dark                   :   black;
 
 
 /*
  ==========Flat=========
 */
 //colors maple-message
-$f-bg-color--primary            :   #F6F4F5;
-$f-bg-color--bar                :   #A1B4CB;
-$f-bg-color--texture            :   #DFDCD2;
-$f-bg-color--name               :   #223356;
-$f-bg-color--dark               :   #898785;
+$f-bg-color--primary                :   #F6F4F5;
+$f-bg-color--bar                    :   #A1B4CB;
+$f-bg-color--texture                :   #DFDCD2;
+$f-bg-color--name                   :   #223356;
+$f-bg-color--dark                   :   #898785;
 
 //colors buttons
-$f-btn-color--exit              :   #ADC817;
-$f-btn-color--interrogative-1   :   #FF9C52;
-$f-btn-color--interrogative-2   :   #2884CD;
+$f-btn-color--exit                  :   #ADC817;
+$f-btn-color--interrogative-1       :   #FF9C52;
+$f-btn-color--interrogative-2       :   #2884CD;
 
 
 /*
  ==========Classic=========
 */
 //colors maple-message
-$c-bg-color--primary            :   #F6F4F5;
-$c-bg-color--bar                :   linear-gradient(hsl(213,28,90),hsl(211,28,70) 10%,hsl(213,28,77));
-$c-bg-color--texture            :   url(../source/img/texture/texture0.png);
-$c-bg-color--name               :   #223356;
-$c-bg-color--dark               :   #898785;
+$c-bg-color--primary                :   #F6F4F5;
+$c-bg-color--bar                    :   linear-gradient(hsl(213,28,90),hsl(211,28,70) 10%,hsl(213,28,77));
+$c-bg-color--texture                :   url(../source/img/texture/texture0.png);
+$c-bg-color--name                   :   #223356;
+$c-bg-color--dark                   :   #898785;
 
 //colors buttons
-$c-btn-color--exit              :   linear-gradient(hsl(64,65,64),hsl(70,80,41) 10%,hsl(64,65,64) 120%);
-$c-btn-color--interrogative-1   :   linear-gradient(hsl(24,100,67),hsl(29,83,47) 12%,hsl(24,100,67));
-$c-btn-color--interrogative-2   :   linear-gradient(hsl(205,77,65),hsl(207,73,50) 15%,hsl(205,77,65) 120%);
+$c-btn-color--exit                  :   linear-gradient(hsl(64,65,64),hsl(70,80,41) 10%,hsl(64,65,64) 120%);
+$c-btn-color--interrogative-1       :   linear-gradient(hsl(24,100,67),hsl(29,83,47) 12%,hsl(24,100,67));
+$c-btn-color--interrogative-2       :   linear-gradient(hsl(205,77,65),hsl(207,73,50) 15%,hsl(205,77,65) 120%);
 
 
 /*
 ==========Modern=========
 */
 //colors maple-message
-$m-bg-color--primary            :   #F6F4F5;
-$m-bg-color--bar                :   #A1B4CB;
-$m-bg-color--texture            :   #DFDCD2;
-$m-bg-color--name               :   #223356;
-$m-bg-color--dark               :   #898785;
+$m-bg-color--primary                :   rgba(#098FD5, 0.7);
+$m-bg-color--texture                :   #EEEEEE;
+$m-bg-color--name                   :   linear-gradient(#949494, #626262);
 
 //colors buttons
-$m-btn-color--exit              :   #CFDA50;
-$m-btn-color--interrogative-1   :   #FF9C52;
-$m-btn-color--interrogative-2   :   #2884CD;
+$m-btn-color--exit                  :   linear-gradient(hsl(71,90,50) 10%,hsl(69,79,44) 100%);
+$m-btn-color--interrogative1--yes   :   linear-gradient(hsl(51,87,54) 10%,hsl(43,98,51));
+$m-btn-color--interrogative1--no    :   linear-gradient(hsl(341,92,62) 10%,hsl(341,88,46));
+$m-btn-color--interrogative2        :   $m-btn-color--exit;
+
+//border
+$m-border--dark                 :   #626262;

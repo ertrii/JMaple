@@ -1,0 +1,223 @@
+/*
+ ==========Flat=========
+*/
+/*
+ ==========Classic=========
+*/
+/*
+==========Modern=========
+*/
+@font-face {
+  font-family: inconsolata-regular;
+  src: url(../source/font/Roboto-Light.ttf);
+}
+
+@font-face {
+  font-family: encode-sans-light;
+  src: url(../source/font/EncodeSans-Light.ttf);
+}
+
+@font-face {
+  font-family: open-sans-light;
+  src: url(../source/font/OpenSans-Light.ttf);
+}
+
+*, *::after, *::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.maple-message-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.m-msg__bold {
+  color: #3839CC;
+}
+
+body {
+  background-image: url(https://orig00.deviantart.net/4eb7/f/2015/176/1/7/way_home_by_juh_juh-d8yqe7w.jpg);
+  background-size: cover;
+  background-position: center;
+}
+
+.m-msg {
+  width: 524px;
+  min-height: 200px;
+  background-color: rgba(9, 143, 213, 0.7);
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px rgba(98, 98, 98, 0.5), 0 0 0 2px rgba(255, 255, 255, 0.5), 0 0 0 3px rgba(98, 98, 98, 0.5), 1px 2px 10px black;
+}
+
+.m-msg__body__dialog button, .m-msg__footer button {
+  font-family: encode-sans-light, sans-serif;
+  font-size: 6pt;
+  padding: 2px 20px 1px;
+  text-shadow: -1px -1px 3px black;
+  border: none;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  color: white;
+  outline: none;
+  border-radius: 4px;
+}
+
+.m-msg__body__dialog button:active, .m-msg__footer button:active {
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3), inset 0px 0px 4px -1px black;
+}
+
+.m-msg__head {
+  border-radius: 7px 7px 0 0;
+  box-shadow: inset 0 1px 0 white, inset 0px 8px 8px rgba(255, 255, 255, 0.5);
+  width: 100%;
+  height: 13px;
+  cursor: move;
+}
+
+.m-msg__body, .m-msg__footer {
+  display: flex;
+}
+
+.m-msg__body {
+  padding: 3px 3px 5px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #EEEEEE;
+  width: 500px;
+  min-height: 165px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: inset 0 0 0 1px #626262;
+  border-radius: 4px;
+}
+
+.m-msg__body__npc {
+  width: 135px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.m-msg__body__npc__img {
+  max-height: 100px;
+  max-width: 110px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.m-msg__body__npc__img img {
+  width: 100%;
+}
+
+.m-msg__body__npc__name {
+  width: 80%;
+  padding: 1px;
+  background-image: linear-gradient(#949494, #626262);
+  color: white;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px white, 0 0 0 2px #626262;
+  text-align: center;
+  font-size: 8pt;
+  font-family: inconsolata-regular, sans-serif;
+}
+
+.m-msg__body__dialog {
+  width: 355px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: inset 0px 0px 3px #626262;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.m-msg__body__dialog--info, .m-msg__body__dialog--alternatives {
+  font-size: 9pt;
+  line-height: 1.4em;
+  font-family: open-sans-light, sans-serif;
+}
+
+.m-msg__body__dialog--info {
+  padding-bottom: 10px;
+}
+
+.m-msg__body__dialog--alternatives {
+  list-style: none;
+  color: #3839CC;
+  cursor: pointer;
+  padding-left: 20px;
+}
+
+.m-msg__body__dialog li {
+  margin-bottom: 4px;
+}
+
+.m-msg__body__dialog li::before {
+  content: url("../source/svg/heart-mouse-leave.svg");
+  width: 7px;
+  height: 7px;
+  position: absolute;
+  -webkit-transform: rotate(-90deg);
+          transform: rotate(-90deg);
+  text-decoration: none;
+  margin-top: 3px;
+  margin-left: -14px;
+}
+
+.m-msg__body__dialog li:hover {
+  text-decoration: underline;
+}
+
+.m-msg__body__dialog li:hover::before {
+  content: url("../source/svg/heart-mouse-hover.svg");
+}
+
+.m-msg__body__dialog__btn-interrogate {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.m-msg__body__dialog__btn-interrogate button {
+  background-image: linear-gradient(#c8f20d 10%, #aec918 100%);
+  padding: 2px 10px 1px;
+}
+
+.m-msg__body__dialog__btn-interrogate button:nth-child(2) {
+  margin-left: 4px;
+}
+
+.m-msg__footer {
+  height: 100%;
+  padding: 1px 10px 4px;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 0 0 10px 10px;
+}
+
+.m-msg__footer__btn-exit button {
+  background-image: linear-gradient(#c8f20d 10%, #aec918 100%);
+  margin-left: 2px;
+}
+
+.m-msg__footer__btn-interrogate button:nth-child(1) {
+  background-image: linear-gradient(#f0d124 10%, #fdb708);
+}
+
+.m-msg__footer__btn-interrogate button:nth-child(2) {
+  background-image: linear-gradient(#f7457d 10%, #dd0e4f);
+  margin-right: 2px;
+}
