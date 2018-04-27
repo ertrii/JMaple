@@ -4,7 +4,7 @@ const MConfig = {
     IMG_DIRECTORY   :       'source/img/npc/'
 }
 
-class MampleMessage{
+class MapleMessage{
     constructor(el, npc = null){
         this.container = el;
         this.npc = {
@@ -12,15 +12,15 @@ class MampleMessage{
             img: '9010000.png',
             typeDialog: 'yesNo',
             info: {
-                text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit',
-                title: 'Maple Administrator',
+                text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores dolor molestiae voluptatum, at incidunt corporis doloribus temporibus ab obcaecati cum. Sint soluta amet accusamus odio consequatur veniam, labore magni earum.',
+                title: 'QUESTION',
                 alternatives: ['Answer1', 'Answer2']
-            }            
+            }
         }
     }
 
     /*===Creating Element===*/
-    html(){    
+    html(){
         //parent
         let parentElement = document.createElement('div')
         parentElement.setAttribute('class', 'm-msg')
@@ -44,17 +44,17 @@ class MampleMessage{
                 pNameElem.setAttribute('class', 'm-msg__body__npc__name')
                 pNameElem.appendChild(document.createTextNode(this.npc.name))
             npc.appendChild(pNameElem)
-
+        body.appendChild(npc)
             let dialog = document.createElement('div')
             dialog.setAttribute('class', 'm-msg__body__dialog')
                 let info = document.createElement('div')
                 info.setAttribute('class', 'm-msg__body__dialog__info')
                     let text = document.createElement('p')
-                    text.setAttribute('div', 'm-msg__body__dialog__info--text')
+                    text.setAttribute('class', 'm-msg__body__dialog__info--text')
                     text.appendChild(document.createTextNode(this.npc.info.text))
                 info.appendChild(text)
                     let title = document.createElement('h3')
-                    title.setAttribute('div', 'm-msg__body__dialog__info--title')
+                    title.setAttribute('class', 'm-msg__body__dialog__info--title')
                     title.appendChild(document.createTextNode(this.npc.info.title))
                 info.appendChild(title)
                     let alternatives = document.createElement('ul')
@@ -68,9 +68,11 @@ class MampleMessage{
                 diagBtn.setAttribute('class', 'm-msg__body__dialog__btn-interrogate')
                     let btnPrev = document.createElement('button')
                     btnPrev.setAttribute('class', 'm-msg__body__dialog__btn-interrogate--prev')
+                    btnPrev.appendChild(document.createTextNode('PREV'))
                 diagBtn.appendChild(btnPrev)
                     let btnNext = document.createElement('button')
-                    btnNext.setAttribute('class', 'm-msg__body__dialog__btn-interrogate--next')                
+                    btnNext.setAttribute('class', 'm-msg__body__dialog__btn-interrogate--next')
+                    btnNext.appendChild(document.createTextNode('NEXT'))
                 diagBtn.appendChild(btnNext)
             dialog.appendChild(diagBtn)
         body.appendChild(dialog)
@@ -79,20 +81,20 @@ class MampleMessage{
         let footer = document.createElement('div')
         footer.setAttribute('class', 'm-msg__footer')
             let exit = document.createElement('div')
-            exit.setAttribute('class', 'm-msg__footer__bnt-exit')
+            exit.setAttribute('class', 'm-msg__footer__btn-exit')
                 let btnEndChat = document.createElement('button')
-                btnEndChat.setAttribute('div', 'm-msg__footer__btn-exit--end-chat')
+                btnEndChat.setAttribute('class', 'm-msg__footer__btn-exit--end-chat')
                 btnEndChat.appendChild(document.createTextNode('END CHAT'))
             exit.appendChild(btnEndChat)
         footer.appendChild(exit)
             let btnsInterrogate = document.createElement('div')
-            btnsInterrogate.setAttribute('div', 'm-msg__footer__btn-interrogate')
+            btnsInterrogate.setAttribute('class', 'm-msg__footer__btn-interrogate')
                 let btnYes = document.createElement('button')
-                btnYes.setAttribute('button', 'm-msg__footer__btn-interrogate--yes')
+                btnYes.setAttribute('class', 'm-msg__footer__btn-interrogate--yes')
                 btnYes.appendChild(document.createTextNode('YES'))
             btnsInterrogate.appendChild(btnYes)
                 let btnNo = document.createElement('button')
-                btnNo.setAttribute('button', 'm-msg__footer__btn-interrogate--no')
+                btnNo.setAttribute('class', 'm-msg__footer__btn-interrogate--no')
                 btnNo.appendChild(document.createTextNode('NO'))
             btnsInterrogate.appendChild(btnNo)
         footer.appendChild(btnsInterrogate)
@@ -105,6 +107,6 @@ class MampleMessage{
     }
 
     show(){
-
+        this.container.appendChild(this.html())
     }
 }

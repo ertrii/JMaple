@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="maple-message-container">
-        <div class="m-msg">
+        <!-- <div class="m-msg">
             <div class="m-msg__head"></div>
             <div class="m-msg__body">
                 <div class="m-msg__body__npc">
@@ -42,9 +42,13 @@
                     <button class="m-msg__footer__btn-interrogate--yes">YES</button>
                     <button class="m-msg__footer__btn-interrogate--no">NO</button>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
     <script src="script/maple-message.js"></script>
+    <script>
+        const mapleMessage = new MapleMessage(document.getElementsByClassName('maple-message-container')[0]);
+        mapleMessage.show()
+    </script>
 </body>
 </html>

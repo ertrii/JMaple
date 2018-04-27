@@ -122,6 +122,7 @@ body{
                 button{
                     background-image: $m-btn-color--interrogative2;
                     padding: 2px 10px 1px;
+                    &:nth-child(2){margin-left: 9px}
                 }
             }
         }
@@ -134,6 +135,6 @@ body{
         border-radius: 0 0 10px 10px;        
         &__btn-exit button{background-image: $m-btn-color--exit; margin-left: 2px;}
         &__btn-interrogate button:nth-child(1){background-image: $m-btn-color--interrogative1--yes}
-        &__btn-interrogate button:nth-child(2){background-image: $m-btn-color--interrogative1--no; margin-right: 2px;}
+        &__btn-interrogate button:nth-child(2){background-image: $m-btn-color--interrogative1--no; margin-right: 2px; margin-left: 9px}
     }    
 }
