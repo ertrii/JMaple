@@ -3,6 +3,15 @@
 $text-color--light                  :   white;
 $text-color--bold                   :   #3839CC;
 $text-color--dark                   :   black;
+                                    //text-shadow
+$text-title                         :   0 0 0 #F09EA1, 
+                                        0 0 1px #C60900,
+                                        0 0 1px #C60900,
+                                        0 0 1px #C60900,
+                                        0 0 1px #C60900,
+                                        0 0 1px #C60900,
+                                        0 0 1px #C60900,
+                                        0 0 1px #C60900;
 
 
 /*
@@ -41,7 +50,7 @@ $c-btn-color--interrogative-2       :   linear-gradient(hsl(205,77,65),hsl(207,7
 ==========Modern=========
 */
 //colors maple-message
-$m-bg-color--primary                :   rgba(#098FD5, 0.7);
+$m-bg-color--primary                :   rgba(#098FD5, 0.6);
 $m-bg-color--texture                :   #EEEEEE;
 $m-bg-color--name                   :   linear-gradient(#949494, #626262);
 
@@ -52,4 +61,23 @@ $m-btn-color--interrogative1--no    :   linear-gradient(hsl(341,92,62) 10%,hsl(3
 $m-btn-color--interrogative2        :   $m-btn-color--exit;
 
 //border
-$m-border--dark                 :   #626262;
+$m-border--dark                     :   #626262;
+
+
+//Fonts
+@font-face{
+    font-family: inconsolata-regular;
+    src: url(../source/font/Roboto-Light.ttf);
+}
+@font-face{
+    font-family: encode-sans-light;
+    src: url(../source/font/EncodeSans-Light.ttf);
+}
+@font-face{
+    font-family: open-sans-light;
+    src: url(../source/font/OpenSans-Light.ttf);
+}
+@font-face{
+    font-family: open-sans-bold;
+    src: url(../source/font/OpenSans-Bold.ttf);
+}

@@ -17,6 +17,16 @@
   src: url(../source/font/EncodeSans-Light.ttf);
 }
 
+@font-face {
+  font-family: open-sans-light;
+  src: url(../source/font/OpenSans-Light.ttf);
+}
+
+@font-face {
+  font-family: open-sans-bold;
+  src: url(../source/font/OpenSans-Bold.ttf);
+}
+
 *, *::after, *::before {
   box-sizing: border-box;
   margin: 0;
@@ -138,27 +148,38 @@
   align-items: flex-start;
 }
 
-.m-msg__body__dialog--info, .m-msg__body__dialog--alternatives {
+.m-msg__body__dialog__info {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.m-msg__body__dialog__info--text, .m-msg__body__dialog__info--alternatives {
   font-size: 9pt;
   font-family: inconsolata-regular, sans-serif;
 }
 
-.m-msg__body__dialog--info {
-  padding-bottom: 10px;
+.m-msg__body__dialog__info--title {
+  padding-top: 10px;
+  color: transparent;
+  font-size: 9pt;
+  text-shadow: 0 0 0 #F09EA1, 0 0 1px #C60900, 0 0 1px #C60900, 0 0 1px #C60900, 0 0 1px #C60900, 0 0 1px #C60900, 0 0 1px #C60900, 0 0 1px #C60900;
 }
 
-.m-msg__body__dialog--alternatives {
+.m-msg__body__dialog__info--alternatives {
   list-style: none;
   color: #3839CC;
   cursor: pointer;
-  padding-left: 20px;
+  padding: 10px 0 10px 20px;
 }
 
-.m-msg__body__dialog li {
+.m-msg__body__dialog__info li {
   margin-bottom: 4px;
 }
 
-.m-msg__body__dialog li::before {
+.m-msg__body__dialog__info li::before {
   content: url("../source/svg/heart-mouse-leave.svg");
   width: 7px;
   height: 7px;
@@ -170,29 +191,21 @@
   margin-left: -14px;
 }
 
-.m-msg__body__dialog li:hover {
+.m-msg__body__dialog__info li:hover {
   text-decoration: underline;
 }
 
-.m-msg__body__dialog li:hover::before {
+.m-msg__body__dialog__info li:hover::before {
   content: url("../source/svg/heart-mouse-hover.svg");
 }
 
 .m-msg__body__dialog__btn-interrogate {
   width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-end;
+  text-align: right;
 }
 
 .m-msg__body__dialog__btn-interrogate button {
   background-image: linear-gradient(#61b1ea, #2289dd 15%, #61b1ea 120%);
-}
-
-.m-msg__body__dialog__btn-interrogate button:nth-child(2) {
-  margin-left: 4px;
 }
 
 .m-msg__footer {

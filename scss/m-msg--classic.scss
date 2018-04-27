@@ -83,40 +83,45 @@
             padding: 10px;
             border-radius: 5px;
             @include flex-center(column, center, flex-start);
-            &--info, &--alternatives{
-                font-size: 9pt;
-                font-family: inconsolata-regular, sans-serif;
-            }
-            &--info{
-                padding-bottom: 10px;
-            }
-            &--alternatives{
-                list-style: none;
-                color: $text-color--bold;
-                cursor: pointer;
-                padding-left: 20px;
-                }
-                li{margin-bottom: 4px;}
-                li::before{
-                    content: url('../source/svg/heart-mouse-leave.svg');
-                    width: 7px;
-                    height: 7px;
-                    position: absolute;                    
-                    transform: rotate(-90deg);
-                    text-decoration: none;
-                    margin-top: 2px;
-                    margin-left: -14px;
+            &__info{
+                height: 100%;
+                @include flex-cl-center(center, flex-start);
+                &--text, &--alternatives{
+                    font-size: 9pt;
+                    font-family: inconsolata-regular, sans-serif;
                 }                
-                li:hover{
-                    text-decoration: underline;
-                    &::before{content: url('../source/svg/heart-mouse-hover.svg');}
+                &--title{
+                    padding-top: 10px;
+                    color: transparent;
+                    font-size: 9pt;
+                    text-shadow: $text-title;
                 }
+                &--alternatives{
+                    list-style: none;
+                    color: $text-color--bold;
+                    cursor: pointer;
+                    padding: 10px 0 10px 20px;
+                    }
+                    li{margin-bottom: 4px;}
+                    li::before{
+                        content: url('../source/svg/heart-mouse-leave.svg');
+                        width: 7px;
+                        height: 7px;
+                        position: absolute;                    
+                        transform: rotate(-90deg);
+                        text-decoration: none;
+                        margin-top: 2px;
+                        margin-left: -14px;
+                    }                
+                    li:hover{
+                        text-decoration: underline;
+                        &::before{content: url('../source/svg/heart-mouse-hover.svg');}
+                    }
+            }            
             &__btn-interrogate{
                 width: 100%;                
-                height: 100%;
-                @include flex-center(row, flex-end, flex-end);                
-                button{background-image: $c-btn-color--interrogative-2}
-                button:nth-child(2){margin-left: 4px}
+                text-align: right;
+                button{background-image: $c-btn-color--interrogative-2}                
             }
         }
     }

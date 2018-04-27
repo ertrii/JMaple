@@ -1,20 +1,5 @@
 @import 'config';
 
-//Fonts
-@font-face{
-    font-family: inconsolata-regular;
-    src: url(../source/font/Roboto-Light.ttf);
-}
-@font-face{
-    font-family: encode-sans-light;
-    src: url(../source/font/EncodeSans-Light.ttf);
-}
-@font-face{
-    font-family: open-sans-light;
-    src: url(../source/font/OpenSans-Light.ttf);
-}
-
-
 *, *::after, *::before{
     box-sizing: border-box;
     margin: 0;
