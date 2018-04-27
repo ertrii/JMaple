@@ -5,18 +5,9 @@ const MConfig = {
 }
 
 class MapleMessage{
-    constructor(el, npc = null){
+    constructor(el, npc){
         this.container = el;
-        this.npc = {
-            name: 'Maple Administratos',
-            img: '9010000.png',
-            typeDialog: 'yesNo',
-            info: {
-                text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores dolor molestiae voluptatum, at incidunt corporis doloribus temporibus ab obcaecati cum. Sint soluta amet accusamus odio consequatur veniam, labore magni earum.',
-                title: 'QUESTION',
-                alternatives: ['Answer1', 'Answer2']
-            }
-        }
+        this.npc = npc        
     }
 
     /*===Creating Element===*/
@@ -37,66 +28,66 @@ class MapleMessage{
                 let npcImg = document.createElement('div')
                 npcImg.setAttribute('class', 'm-msg__body__npc__img')
                     let imgElem = document.createElement('img')
-                    imgElem.setAttribute('src', MConfig.IMG_DIRECTORY + this.npc.img);
+                    imgElem.setAttribute('src', MConfig.IMG_DIRECTORY + this.npc.data.img);
                 npcImg.appendChild(imgElem);
             npc.appendChild(npcImg);
                 let pNameElem = document.createElement('p')
                 pNameElem.setAttribute('class', 'm-msg__body__npc__name')
-                pNameElem.appendChild(document.createTextNode(this.npc.name))
+                pNameElem.appendChild(document.createTextNode(this.npc.data.name))
             npc.appendChild(pNameElem)
         body.appendChild(npc)
-            let dialog = document.createElement('div')
-            dialog.setAttribute('class', 'm-msg__body__dialog')
+            this.dialog = document.createElement('div')
+            this.dialog.setAttribute('class', 'm-msg__body__dialog')
                 let info = document.createElement('div')
                 info.setAttribute('class', 'm-msg__body__dialog__info')
                     let text = document.createElement('p')
                     text.setAttribute('class', 'm-msg__body__dialog__info--text')
-                    text.appendChild(document.createTextNode(this.npc.info.text))
+                    text.appendChild(document.createTextNode(this.npc.data.info.text))
                 info.appendChild(text)
                     let title = document.createElement('h3')
                     title.setAttribute('class', 'm-msg__body__dialog__info--title')
-                    title.appendChild(document.createTextNode(this.npc.info.title))
+                    title.appendChild(document.createTextNode(this.npc.data.info.title))
                 info.appendChild(title)
                     let alternatives = document.createElement('ul')
                     alternatives.setAttribute('class', 'm-msg__body__dialog__info--alternatives')
                         let li = document.createElement('li')
-                        li.appendChild(document.createTextNode(this.npc.info.alternatives[0]))
+                        li.appendChild(document.createTextNode(this.npc.data.info.alternatives[0]))
                     alternatives.appendChild(li)                    
                 info.appendChild(alternatives)
-            dialog.appendChild(info)
+            this.dialog.appendChild(info)
                 let diagBtn = document.createElement('div')
                 diagBtn.setAttribute('class', 'm-msg__body__dialog__btn-interrogate')
-                    let btnPrev = document.createElement('button')
-                    btnPrev.setAttribute('class', 'm-msg__body__dialog__btn-interrogate--prev')
-                    btnPrev.appendChild(document.createTextNode('PREV'))
-                diagBtn.appendChild(btnPrev)
-                    let btnNext = document.createElement('button')
-                    btnNext.setAttribute('class', 'm-msg__body__dialog__btn-interrogate--next')
-                    btnNext.appendChild(document.createTextNode('NEXT'))
-                diagBtn.appendChild(btnNext)
-            dialog.appendChild(diagBtn)
-        body.appendChild(dialog)
+                    this.btnPrev = document.createElement('button')
+                    this.btnPrev.setAttribute('class', 'm-msg__body__dialog__btn-interrogate--prev')
+                    this.btnPrev.appendChild(document.createTextNode('PREV'))
+                diagBtn.appendChild(this.btnPrev)
+                    this.btnNext = document.createElement('button')
+                    this.btnNext.setAttribute('class', 'm-msg__body__dialog__btn-interrogate--next')
+                    this.btnNext.appendChild(document.createTextNode('NEXT'))
+                diagBtn.appendChild(this.btnNext)
+            this.dialog.appendChild(diagBtn)
+        body.appendChild(this.dialog)
         
         //footer
         let footer = document.createElement('div')
         footer.setAttribute('class', 'm-msg__footer')
             let exit = document.createElement('div')
             exit.setAttribute('class', 'm-msg__footer__btn-exit')
-                let btnEndChat = document.createElement('button')
-                btnEndChat.setAttribute('class', 'm-msg__footer__btn-exit--end-chat')
-                btnEndChat.appendChild(document.createTextNode('END CHAT'))
-            exit.appendChild(btnEndChat)
+                this.btnEndChat = document.createElement('button')
+                this.btnEndChat.setAttribute('class', 'm-msg__footer__btn-exit--end-chat')
+                this.btnEndChat.appendChild(document.createTextNode('END CHAT'))
+            exit.appendChild(this.btnEndChat)
         footer.appendChild(exit)
             let btnsInterrogate = document.createElement('div')
             btnsInterrogate.setAttribute('class', 'm-msg__footer__btn-interrogate')
-                let btnYes = document.createElement('button')
-                btnYes.setAttribute('class', 'm-msg__footer__btn-interrogate--yes')
-                btnYes.appendChild(document.createTextNode('YES'))
-            btnsInterrogate.appendChild(btnYes)
-                let btnNo = document.createElement('button')
-                btnNo.setAttribute('class', 'm-msg__footer__btn-interrogate--no')
-                btnNo.appendChild(document.createTextNode('NO'))
-            btnsInterrogate.appendChild(btnNo)
+                this.btnYes = document.createElement('button')
+                this.btnYes.setAttribute('class', 'm-msg__footer__btn-interrogate--yes')
+                this.btnYes.appendChild(document.createTextNode('YES'))
+            btnsInterrogate.appendChild(this.btnYes)
+                this.btnNo = document.createElement('button')
+                this.btnNo.setAttribute('class', 'm-msg__footer__btn-interrogate--no')
+                this.btnNo.appendChild(document.createTextNode('NO'))
+            btnsInterrogate.appendChild(this.btnNo)
         footer.appendChild(btnsInterrogate)
 
         //Adding children
@@ -106,7 +97,18 @@ class MapleMessage{
         return parentElement;
     }
 
-    show(){
+    events(){
+        //Button
+        this.btnEndChat.onclick = () => this.npc.event(-1)
+        this.btnNo.onclick = () => this.npc.event(0)
+        this.btnYes.onclick = () => this.npc.event(1)
+        this.btnNext.onclick = () => this.npc.event(3)
+        this.btnPrev.onclick = () => this.npc.event(2)
+        
+    }
+
+    show(){        
         this.container.appendChild(this.html())
+        this.events()
     }
 }
