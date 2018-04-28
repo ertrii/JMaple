@@ -45,26 +45,11 @@
             </div> -->
         </div>
     </div>
+    <script src="script/npc/9010000.js"></script>
     <script src="script/maple-message.js"></script>
     <script>        
-        let npc = {
-            data    :   () => {
-                return {
-                    name        :   'Maple Administratos',
-                    img         :   '9010000.png',
-                    send        :   'test',
-                    info        :   {
-                        text            :   ' Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores dolor molestiae voluptatum, at incidunt corporis doloribus temporibus ab obcaecati cum. Sint soluta amet accusamus odio consequatur veniam, labore magni earum.',
-                        title           :   'QUESTION',
-                        alternatives    :   ['Answer1', 'Answer2']
-                    }
-                }
-            },
-            event   :   (ev, dispose) => console.log(ev)
-        }
-
         let el = document.getElementsByClassName('maple-message-container')[0]
-        const mapleMessage = new MapleMessage(el, npc);
+        const mapleMessage = new MapleMessage(el, N9010000);
 
         mapleMessage.show()
     </script>
