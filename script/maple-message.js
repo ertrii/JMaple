@@ -7,7 +7,9 @@ const MConfig = {
 class MapleMessage{
     constructor(el, npc){
         this.container = el;
-        this.npc = npc        
+        this.npc = npc
+        this.npcdata = this.npc.data()
+        this.send = this.npcdata.send;
     }
 
     /*===Creating Element===*/
@@ -28,42 +30,44 @@ class MapleMessage{
                 let npcImg = document.createElement('div')
                 npcImg.setAttribute('class', 'm-msg__body__npc__img')
                     let imgElem = document.createElement('img')
-                    imgElem.setAttribute('src', MConfig.IMG_DIRECTORY + this.npc.data.img);
+                    imgElem.setAttribute('src', MConfig.IMG_DIRECTORY + this.npcdata.img);
                 npcImg.appendChild(imgElem);
             npc.appendChild(npcImg);
                 let pNameElem = document.createElement('p')
                 pNameElem.setAttribute('class', 'm-msg__body__npc__name')
-                pNameElem.appendChild(document.createTextNode(this.npc.data.name))
+                pNameElem.appendChild(document.createTextNode(this.npcdata.name))
             npc.appendChild(pNameElem)
         body.appendChild(npc)
             this.dialog = document.createElement('div')
             this.dialog.setAttribute('class', 'm-msg__body__dialog')
-                let info = document.createElement('div')
-                info.setAttribute('class', 'm-msg__body__dialog__info')
+                this.info = document.createElement('div')
+                this.info.setAttribute('class', 'm-msg__body__dialog__info')
                     let text = document.createElement('p')
                     text.setAttribute('class', 'm-msg__body__dialog__info--text')
-                    text.appendChild(document.createTextNode(this.npc.data.info.text))
-                info.appendChild(text)
+                    text.appendChild(document.createTextNode(this.npcdata.info.text))
+                this.info.appendChild(text)
                     let title = document.createElement('h3')
                     title.setAttribute('class', 'm-msg__body__dialog__info--title')
-                    title.appendChild(document.createTextNode(this.npc.data.info.title))
-                info.appendChild(title)
+                    title.appendChild(document.createTextNode(this.npcdata.info.title))
+                this.info.appendChild(title)
                     let alternatives = document.createElement('ul')
                     alternatives.setAttribute('class', 'm-msg__body__dialog__info--alternatives')
                         let li = document.createElement('li')
-                        li.appendChild(document.createTextNode(this.npc.data.info.alternatives[0]))
+                        li.appendChild(document.createTextNode(this.npcdata.info.alternatives[0]))
                     alternatives.appendChild(li)                    
-                info.appendChild(alternatives)
-            this.dialog.appendChild(info)
+                this.info.appendChild(alternatives)
+            this.dialog.appendChild(this.info)
                 let diagBtn = document.createElement('div')
                 diagBtn.setAttribute('class', 'm-msg__body__dialog__btn-interrogate')
                     this.btnPrev = document.createElement('button')
-                    this.btnPrev.setAttribute('class', 'm-msg__body__dialog__btn-interrogate--prev')
+                    this.btnPrev.setAttribute('class', 'm-msg__body__dialog__btn-interrogate--prev')                    
                     this.btnPrev.appendChild(document.createTextNode('PREV'))
+                if(this.send === 'test' || this.send === 'nextprev')
                 diagBtn.appendChild(this.btnPrev)
                     this.btnNext = document.createElement('button')
                     this.btnNext.setAttribute('class', 'm-msg__body__dialog__btn-interrogate--next')
                     this.btnNext.appendChild(document.createTextNode('NEXT'))
+                if(this.send === 'test' || this.send === 'next' || this.send === 'nextprev')
                 diagBtn.appendChild(this.btnNext)
             this.dialog.appendChild(diagBtn)
         body.appendChild(this.dialog)
@@ -82,11 +86,13 @@ class MapleMessage{
             btnsInterrogate.setAttribute('class', 'm-msg__footer__btn-interrogate')
                 this.btnYes = document.createElement('button')
                 this.btnYes.setAttribute('class', 'm-msg__footer__btn-interrogate--yes')
-                this.btnYes.appendChild(document.createTextNode('YES'))
+                this.btnYes.appendChild(document.createTextNode((this.send === 'simple') ? 'OK' : 'YES'))//ok === yes
+            if(this.send === 'test' || this.send === 'yesno' || this.send === 'simple')
             btnsInterrogate.appendChild(this.btnYes)
                 this.btnNo = document.createElement('button')
                 this.btnNo.setAttribute('class', 'm-msg__footer__btn-interrogate--no')
                 this.btnNo.appendChild(document.createTextNode('NO'))
+            if(this.send === 'test' || this.send === 'yesno')
             btnsInterrogate.appendChild(this.btnNo)
         footer.appendChild(btnsInterrogate)
 
@@ -96,14 +102,19 @@ class MapleMessage{
         parentElement.appendChild(footer)
         return parentElement;
     }
+    dispose(){
+        this.npcdata = this.npc.data()
 
-    events(){
-        //Button
-        this.btnEndChat.onclick = () => this.npc.event(-1)
-        this.btnNo.onclick = () => this.npc.event(0)
-        this.btnYes.onclick = () => this.npc.event(1)
-        this.btnNext.onclick = () => this.npc.event(3)
-        this.btnPrev.onclick = () => this.npc.event(2)
+        this.info.children[0].innerHTML = this.npcdata.info.text
+    }
+
+    events(){        
+        //Button        
+        this.btnEndChat.onclick = () => this.npc.event(-1, this.dispose)
+        this.btnNo.onclick = () => this.npc.event(0, this.dispose)
+        this.btnYes.onclick = () => {this.npc.event(1, this.dispose)}
+        this.btnNext.onclick = () => this.npc.event(3, this.dispose)
+        this.btnPrev.onclick = () => this.npc.event(2, this.dispose)
         
     }
 

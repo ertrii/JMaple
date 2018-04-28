@@ -46,19 +46,21 @@
         </div>
     </div>
     <script src="script/maple-message.js"></script>
-    <script>
+    <script>        
         let npc = {
-            data    :   {
-                name        :   'Maple Administratos',
-                img         :   '9010000.png',
-                typeDialog  :   'yesNo',
-                info        :   {
-                    text            :   'Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores dolor molestiae voluptatum, at incidunt corporis doloribus temporibus ab obcaecati cum. Sint soluta amet accusamus odio consequatur veniam, labore magni earum.',
-                    title           :   'QUESTION',
-                    alternatives    :   ['Answer1', 'Answer2']
+            data    :   () => {
+                return {
+                    name        :   'Maple Administratos',
+                    img         :   '9010000.png',
+                    send        :   'test',
+                    info        :   {
+                        text            :   ' Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores dolor molestiae voluptatum, at incidunt corporis doloribus temporibus ab obcaecati cum. Sint soluta amet accusamus odio consequatur veniam, labore magni earum.',
+                        title           :   'QUESTION',
+                        alternatives    :   ['Answer1', 'Answer2']
+                    }
                 }
             },
-            event   :   ev => console.log(ev)
+            event   :   (ev, dispose) => console.log(ev)
         }
 
         let el = document.getElementsByClassName('maple-message-container')[0]
