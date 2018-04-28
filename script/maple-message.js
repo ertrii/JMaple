@@ -108,9 +108,10 @@ class MapleMessage{
     }
 
     cm(){
-        this.info.children[0].innerHTML = text
+        
         return {
             sendSimple      :   text => {                
+                this.info.children[0].innerHTML = text
                 this.btnYes.innerHTML = 'OK'
                 switch(this.send){
                     case 'yesno':
@@ -136,6 +137,7 @@ class MapleMessage{
             },
 
             sendNext        :   text => {
+                this.info.children[0].innerHTML = text
                 switch (this.send) {
                     case 'simple':
                         this.btnsInterrogate2.removeChild(this.btnYes)
@@ -160,6 +162,7 @@ class MapleMessage{
             },
 
             sendNextPrev    :   text => {                
+                this.info.children[0].innerHTML = text
                 switch (this.send) {
                     case 'simple':
                         this.btnsInterrogate2.removeChild(this.btnYes)
@@ -183,6 +186,7 @@ class MapleMessage{
             },
 
             sendYesNo       :   text => {
+                this.info.children[0].innerHTML = text
                 this.btnYes.innerHTML = 'YES'
                 switch (this.send) {
                     case 'simple':
@@ -208,6 +212,7 @@ class MapleMessage{
             },
 
             sendTest        :   text => {
+                this.info.children[0].innerHTML = text
                 this.btnYes.innerHTML = 'YES'
                 switch (this.send) {
                     case 'simple':

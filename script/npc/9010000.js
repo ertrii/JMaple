@@ -12,7 +12,7 @@ class N9010000 {
             this.cm.sendNext('Hola, dale a siguiente' + mode)
             return
         }
-        if(mode === 3)
+        if(mode === 2)
             this.cm.sendSimple('genial...' + mode)
         
     }    
