@@ -1,15 +1,18 @@
 const MConfig = {
     DISPLACE        :       true,
     WRITING         :       true,
-    IMG_DIRECTORY   :       'source/img/npc/'
+    IMG_DIRECTORY   :       'source/img/npc/',
+    TRANSITION      :       'gross'              //ease, gross, step   
 }
 
 class MapleMessage{
     constructor(el, NPC){
-        this.container = el        
-        this.npc = new NPC()
-        this.npc.cm = this.cm()
-        this.send = 'test'
+        this.container      =       el
+        this.getNPC         =       ()  =>  { this.npc = new NPC(); this.npc.cm = this.cm() }
+        this.cmSend           =     'simple'
+        this.dispose        =       false
+        this.type           =       0
+        this.selection      =       0
     }
 
     /*===Creating Element===*/
@@ -44,7 +47,7 @@ class MapleMessage{
                 this.info.setAttribute('class', 'm-msg__body__dialog__info')
                     let text = document.createElement('p')
                     text.setAttribute('class', 'm-msg__body__dialog__info--text')
-                    text.appendChild(document.createTextNode('this.npcdata.info.text'))
+                    text.appendChild(document.createTextNode('...'))
                 this.info.appendChild(text)
                     let title = document.createElement('h3')
                     title.setAttribute('class', 'm-msg__body__dialog__info--title')
@@ -62,12 +65,12 @@ class MapleMessage{
                     this.btnPrev = document.createElement('button')
                     this.btnPrev.setAttribute('class', 'm-msg__body__dialog__btn-interrogate--prev')                    
                     this.btnPrev.appendChild(document.createTextNode('PREV'))
-                if(this.send === 'test' || this.send === 'nextprev')
+                if(this.cmSend === 'test' || this.cmSend === 'nextprev')
                 this.btnsInterrogate1.appendChild(this.btnPrev)
                     this.btnNext = document.createElement('button')
                     this.btnNext.setAttribute('class', 'm-msg__body__dialog__btn-interrogate--next')
                     this.btnNext.appendChild(document.createTextNode('NEXT'))
-                if(this.send === 'test' || this.send === 'next' || this.send === 'nextprev')
+                if(this.cmSend === 'test' || this.cmSend === 'next' || this.cmSend === 'nextprev')
                 this.btnsInterrogate1.appendChild(this.btnNext)
             this.dialog.appendChild(this.btnsInterrogate1)
         body.appendChild(this.dialog)
@@ -86,13 +89,13 @@ class MapleMessage{
             this.btnsInterrogate2.setAttribute('class', 'm-msg__footer__btn-interrogate')
                 this.btnYes = document.createElement('button')
                 this.btnYes.setAttribute('class', 'm-msg__footer__btn-interrogate--yes')
-                this.btnYes.appendChild(document.createTextNode((this.send === 'simple') ? 'OK' : 'YES'))//ok === yes
-            if(this.send === 'test' || this.send === 'yesno' || this.send === 'simple')
+                this.btnYes.appendChild(document.createTextNode((this.cmSend === 'ok') ? 'OK' : 'YES'))//ok === yes
+            if(this.cmSend === 'test' || this.cmSend === 'yesno' || this.cmSend === 'ok')
             this.btnsInterrogate2.appendChild(this.btnYes)
                 this.btnNo = document.createElement('button')
                 this.btnNo.setAttribute('class', 'm-msg__footer__btn-interrogate--no')
                 this.btnNo.appendChild(document.createTextNode('NO'))
-            if(this.send === 'test' || this.send === 'yesno')
+            if(this.cmSend === 'test' || this.cmSend === 'yesno')
             this.btnsInterrogate2.appendChild(this.btnNo)
         footer.appendChild(this.btnsInterrogate2)
 
@@ -102,18 +105,48 @@ class MapleMessage{
         parentElement.appendChild(footer)
         return parentElement;
     }
-    dispose(){
-        this.npcdata = this.npc.data()        
-        this.info.children[0].innerHTML = this.npcdata.info.text
+
+    end(){
+        while(this.container.firstChild) this.container.removeChild(this.container.firstChild)
+        this.dispose = false        
     }
 
     cm(){
         
         return {
-            sendSimple      :   text => {                
+            sendSimple  :   text => {
+                this.info.children[0].innerHTML = text
+                switch(this.cmSend){
+                    case 'ok':
+                        this.btnsInterrogate2.removeChild(this.btnYes)
+                        break
+                    case 'yesno':
+                        while(this.btnsInterrogate2.firstChild) this.btnsInterrogate2.removeChild(this.btnsInterrogate2.firstChild)
+                        break
+                    case 'next':
+                        this.btnsInterrogate1.removeChild(this.btnNext)                        
+                        break
+                    case 'nextprev':
+                        while(this.btnsInterrogate1.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate1.firstChild)                        
+                        break
+                    case 'test':
+                        while(this.btnsInterrogate1.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate1.firstChild)
+                        while(this.btnsInterrogate2.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate2.firstChild)                        
+                        break
+                    default:
+                        console.log('same')
+                        break;
+                }
+                this.cmSend = 'simple'
+            },
+
+            sendOk      :   text => {                
                 this.info.children[0].innerHTML = text
                 this.btnYes.innerHTML = 'OK'
-                switch(this.send){
+                switch(this.cmSend){
+                    case 'simple':
+                        this.btnsInterrogate2.appendChild(this.btnYes)
+                        break
                     case 'yesno':
                         this.btnsInterrogate2.removeChild(this.btnNo)
                         break
@@ -133,13 +166,16 @@ class MapleMessage{
                         console.log('same')
                         break;
                 }
-                this.send = 'simple'
+                this.cmSend = 'ok'
             },
 
             sendNext        :   text => {
                 this.info.children[0].innerHTML = text
-                switch (this.send) {
+                switch (this.cmSend) {
                     case 'simple':
+                        this.btnsInterrogate1.appendChild(this.btnNext)
+                        break
+                    case 'ok':
                         this.btnsInterrogate2.removeChild(this.btnYes)
                         this.btnsInterrogate1.appendChild(this.btnNext)
                         break
@@ -158,13 +194,17 @@ class MapleMessage{
                         console.log('same')
                         break
                 }
-                this.send = 'next'
+                this.cmSend = 'next'
             },
 
             sendNextPrev    :   text => {                
                 this.info.children[0].innerHTML = text
-                switch (this.send) {
+                switch (this.cmSend) {
                     case 'simple':
+                        this.btnsInterrogate1.appendChild(this.btnPrev)
+                        this.btnsInterrogate1.appendChild(this.btnNext)
+                        break
+                    case 'ok':
                         this.btnsInterrogate2.removeChild(this.btnYes)
                         break;
                     case 'yesno':
@@ -182,14 +222,17 @@ class MapleMessage{
                         console.log('same')                        
                         break;
                 }
-                this.send = 'nextprev'
+                this.cmSend = 'nextprev'
             },
 
             sendYesNo       :   text => {
                 this.info.children[0].innerHTML = text
                 this.btnYes.innerHTML = 'YES'
-                switch (this.send) {
+                switch (this.cmSend) {
                     case 'simple':
+                        this.btnsInterrogate2.appendChild(this.btnYes)
+                        this.btnsInterrogate2.appendChild(this.btnNo)
+                    case 'ok':
                         this.btnsInterrogate2.appendChild(this.btnNo)
                         break
                     case 'next':
@@ -208,14 +251,20 @@ class MapleMessage{
                         console.log('same');                        
                         break;
                 }
-                this.send = 'yesno'
+                this.cmSend = 'yesno'
             },
 
             sendTest        :   text => {
                 this.info.children[0].innerHTML = text
                 this.btnYes.innerHTML = 'YES'
-                switch (this.send) {
+                switch (this.cmSend) {
                     case 'simple':
+                        this.btnsInterrogate1.appendChild(this.btnPrev)
+                        this.btnsInterrogate1.appendChild(this.btnNext)
+                        this.btnsInterrogate2.appendChild(this.btnYes)
+                        this.btnsInterrogate2.appendChild(this.btnNo)
+                        break
+                    case 'ok':
                         this.btnsInterrogate1.appendChild(this.btnPrev)
                         this.btnsInterrogate1.appendChild(this.btnNext)
                         this.btnsInterrogate2.appendChild(this.btnNo)
@@ -236,24 +285,45 @@ class MapleMessage{
                         console.log('same')
                         break
                 }
-                this.send = 'test'
+                this.cmSend = 'test'
             },
-            dispose         :   this.dispose
+
+            dispose         :   () => this.dispose = true
         }
+    }
+
+    set send(m){
+        if(MConfig.TRANSITION !== 'step'){ 
+            this.container.style.opacity = 0
+
+            setTimeout( () => {
+                if(MConfig.TRANSITION === 'ease') this.container.style.transition = '0.1s ease'
+                this.npc.action(m, this.type, this.selection)
+                this.container.style.opacity = 1
+            }, 100)
+
+            if(MConfig.TRANSITION === 'ease') this.container.style.transition = '0s'            
+            return
+        }
+        
+        this.npc.action(m, this.type, this.selection)
+        
     }
 
     events(){        
         //Button        
-        this.btnEndChat.onclick     =   ()  =>  this.npc.action(-1)//endchat
-        this.btnYes.onclick         =   ()  =>  this.npc.action(1)//yes
-        this.btnNo.onclick          =   ()  =>  this.npc.action(0)//no
-        this.btnPrev.onclick        =   ()  =>  this.npc.action(2)//prev
-        this.btnNext.onclick        =   ()  =>  this.npc.action(1)//next
+        this.btnEndChat.onclick     =   ()    =>    { this.npc.action(-1, 0, 0); this.end() }                    //endchat
+        this.btnYes.onclick         =   ()    =>    { if ( !this.dispose ) this.send = 1; else { this.end() } }  //yes
+        this.btnNo.onclick          =   ()    =>    { if ( !this.dispose ) this.send = 0; else { this.end() } }  //no
+        this.btnPrev.onclick        =   ()    =>    { if ( !this.dispose ) this.send = 0; else { this.end() } }  //prev
+        this.btnNext.onclick        =   ()    =>    { if ( !this.dispose ) this.send = 1; else { this.end() } }  //next
         
     }
 
-    show(){        
-        this.container.appendChild(this.html)
+    show(){
+        this.getNPC()
+        this.container.appendChild(this.html)        
+        this.npc.start()
         this.events()
     }
 }
