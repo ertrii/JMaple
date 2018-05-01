@@ -111,59 +111,81 @@ class MapleMessage{
         this.dispose = false        
     }
 
-    set style(text){
-        let splitText   =   text.split('#')                
+    set style(text){        
         let p = document.createElement('p')
         p.setAttribute('class', 'm-msg__body__dialog__info--text')
 
-        for (const t of splitText) {
-            let cod         =   t.substr(0,1)
-            let textElem    =   document.createElement((cod === 'e') ? 'strong' :'span')
-            let textNode    =   document.createTextNode(t.slice(1))
-            let nothing     =   false
-            switch (cod) {
-                //#b
-                case 'b':
-                    textElem.setAttribute('class', 'm-msg__style--color-blue')
-                    break
-                //#d
-                case 'd':
-                    textElem.setAttribute('class', 'm-msg__style--color-purple')
-                    break
-                //#e
-                case 'e':
-                    textElem.setAttribute('class', 'm-msg__style--color-bold')
-                    break
-                //#g
-                case 'g':
-                    textElem.setAttribute('class', 'm-msg__style--color-green')
-                    break
-                //#k
-                case 'k':
-                    textElem.setAttribute('class', 'm-msg__style--color-black')
-                    break
-                //#r
-                case 'r':
-                    textElem.setAttribute('class', 'm-msg__style--color-red')
-                    break                
-                default:
-                    nothing = true
-                    break;
-            }
+        let openSelection   =   false
+        let ul = document.createElement('ul')
+        ul.setAttribute('class', 'm-msg__body__dialog__info--alternatives')
+        
+        let splitText   =   text.split('#')
+        
+        let nothing     =   (text.substr(0,1) === '#') ? false : true
+        
+        for (let t of splitText) {
+            let cod         =   t.substr(0,1)            
+            let cleanText    =   document.createTextNode(t.slice(1))
+            
+            
+            if(cod === 'l') {openSelection = false; t = t.slice(1) }    //#l close selection
+            if(cod === 'L') openSelection = true                        //#L <- Selection open            
 
-            if(!nothing){
-                textElem.appendChild(textNode)
-                p.appendChild(textElem)
-            }else{
+            let textElem    =   document.createElement((cod === 'e') ? 'strong' : (openSelection) ? 'li' : 'span')
+
+            if(!nothing)
+                if(!openSelection){
+                    switch (cod) {
+                        //#b
+                        case 'b':
+                            textElem.setAttribute('class', 'm-msg__style--color-blue')
+                            break
+                        //#d
+                        case 'd':
+                            textElem.setAttribute('class', 'm-msg__style--color-purple')
+                            break
+                        //#e
+                        case 'e':
+                            textElem.setAttribute('class', 'm-msg__style--color-bold')
+                            break
+                        //#g
+                        case 'g':
+                            textElem.setAttribute('class', 'm-msg__style--color-green')
+                            break
+                        //#k
+                        case 'k':
+                            textElem.setAttribute('class', 'm-msg__style--color-black')
+                            break
+                        //#r
+                        case 'r':
+                            textElem.setAttribute('class', 'm-msg__style--color-red')
+                            break                                        
+                        default:
+                            nothing = true
+                            break;
+                    }
+                }
+
+            if(!nothing && !openSelection){
+                textElem.appendChild(cleanText)
+                p.appendChild(textElem)                
+            }else if(openSelection){
+                let li = document.createElement('li')                    
+                li.appendChild(cleanText)
+                ul.appendChild(li)                
+            }
+            else{
                 let OriginalText = document.createTextNode(t)
                 p.appendChild(OriginalText)
+                nothing = false
             }
+
         } 
         
         while(this.info.firstChild) this.info.removeChild(this.info.firstChild)
-
+                
         this.info.appendChild(p)
-
+        this.info.appendChild(ul)
     }
 
     cm(){

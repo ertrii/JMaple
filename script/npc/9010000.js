@@ -7,7 +7,7 @@ class N9010000 {
         this.status =   0
     }
     start(){
-        this.cm.sendYesNo('hola, #b bienvenido# a este #bnpc# de #eprueba#, #d¿usted desea proseguir?#')
+        this.cm.sendYesNo('roger hola, bienvenido a este #bnpc# de #bprueba#, ¿usted desea proseguir? #Llista 1#l#Llista 2#l')
     }
     action(mode, type, selection){
         if(mode === 0 && this.status === 0){
@@ -40,7 +40,7 @@ class N9010000 {
         }
 
         if(this.status === 4){
-            this.cm.sendOk('Listo hemos terminado gracias por su participación')
+            this.cm.sendOk(' Listo hemos terminado gracias por su participación')
             this.cm.dispose()            
         }
 
