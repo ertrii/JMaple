@@ -45,20 +45,20 @@ class MapleMessage{
             this.dialog.setAttribute('class', 'm-msg__body__dialog')
                 this.info = document.createElement('div')
                 this.info.setAttribute('class', 'm-msg__body__dialog__info')
-                    let text = document.createElement('p')
-                    text.setAttribute('class', 'm-msg__body__dialog__info--text')
-                    text.appendChild(document.createTextNode('...'))
-                this.info.appendChild(text)
-                    let title = document.createElement('h3')
-                    title.setAttribute('class', 'm-msg__body__dialog__info--title')
-                    title.appendChild(document.createTextNode('TITLE'))//remember
-                this.info.appendChild(title)
-                    let alternatives = document.createElement('ul')
-                    alternatives.setAttribute('class', 'm-msg__body__dialog__info--alternatives')
-                        let li = document.createElement('li')
-                        li.appendChild(document.createTextNode('Answer1'))//remember
-                    alternatives.appendChild(li)                    
-                this.info.appendChild(alternatives)
+                //     let text = document.createElement('p')
+                //     text.setAttribute('class', 'm-msg__body__dialog__info--text')
+                //     text.appendChild(document.createTextNode('...'))
+                // this.info.appendChild(text)
+                //     let title = document.createElement('h3')
+                //     title.setAttribute('class', 'm-msg__body__dialog__info--title')
+                //     title.appendChild(document.createTextNode('TITLE'))//remember
+                // this.info.appendChild(title)
+                //     let alternatives = document.createElement('ul')
+                //     alternatives.setAttribute('class', 'm-msg__body__dialog__info--alternatives')
+                //         let li = document.createElement('li')
+                //         li.appendChild(document.createTextNode('Answer1'))//remember
+                //     alternatives.appendChild(li)                    
+                // this.info.appendChild(alternatives)
             this.dialog.appendChild(this.info)
                 this.btnsInterrogate1 = document.createElement('div')
                 this.btnsInterrogate1.setAttribute('class', 'm-msg__body__dialog__btn-interrogate')
@@ -111,12 +111,67 @@ class MapleMessage{
         this.dispose = false        
     }
 
+    set style(text){
+        let splitText   =   text.split('#')                
+        let p = document.createElement('p')
+        p.setAttribute('class', 'm-msg__body__dialog__info--text')
+
+        for (const t of splitText) {
+            let cod         =   t.substr(0,1)
+            let textElem    =   document.createElement((cod === 'e') ? 'strong' :'span')
+            let textNode    =   document.createTextNode(t.slice(1))
+            let nothing     =   false
+            switch (cod) {
+                //#b
+                case 'b':
+                    textElem.setAttribute('class', 'm-msg__style--color-blue')
+                    break
+                //#d
+                case 'd':
+                    textElem.setAttribute('class', 'm-msg__style--color-purple')
+                    break
+                //#e
+                case 'e':
+                    textElem.setAttribute('class', 'm-msg__style--color-bold')
+                    break
+                //#g
+                case 'g':
+                    textElem.setAttribute('class', 'm-msg__style--color-green')
+                    break
+                //#k
+                case 'k':
+                    textElem.setAttribute('class', 'm-msg__style--color-black')
+                    break
+                //#r
+                case 'r':
+                    textElem.setAttribute('class', 'm-msg__style--color-red')
+                    break                
+                default:
+                    nothing = true
+                    break;
+            }
+
+            if(!nothing){
+                textElem.appendChild(textNode)
+                p.appendChild(textElem)
+            }else{
+                let OriginalText = document.createTextNode(t)
+                p.appendChild(OriginalText)
+            }
+        } 
+        
+        while(this.info.firstChild) this.info.removeChild(this.info.firstChild)
+
+        this.info.appendChild(p)
+
+    }
+
     cm(){
         
         return {
             sendSimple  :   text => {
                 this.type = 4
-                this.info.children[0].innerHTML = text
+                this.style = text
                 switch(this.cmSend){
                     case 'ok':
                         this.btnsInterrogate2.removeChild(this.btnYes)
@@ -144,7 +199,7 @@ class MapleMessage{
 
             sendOk      :   text => {
                 this.type = 0
-                this.info.children[0].innerHTML = text
+                this.style = text
                 this.btnYes.innerHTML = 'OK'
                 switch(this.cmSend){
                     case 'simple':
@@ -175,7 +230,7 @@ class MapleMessage{
 
             sendNext        :   text => {
                 this.type = 0
-                this.info.children[0].innerHTML = text
+                this.style = text
                 switch (this.cmSend) {
                     case 'simple':
                         this.btnsInterrogate1.appendChild(this.btnNext)
@@ -205,7 +260,7 @@ class MapleMessage{
 
             sendNextPrev    :   text => {
                 this.type = 0
-                this.info.children[0].innerHTML = text
+                this.style = text
                 switch (this.cmSend) {
                     case 'simple':
                         this.btnsInterrogate1.appendChild(this.btnPrev)
@@ -235,7 +290,7 @@ class MapleMessage{
 
             sendYesNo       :   text => {
                 this.type = 1
-                this.info.children[0].innerHTML = text
+                this.style = text
                 this.btnYes.innerHTML   =   'YES'
                 this.btnNo.innerHTML    =   'NO'
                 switch (this.cmSend) {
@@ -267,7 +322,7 @@ class MapleMessage{
 
             sendAcceptDecline   :   text => {
                 this.type = 12
-                this.info.children[0].innerHTML = text
+                this.style = text
                 this.btnYes.innerHTML   =   'Accept'
                 this.btnNo.innerHTML    =   'Decline'
                 switch (this.cmSend) {
@@ -299,7 +354,7 @@ class MapleMessage{
 
             sendTest        :   text => {
                 this.type = -1
-                this.info.children[0].innerHTML = text
+                this.style = text
                 this.btnYes.innerHTML = 'YES'
                 switch (this.cmSend) {
                     case 'simple':

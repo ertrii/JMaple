@@ -7,7 +7,7 @@ class N9010000 {
         this.status =   0
     }
     start(){
-        this.cm.sendYesNo('hola, bienvenido a este npc de prueba, ¿usted desea proseguir?')
+        this.cm.sendYesNo('hola, #b bienvenido# a este #bnpc# de #eprueba#, #d¿usted desea proseguir?#')
     }
     action(mode, type, selection){
         if(mode === 0 && this.status === 0){
