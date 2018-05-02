@@ -206,7 +206,7 @@ class MapleMessage{
             i++                       
         }
 
-        for (const list of listLi)list.li.onclick = () => {
+        for (const list of listLi) list.li.onclick = () => {
             if ( !this.dispose ) { this.selection = list.num; this.send = 1 }
             else this.end()
         }
@@ -231,6 +231,10 @@ class MapleMessage{
                         break
                     case 'next':
                         this.btnsInterrogate1.removeChild(this.btnNext)                        
+                        break
+                    case 'prev':
+                        this.btnsInterrogate1.removeChild(this.btnPrev)
+                        this.btnsInterrogate2.removeChild(this.btnYes)
                         break
                     case 'nextprev':
                         while(this.btnsInterrogate1.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate1.firstChild)                        
@@ -261,6 +265,9 @@ class MapleMessage{
                     case 'next':
                         this.btnsInterrogate1.removeChild(this.btnNext)                        
                         this.btnsInterrogate2.appendChild(this.btnYes)
+                        break
+                    case 'prev':
+                        this.btnsInterrogate1.removeChild(this.btnPrev)                        
                         break
                     case 'nextprev':
                         while(this.btnsInterrogate1.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate1.firstChild)
@@ -293,6 +300,10 @@ class MapleMessage{
                         while(this.btnsInterrogate2.firstChild) this.btnsInterrogate2.removeChild(this.btnsInterrogate2.firstChild)
                         this.btnsInterrogate1.appendChild(this.btnNext)
                         break
+                    case 'prev':
+                        this.btnsInterrogate1.removeChild(this.btnPrev)
+                        this.btnsInterrogate2.removeChild(this.btnYes)
+                        break
                     case 'nextprev':
                         this.btnsInterrogate1.removeChild(this.btnPrev)
                         break
@@ -305,6 +316,43 @@ class MapleMessage{
                         break
                 }
                 this.cmSend = 'next'
+            },
+
+            sendPrev        :   text => {
+                this.type = 5   //??????...
+                this.style = text
+                this.btnYes.innerHTML = 'OK'
+                switch (this.cmSend) {
+                    case 'simple':
+                        this.btnsInterrogate1.appendChild(this.btnPrev)
+                        this.btnsInterrogate2.appendChild(this.btnYes)
+                        break
+                    case 'ok':                        
+                        this.btnsInterrogate1.appendChild(this.btnPrev)
+                        break
+                    case 'yesno':
+                    case 'acceptdecline':                                                
+                        this.btnsInterrogate1.appendChild(this.btnPrev)
+                        this.btnsInterrogate2.removeChild(this.btnNo)
+                        break
+                    case 'next':
+                        this.btnsInterrogate1.removeChild(this.btnNext)
+                        this.btnsInterrogate1.appendChild(this.btnPrev)
+                        this.btnsInterrogate2.appendChild(this.btnYes)
+                        break
+                    case 'nextprev':
+                        this.btnsInterrogate1.removeChild(this.btnNext)
+                        this.btnsInterrogate2.appendChild(this.btnYes)
+                        break
+                    case 'test':
+                        this.btnsInterrogate1.removeChild(this.next)
+                        this.btnsInterrogate2.removeChild(this.btnNo)
+                        break
+                    default:
+                        console.log('same')
+                        break
+                }
+                this.cmSend = 'prev'
             },
 
             sendNextPrev    :   text => {
@@ -326,6 +374,10 @@ class MapleMessage{
                         break
                     case 'next':
                         this.btnsInterrogate1.insertBefore(this.btnPrev, this.btnNext)
+                        break
+                    case 'prev':
+                        this.btnsInterrogate1.appendChild(this.btnNext)
+                        this.btnsInterrogate2.removeChild(this.btnYes)
                         break
                     case 'test':
                         while(this.btnsInterrogate2.firstChild) this.btnsInterrogate2.removeChild(this.btnsInterrogate2.firstChild)
@@ -354,6 +406,9 @@ class MapleMessage{
                         this.btnsInterrogate1.removeChild(this.btnNext)
                         this.btnsInterrogate2.appendChild(this.btnYes)
                         this.btnsInterrogate2.appendChild(this.btnNo)
+                        break
+                    case 'prev':
+                        this.btnsInterrogate1.removeChild(this.btnPrev)
                         break
                     case 'nextprev':
                         while(this.btnsInterrogate1.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate1.firstChild)
@@ -386,6 +441,9 @@ class MapleMessage{
                         this.btnsInterrogate1.removeChild(this.btnNext)
                         this.btnsInterrogate2.appendChild(this.btnYes)
                         this.btnsInterrogate2.appendChild(this.btnNo)
+                        break
+                    case 'prev':
+                        this.btnsInterrogate1.removeChild(this.btnPrev)
                         break
                     case 'nextprev':
                         while(this.btnsInterrogate1.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate1.firstChild)
@@ -426,6 +484,11 @@ class MapleMessage{
                         this.btnsInterrogate2.appendChild(this.btnYes)
                         this.btnsInterrogate2.appendChild(this.btnNo)
                         break
+                    case 'prev':
+                        this.btnsInterrogate1.insertBefore(this.btnNext, btn.btnPrev)
+                        this.btnsInterrogate2.appendChild(this.btnYes)
+                        this.btnsInterrogate2.appendChild(this.btnNo)
+                        break
                     case 'nextprev':
                         this.btnsInterrogate2.appendChild(this.btnYes)
                         this.btnsInterrogate2.appendChild(this.btnNo)
@@ -448,16 +511,14 @@ class MapleMessage{
             setTimeout( () => {
                 if(MConfig.TRANSITION === 'ease') this.container.style.transition = '0.1s ease'
                 this.npc.action(m, this.type, this.selection)
-                this.selection = 0
+                this.selection = 0 //reset
                 this.container.style.opacity = 1
             }, 100)
 
             if(MConfig.TRANSITION === 'ease') this.container.style.transition = '0s'            
             return
-        }
-        
-        this.npc.action(m, this.type, this.selection)
-        
+        }        
+        this.npc.action(m, this.type, this.selection)        
         this.selection = 0 //reset
     }
 
