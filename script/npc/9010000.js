@@ -7,7 +7,7 @@ class N9010000 {
         this.status =   0
     }
     start(){
-        this.cm.sendYesNo('roger hola, bienvenido a este #bnpc# de #bprueba#, ¿usted desea proseguir? #Llista 1#l#Llista 2#l')
+        this.cm.sendYesNo('roger hola, bienvenido a este #bnpc# de #bprueba#, ¿usted desea proseguir? #L1# Lista 1#l #L2# Lista 2#l')
     }
     action(mode, type, selection){
         if(mode === 0 && this.status === 0){
@@ -19,7 +19,7 @@ class N9010000 {
         }
 
         if(this.status === 1){
-            this.cm.sendNext('Gracias por aceptar. Para proseguir con esta prueba le recomendamos darle click en siguiente...')
+            this.cm.sendNext("Gracias por aceptar. Para proseguir con esta prueba le recomendamos darle click en siguiente..." + `mode: ${mode}, type: ${type}, selection: ${selection}`)
             this.status++
             return
         }
@@ -28,7 +28,7 @@ class N9010000 {
 
 
         if(this.status === 2){
-            this.cm.sendNext('Bien...!, vemos que esto está funcionando de maravilla, sigamos prosigando.')
+            this.cm.sendNext('Bien...!, vemos que esto está funcionando de maravilla, sigamos prosigando. ')
             this.status++
             return            
         }

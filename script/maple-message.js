@@ -118,11 +118,12 @@ class MapleMessage{
         let openSelection   =   false
         let ul = document.createElement('ul')
         ul.setAttribute('class', 'm-msg__body__dialog__info--alternatives')
-        
+        let nLi = new Array(), dataLi = 0
+
         let splitText   =   text.split('#')
         
         let nothing     =   (text.substr(0,1) === '#') ? false : true
-        
+                
         for (let t of splitText) {
             let cod         =   t.substr(0,1)            
             let cleanText    =   document.createTextNode(t.slice(1))
@@ -169,10 +170,25 @@ class MapleMessage{
             if(!nothing && !openSelection){
                 textElem.appendChild(cleanText)
                 p.appendChild(textElem)                
-            }else if(openSelection){
-                let li = document.createElement('li')                    
-                li.appendChild(cleanText)
-                ul.appendChild(li)                
+            }else if(openSelection){                
+                if(dataLi === 0){
+                                        
+                    let n = parseInt(cleanText.data)
+                    if(isNaN(n)){
+                        console.error('number Selection is ' + n);
+                        return
+                    }else{
+                        nLi.push(n)                        
+                    }
+                    
+                    dataLi++
+                }else{
+                    let li = document.createElement('li')
+                    li.appendChild(cleanText)
+                    ul.appendChild(li)
+                    dataLi = 0
+                }
+                                
             }
             else{
                 let OriginalText = document.createTextNode(t)
@@ -183,7 +199,18 @@ class MapleMessage{
         } 
         
         while(this.info.firstChild) this.info.removeChild(this.info.firstChild)
-                
+        
+        let listLi = new Array(), i = 0
+        for (const _li of ul.children) {
+            listLi.push( { li : _li, num : nLi[i] } )            
+            i++                       
+        }
+
+        for (const list of listLi)list.li.onclick = () => {
+            if ( !this.dispose ) { this.selection = list.num; this.send = 1 }
+            else this.end()
+        }
+        
         this.info.appendChild(p)
         this.info.appendChild(ul)
     }
@@ -421,6 +448,7 @@ class MapleMessage{
             setTimeout( () => {
                 if(MConfig.TRANSITION === 'ease') this.container.style.transition = '0.1s ease'
                 this.npc.action(m, this.type, this.selection)
+                this.selection = 0
                 this.container.style.opacity = 1
             }, 100)
 
@@ -430,6 +458,7 @@ class MapleMessage{
         
         this.npc.action(m, this.type, this.selection)
         
+        this.selection = 0 //reset
     }
 
     events(){        
