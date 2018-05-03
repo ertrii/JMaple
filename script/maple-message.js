@@ -213,6 +213,8 @@ class MapleMessage{
         
         this.info.appendChild(p)
         this.info.appendChild(ul)
+
+        this.write = p
     }
 
     cm(){
@@ -502,6 +504,79 @@ class MapleMessage{
 
             dispose         :   () => this.dispose = true
         }
+    }
+
+    set write(textElement) {
+                        
+        let childText = new Array()
+
+        for (const child of textElement.childNodes) {
+            if(child.data !== undefined){
+                if(child.data == '' || child.data == ' '){
+                    textElement.removeChild(child)
+                }else{
+                    childText.push(child.data.split(''))
+                    child.data = ''
+                }
+                continue
+            }
+
+            childText.push(child.innerHTML.split(''))
+            child.innerHTML = ''
+                            
+        }
+                
+        let i = 0
+        const assyncWrite = () => {
+             
+            if(i >= childText.length) return
+
+            let j = 0
+
+            if (textElement.childNodes[i].nodeName === '#text') {
+                let writing1 = setInterval(() => {
+                    if(j < childText[i].length){
+                        if(childText[i][j] === ' '){
+                            textElement.childNodes[i].data += (childText[i][j+1] === undefined) ? childText[i][j] : ' ' + childText[i][j+1]
+                            j += 2
+                        }else{
+                            textElement.childNodes[i].data += childText[i][j]
+                            j++
+                        }                        
+                    }else{
+                        clearInterval(writing1)
+                        i++
+                        assyncWrite()
+                        return
+                    }
+                }, 35)
+                    
+            }
+
+            else{
+                let writing2 = setInterval(() => {
+                    
+                    if(j < childText[i].length){
+                        if(childText[i][j] === ' '){
+                            textElement.childNodes[i].innerHTML += (childText[i][j++] === undefined) ? childText[i][j] : ' ' + childText[i][j++]
+                            j += 2
+                        }else{
+                            textElement.childNodes[i].innerHTML += childText[i][j]
+                            j++
+                        }
+                                                
+                    }else{
+                        clearInterval(writing2)
+                        i++
+                        assyncWrite()
+                        return
+                    }
+                }, 35)
+            }            
+        }
+        
+        assyncWrite()
+         
     }
 
     set send(m){
