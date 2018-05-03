@@ -8,50 +8,9 @@
     <title>Maple Message</title>
 </head>
 <body>
-    <div class="maple-message-container">
-        <!-- <div class="m-msg">
-            <div class="m-msg__head"></div>
-            <div class="m-msg__body">
-                <div class="m-msg__body__npc">
-                    <div class="m-msg__body__npc__img">
-                        <img src="source/img/npc/9010000.png" alt="Maple Administrator">
-                    </div>
-                    <p class="m-msg__body__npc__name">Maple Administrator</p>
-                </div>
-                <div class="m-msg__body__dialog">
-                    <div class="m-msg__body__dialog__info">                        
-                        <p class="m-msg__body__dialog__info--text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores dolor molestiae voluptatum, at incidunt corporis doloribus temporibus ab obcaecati cum. Sint soluta amet accusamus odio consequatur veniam, labore magni earum.</p>
-                        <h3 class="m-msg__body__dialog__info--title">TITULO</h3>
-                        <ul class="m-msg__body__dialog__info--alternatives">
-                            <li>Answer 1</li>
-                            <li>Answer 2</li>
-                            <li>Answer 3</li>
-                        </ul>
-                    </div>                    
-                    <div class="m-msg__body__dialog__btn-interrogate">
-                        <button class="m-msg__body__dialog__btn-interrogate--prev">BACK</button>
-                        <button class="m-msg__body__dialog__btn-interrogate--next">NEXT</button>
-                    </div>
-                </div>
-            </div>
-            <div class="m-msg__footer">
-                <div class="m-msg__footer__btn-exit">
-                    <button class="m-msg__footer__btn-exit--end-chat">END CHAT</button>
-                </div>
-                <div class="m-msg__footer__btn-interrogate">
-                    <button class="m-msg__footer__btn-interrogate--yes">YES</button>
-                    <button class="m-msg__footer__btn-interrogate--no">NO</button>
-                </div>
-            </div> -->
-        </div>
-    </div>
+    <div id="m-msg"></div>
     <script src="script/npc/9010000.js"></script>
     <script src="script/maple-message.js"></script>
-    <script>        
-        let el = document.getElementsByClassName('maple-message-container')[0]
-        const mapleMessage = new MapleMessage(el, N9010000);
-
-        mapleMessage.show()
-    </script>
+    <script>new MapleMessage(document.getElementById('m-msg'), N9010000).show()</script>
 </body>
 </html>

@@ -10,7 +10,7 @@ class MapleMessage{
     constructor(el, NPC){
         this.container      =       el
         this.getNPC         =       ()  =>  { this.npc = new NPC(); this.npc.cm = this.cm() }
-        this.cmSend           =     'simple'        //simple
+        this.cmSend         =       'simple'        //simple
         this.dispose        =       false
         this.type           =       4               //defult
         this.selection      =       0
@@ -636,7 +636,8 @@ class MapleMessage{
 
     show(){
         this.getNPC()
-        this.container.appendChild(this.html)        
+        this.container.classList.add('maple-message-container')
+        this.container.appendChild(this.html)
         this.npc.start()
         this.events()
     }
