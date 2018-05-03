@@ -1,8 +1,9 @@
-const MConfig = {
+const M_MSG__CONFIG = {
     DISPLACE        :       true,
     WRITING         :       true,
     IMG_DIRECTORY   :       'source/img/npc/',
-    TRANSITION      :       'gross'              //ease, gross, step   
+    TRANSITION      :       'gross',              //ease, gross, step
+    WRITING         :       true
 }
 
 class MapleMessage{
@@ -33,7 +34,7 @@ class MapleMessage{
                 let npcImg = document.createElement('div')
                 npcImg.setAttribute('class', 'm-msg__body__npc__img')
                     let imgElem = document.createElement('img')
-                    imgElem.setAttribute('src', MConfig.IMG_DIRECTORY + this.npc.img)
+                    imgElem.setAttribute('src', M_MSG__CONFIG.IMG_DIRECTORY + this.npc.img)
                 npcImg.appendChild(imgElem);
             npc.appendChild(npcImg);
                 let pNameElem = document.createElement('p')
@@ -506,24 +507,35 @@ class MapleMessage{
         }
     }
 
-    set write(textElement) {
-                        
+    set write(el) {
+        this.progressWrite = M_MSG__CONFIG.WRITING
+
         let childText = new Array()
 
-        for (const child of textElement.childNodes) {
-            if(child.data !== undefined){
+        for (const child of el.childNodes) {
+            if(child.nodeName === '#text'){
                 if(child.data == '' || child.data == ' '){
-                    textElement.removeChild(child)
+                    el.removeChild(child)
                 }else{
-                    childText.push(child.data.split(''))
+                    childText.push([child.data, child.data.split('')])
                     child.data = ''
                 }
                 continue
             }
 
-            childText.push(child.innerHTML.split(''))
+            childText.push([child.innerHTML, child.innerHTML.split('')])
             child.innerHTML = ''
                             
+        }
+        
+        const writeNow = () => {
+            for (let t = 0; t < childText.length; t++) {
+                if(el.childNodes[t].nodeName === '#text'){
+                    el.childNodes[t].data = childText[t][0]                    
+                }else{
+                    el.childNodes[t].innerHTML = childText[t][0]                    
+                }                
+            }
         }
                 
         let i = 0
@@ -533,14 +545,20 @@ class MapleMessage{
 
             let j = 0
 
-            if (textElement.childNodes[i].nodeName === '#text') {
+            if (el.childNodes[i].nodeName === '#text') {
                 let writing1 = setInterval(() => {
-                    if(j < childText[i].length){
-                        if(childText[i][j] === ' '){
-                            textElement.childNodes[i].data += (childText[i][j+1] === undefined) ? childText[i][j] : ' ' + childText[i][j+1]
+
+                    if(!this.progressWrite){
+                        writeNow()
+                        return
+                    } 
+
+                    if(j < childText[i][1].length){
+                        if(childText[i][1][j] === ' '){
+                            el.childNodes[i].data += (childText[i][1][j+1] === undefined) ? childText[i][1][j] : ' ' + childText[i][1][j+1]
                             j += 2
                         }else{
-                            textElement.childNodes[i].data += childText[i][j]
+                            el.childNodes[i].data += childText[i][1][j]
                             j++
                         }                        
                     }else{
@@ -555,13 +573,18 @@ class MapleMessage{
 
             else{
                 let writing2 = setInterval(() => {
+
+                    if(!this.progressWrite){
+                        writeNow()
+                        return
+                    }
                     
-                    if(j < childText[i].length){
-                        if(childText[i][j] === ' '){
-                            textElement.childNodes[i].innerHTML += (childText[i][j++] === undefined) ? childText[i][j] : ' ' + childText[i][j++]
+                    if(j < childText[i][1].length){
+                        if(childText[i][1][j] === ' '){
+                            el.childNodes[i].innerHTML += (childText[i][1][j++] === undefined) ? childText[i][1][j] : ' ' + childText[i][1][j++]
                             j += 2
                         }else{
-                            textElement.childNodes[i].innerHTML += childText[i][j]
+                            el.childNodes[i].innerHTML += childText[i][1][j]
                             j++
                         }
                                                 
@@ -580,17 +603,17 @@ class MapleMessage{
     }
 
     set send(m){
-        if(MConfig.TRANSITION !== 'step'){ 
+        if(M_MSG__CONFIG.TRANSITION !== 'step'){ 
             this.container.style.opacity = 0
 
             setTimeout( () => {
-                if(MConfig.TRANSITION === 'ease') this.container.style.transition = '0.1s ease'
+                if(M_MSG__CONFIG.TRANSITION === 'ease') this.container.style.transition = '0.1s ease'
                 this.npc.action(m, this.type, this.selection)
                 this.selection = 0 //reset
                 this.container.style.opacity = 1
             }, 100)
 
-            if(MConfig.TRANSITION === 'ease') this.container.style.transition = '0s'            
+            if(M_MSG__CONFIG.TRANSITION === 'ease') this.container.style.transition = '0s'            
             return
         }        
         this.npc.action(m, this.type, this.selection)        
@@ -599,11 +622,15 @@ class MapleMessage{
 
     events(){        
         //Button        
-        this.btnEndChat.onclick     =   ()    =>    { this.npc.action(-1, this.type, 0); this.end() }            //endchat
-        this.btnYes.onclick         =   ()    =>    { if ( !this.dispose ) this.send = 1; else { this.end() } }  //yes
-        this.btnNo.onclick          =   ()    =>    { if ( !this.dispose ) this.send = 0; else { this.end() } }  //no
-        this.btnPrev.onclick        =   ()    =>    { if ( !this.dispose ) this.send = 0; else { this.end() } }  //prev
-        this.btnNext.onclick        =   ()    =>    { if ( !this.dispose ) this.send = 1; else { this.end() } }  //next
+        this.btnEndChat.onclick     =   ()  =>  { this.npc.action(-1, this.type, 0); this.end() }            //endchat
+        this.btnYes.onclick         =   ()  =>  { if ( !this.dispose ) this.send = 1; else { this.end() } }  //yes
+        this.btnNo.onclick          =   ()  =>  { if ( !this.dispose ) this.send = 0; else { this.end() } }  //no
+        this.btnPrev.onclick        =   ()  =>  { if ( !this.dispose ) this.send = 0; else { this.end() } }  //prev
+        this.btnNext.onclick        =   ()  =>  { if ( !this.dispose ) this.send = 1; else { this.end() } }  //next
+
+        //Dialog
+        if(M_MSG__CONFIG.WRITING)
+        this.dialog.onclick         =   ()  =>  this.progressWrite = false
         
     }
 
