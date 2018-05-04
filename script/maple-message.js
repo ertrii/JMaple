@@ -9,11 +9,12 @@ const M_MSG__CONFIG = {
 class MapleMessage{
     constructor(el, NPC){
         this.container      =       el
+        this.container.style.display = 'none'
         this.getNPC         =       ()  =>  { this.npc = new NPC(); this.npc.cm = this.cm() }
         this.cmSend         =       'simple'        //simple
         this.dispose        =       false
         this.type           =       4               //defult
-        this.selection      =       0
+        this.selection      =       0        
     }
 
     /*===Creating Element===*/
@@ -109,6 +110,7 @@ class MapleMessage{
 
     end(){
         while(this.container.firstChild) this.container.removeChild(this.container.firstChild)
+        this.container.style.display = 'none'
         this.dispose = false        
     }
 
@@ -637,7 +639,8 @@ class MapleMessage{
     show(){
         this.getNPC()
         this.container.classList.add('maple-message-container')
-        this.container.appendChild(this.html)
+        this.container.style.display = 'flex'
+        this.container.appendChild(this.html)        
         this.npc.start()
         this.events()
     }
