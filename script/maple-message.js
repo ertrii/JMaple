@@ -24,8 +24,8 @@ class MapleMessage{
         parentElement.setAttribute('class', 'm-msg')
 
         //head
-        let head = document.createElement('div')
-        head.setAttribute('class', 'm-msg__head')
+        this.head = document.createElement('div')
+        this.head.setAttribute('class', 'm-msg__head')
 
         //body
         let body = document.createElement('div')
@@ -46,21 +46,11 @@ class MapleMessage{
             this.dialog = document.createElement('div')
             this.dialog.setAttribute('class', 'm-msg__body__dialog')
                 this.info = document.createElement('div')
-                this.info.setAttribute('class', 'm-msg__body__dialog__info')
-                //     let text = document.createElement('p')
-                //     text.setAttribute('class', 'm-msg__body__dialog__info--text')
-                //     text.appendChild(document.createTextNode('...'))
-                // this.info.appendChild(text)
+                this.info.setAttribute('class', 'm-msg__body__dialog__info')                
                 //     let title = document.createElement('h3')
                 //     title.setAttribute('class', 'm-msg__body__dialog__info--title')
                 //     title.appendChild(document.createTextNode('TITLE'))//remember
-                // this.info.appendChild(title)
-                //     let alternatives = document.createElement('ul')
-                //     alternatives.setAttribute('class', 'm-msg__body__dialog__info--alternatives')
-                //         let li = document.createElement('li')
-                //         li.appendChild(document.createTextNode('Answer1'))//remember
-                //     alternatives.appendChild(li)                    
-                // this.info.appendChild(alternatives)
+                // this.info.appendChild(title)                
             this.dialog.appendChild(this.info)
                 this.btnsInterrogate1 = document.createElement('div')
                 this.btnsInterrogate1.setAttribute('class', 'm-msg__body__dialog__btn-interrogate')
@@ -102,7 +92,7 @@ class MapleMessage{
         footer.appendChild(this.btnsInterrogate2)
 
         //Adding children
-        parentElement.appendChild(head)
+        parentElement.appendChild(this.head)
         parentElement.appendChild(body)
         parentElement.appendChild(footer)
         return parentElement;
@@ -620,7 +610,7 @@ class MapleMessage{
         }        
         this.npc.action(m, this.type, this.selection)        
         this.selection = 0 //reset
-    }
+    }    
 
     events(){        
         //Button        
@@ -633,6 +623,29 @@ class MapleMessage{
         //Dialog
         if(M_MSG__CONFIG.WRITING)
         this.dialog.onclick         =   ()  =>  this.progressWrite = false
+        
+        //Message
+        let anchorPoint             =           { getted : false, x : 0, y : 0 },                             //Mag Anchor Point
+            cssTranslate            =           { x : 0, y : 0 },
+            x, y,
+            stopMove                =   ()  =>  { this.container.onmousemove = null; anchorPoint.getted = false; cssTranslate.x = x; cssTranslate.y = y }
+        this.head.onmouseup         =   ()  =>  stopMove()
+        this.container.onmouseup    =   ()  =>  stopMove()
+        if(M_MSG__CONFIG.DISPLACE)
+        this.head.onmousedown       =   ()  =>  this.container.onmousemove  =   ev  => {
+
+            if(!anchorPoint.getted) {
+                anchorPoint.x       =   ev.clientX
+                anchorPoint.y       =   ev.clientY
+                anchorPoint.getted  =   true                
+            }
+
+            x = cssTranslate.x + ev.clientX - anchorPoint.x
+            y = cssTranslate.y + ev.clientY - anchorPoint.y
+            
+            this.container.firstChild.style.transform = `translate(${x}px, ${y}px)`
+
+        }        
         
     }
 
