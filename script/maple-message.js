@@ -1,13 +1,12 @@
-const M_MSG__CONFIG = {
-    DISPLACE        :       true,
-    WRITING         :       true,
-    IMG_DIRECTORY   :       'source/img/npc/',
-    TRANSITION      :       'gross',              //ease, gross, step
-    WRITING         :       true
-}
-
+'use strict';
 class MapleMessage{
     constructor(el, NPC){
+        this.config         =       {
+            displace        :       true,
+            writing         :       true,
+            img_directory   :       'source/img/npc/',
+            transition      :       'ease'          //ease, gross, step <- later check, reason: writing
+        }
         this.container      =       el
         this.container.style.display = 'none'
         this.getNPC         =       ()  =>  { this.npc = new NPC(); this.npc.cm = this.cm() }
@@ -35,7 +34,7 @@ class MapleMessage{
                 let npcImg = document.createElement('div')
                 npcImg.setAttribute('class', 'm-msg__body__npc__img')
                     let imgElem = document.createElement('img')
-                    imgElem.setAttribute('src', M_MSG__CONFIG.IMG_DIRECTORY + this.npc.img)
+                    imgElem.setAttribute('src', this.config.img_directory + this.npc.img)
                 npcImg.appendChild(imgElem);
             npc.appendChild(npcImg);
                 let pNameElem = document.createElement('p')
@@ -500,7 +499,7 @@ class MapleMessage{
     }
 
     set write(el) {
-        this.progressWrite = M_MSG__CONFIG.WRITING
+        this.progressWrite = this.config.writing
 
         let childText = new Array()
 
@@ -595,17 +594,17 @@ class MapleMessage{
     }
 
     set send(m){
-        if(M_MSG__CONFIG.TRANSITION !== 'step'){ 
+        if(this.config.transition !== 'step'){ 
             this.container.style.opacity = 0
 
             setTimeout( () => {
-                if(M_MSG__CONFIG.TRANSITION === 'ease') this.container.style.transition = '0.1s ease'
+                if(this.config.transition === 'ease') this.container.style.transition = '0.1s ease'
                 this.npc.action(m, this.type, this.selection)
                 this.selection = 0 //reset
                 this.container.style.opacity = 1
             }, 100)
 
-            if(M_MSG__CONFIG.TRANSITION === 'ease') this.container.style.transition = '0s'            
+            if(this.config.transition === 'ease') this.container.style.transition = '0s'            
             return
         }        
         this.npc.action(m, this.type, this.selection)        
@@ -621,7 +620,7 @@ class MapleMessage{
         this.btnNext.onclick        =   ()  =>  { if ( !this.dispose ) this.send = 1; else { this.end() } }  //next
 
         //Dialog
-        if(M_MSG__CONFIG.WRITING)
+        if(this.config.writing)
         this.dialog.onclick         =   ()  =>  this.progressWrite = false
         
         //Message
@@ -631,7 +630,7 @@ class MapleMessage{
             stopMove                =   ()  =>  { this.container.onmousemove = null; anchorPoint.getted = false; cssTranslate.x = x; cssTranslate.y = y }
         this.head.onmouseup         =   ()  =>  stopMove()
         this.container.onmouseup    =   ()  =>  stopMove()
-        if(M_MSG__CONFIG.DISPLACE)
+        if(this.config.displace)
         this.head.onmousedown       =   ()  =>  this.container.onmousemove  =   ev  => {
 
             if(!anchorPoint.getted) {
