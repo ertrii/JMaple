@@ -5,7 +5,8 @@ class MapleMessage{
             displace        :       true,
             writing         :       true,
             img_directory   :       'source/img/npc/',
-            transition      :       'ease'          //ease, gross, step <- later check, reason: writing
+            transition      :       'ease',          //ease, gross, step <- later check, reason: writing
+            dev             :       true
         }
         this.container      =       el
         this.container.style.display = 'none'
@@ -19,19 +20,44 @@ class MapleMessage{
         this.setNPC = NPC
     }
 
-    isNPC(npc){
-        let requeriments = ['id', 'name', 'img']
-        for (let i = 0; i < requeriments.length - 1; i++)
-            if(!npc.hasOwnProperty(requeriments[i])) return false
+    isNPC(_npc){
+        let is = true
+        const itsNot    =  (msg, type = 'error')  => {
+            if(this.config.dev)
+                switch (type) {
+                    case 'info':
+                        console.info(msg)
+                        break
+                    case 'warn':
+                        console.warn(msg)
+                        break
+                    default:
+                        console.error(msg)
+                        is = false                        
+                }
+        }        
+        if(typeof _npc !== 'function') itsNot('Its not a class or function')
+        let npc = new _npc()
+        let requeriments = ['id', 'name', 'img']//Property
+        for (let i = 0; i < requeriments.length; i++)
+            if(!npc.hasOwnProperty(requeriments[i])) {
+                itsNot('Was not found one of the required properties(id, name, img)')
+                return is
+            }
         
-                
-        if (typeof npc.id       !==    'number') return false        
-        if (typeof npc.name     !==    'string') return false
-        if (typeof npc.img      !==    'string') return false
-        if (typeof npc.start    ===   undefined) return false
-        if (typeof npc.start    !==  'function') return false
+        if (typeof npc.id           !==    'number')    itsNot('id is not type number')
+        if (typeof npc.name         !==    'string')    itsNot('name is not type string')
+        if (typeof npc.img          !==    'string')    itsNot('img is not type string')
+        if (typeof npc.start        ===   'undefined')  {
+            itsNot('the start function was not found, looking for the action function...', 'warn')
+            if (typeof npc.action   === 'undefined')      itsNot('the start function was not found')
+            if (typeof npc.action   !== 'function')     itsNot('action is not a function')
+            itsNot('Done.', 'info')
+            return is
+        }
+        if (typeof npc.start        !==  'function')    itsNot('start is not a function')
 
-        return true
+        return is
     }
 
     get list(){
@@ -46,13 +72,16 @@ class MapleMessage{
     }
 
     set setNPC(NPCs){
-        if(Array.isArray(NPCs)){
-            for (let i = 0; i < NPCs.length; i++)
-                if(this.listNPC.get(NPCs[i].id) === undefined)
-                    this.listNPC.set(NPCs[i].id, NPCs[i])                
+        if(Array.isArray(NPCs)){            
+            for (let i = 0; i < NPCs.length; i++){
+                let _npc = new NPCs[i]()                
+                if(this.listNPC.get(_npc.id) === undefined)
+                    this.listNPC.set(_npc.id, NPCs[i])
+                }
         }else{
-            if(this.listNPC.get(NPCs.id) === undefined)         
-                this.listNPC.set(NPCs.id, NPCs)  
+            let _npc = new NPCs()
+            if(this.listNPC.get(_npc.id) === undefined)         
+                this.listNPC.set(_npc.id, NPCs)
         }
         
     }
@@ -205,7 +234,7 @@ class MapleMessage{
             if(!nothing && !openSelection){
                 textElem.appendChild(cleanText) //span || strong
                 p.appendChild(textElem)                
-            }else if(openSelection){                
+            }else if(openSelection){
                 if(dataLi === 0){
                                         
                     let n = parseInt(cleanText.data)
@@ -715,8 +744,8 @@ class MapleMessage{
         try{
             this.npc.start()
         }
-        catch(e){            
-            console.info('the start function was not found, executing action function...')
+        catch(e){
+            if(this.config.dev) console.info('the start function was not found, executing action function...')
             this.npc.action()
         }
         this.events()
