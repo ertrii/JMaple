@@ -9,11 +9,52 @@ class MapleMessage{
         }
         this.container      =       el
         this.container.style.display = 'none'
-        this.getNPC         =       ()  =>  { this.npc = new NPC(); this.npc.cm = this.cm() }
+
+        this.listNPC        =       new Map()
+        this.getNPC         =       ()  =>  { this.npc = new NPC(); this.npc.cm = this.cm() }        
         this.cmSend         =       'simple'        //simple
         this.dispose        =       false
-        this.type           =       4               //defult
+        this.type           =       4               //default
         this.selection      =       0        
+        this.setNPC = NPC
+    }
+
+    isNPC(npc){
+        let requeriments = ['id', 'name', 'img']
+        for (let i = 0; i < requeriments.length - 1; i++)
+            if(!npc.hasOwnProperty(requeriments[i])) return false
+        
+                
+        if (typeof npc.id       !==    'number') return false        
+        if (typeof npc.name     !==    'string') return false
+        if (typeof npc.img      !==    'string') return false
+        if (typeof npc.start    ===   undefined) return false
+        if (typeof npc.start    !==  'function') return false
+
+        return true
+    }
+
+    get list(){
+        let NPCs = this.listNPC.values()
+        let listnpc = new Array()
+        while(true){
+            let npcObtained = NPCs.next().value
+            if(npcObtained === undefined) break
+            listnpc.push(npcObtained)
+        }
+        return listnpc
+    }
+
+    set setNPC(NPCs){
+        if(Array.isArray(NPCs)){
+            for (let i = 0; i < NPCs.length; i++)
+                if(this.listNPC.get(NPCs[i].id) === undefined)
+                    this.listNPC.set(NPCs[i].id, NPCs[i])                
+        }else{
+            if(this.listNPC.get(NPCs.id) === undefined)         
+                this.listNPC.set(NPCs.id, NPCs)  
+        }
+        
     }
 
     /*===Creating Element===*/
@@ -100,7 +141,8 @@ class MapleMessage{
     end(){
         while(this.container.firstChild) this.container.removeChild(this.container.firstChild)
         this.container.style.display = 'none'
-        this.dispose = false        
+        this.dispose = false
+        this.cmExecuted = false
     }
 
     set style(text){        
@@ -121,46 +163,47 @@ class MapleMessage{
             let cleanText    =   document.createTextNode(t.slice(1))
             
             
-            if(cod === 'l') {openSelection = false; t = t.slice(1) }    //#l close selection
-            if(cod === 'L') openSelection = true                        //#L <- Selection open            
+            if(cod === 'l') {openSelection = false; t = t.slice(1) }    //#l <- close selection
+            if(cod === 'L') openSelection = true                        //#L <- open selection
 
             let textElem    =   document.createElement((cod === 'e') ? 'strong' : (openSelection) ? 'li' : 'span')
 
-            if(!nothing)
-                if(!openSelection){
-                    switch (cod) {
-                        //#b
-                        case 'b':
-                            textElem.setAttribute('class', 'm-msg__style--color-blue')
-                            break
-                        //#d
-                        case 'd':
-                            textElem.setAttribute('class', 'm-msg__style--color-purple')
-                            break
-                        //#e
-                        case 'e':
-                            textElem.setAttribute('class', 'm-msg__style--color-bold')
-                            break
-                        //#g
-                        case 'g':
-                            textElem.setAttribute('class', 'm-msg__style--color-green')
-                            break
-                        //#k
-                        case 'k':
-                            textElem.setAttribute('class', 'm-msg__style--color-black')
-                            break
-                        //#r
-                        case 'r':
-                            textElem.setAttribute('class', 'm-msg__style--color-red')
-                            break                                        
-                        default:
-                            nothing = true
-                            break;
-                    }
+            let findCode = c => {
+                switch (c) {
+                    //#b
+                    case 'b':
+                        textElem.setAttribute('class', 'm-msg__style--color-blue')
+                        break
+                    //#d
+                    case 'd':
+                        textElem.setAttribute('class', 'm-msg__style--color-purple')
+                        break
+                    //#e
+                    case 'e':
+                        textElem.setAttribute('class', 'm-msg__style--color-bold')
+                        break
+                    //#g
+                    case 'g':
+                        textElem.setAttribute('class', 'm-msg__style--color-green')
+                        break
+                    //#k
+                    case 'k':
+                        textElem.setAttribute('class', 'm-msg__style--color-black')
+                        break
+                    //#r
+                    case 'r':
+                        textElem.setAttribute('class', 'm-msg__style--color-red')
+                        break                                        
+                    default:
+                        nothing = true
+                        break;
                 }
+            }
+
+            if(!nothing && !openSelection) findCode(cod)
 
             if(!nothing && !openSelection){
-                textElem.appendChild(cleanText)
+                textElem.appendChild(cleanText) //span || strong
                 p.appendChild(textElem)                
             }else if(openSelection){                
                 if(dataLi === 0){
@@ -193,8 +236,8 @@ class MapleMessage{
         while(this.info.firstChild) this.info.removeChild(this.info.firstChild)
         
         let listLi = new Array(), i = 0
-        for (const _li of ul.children) {
-            listLi.push( { li : _li, num : nLi[i] } )            
+        for (const _li of ul.children) { //no support edge
+            listLi.push( { li : _li, num : nLi[i] } )
             i++                       
         }
 
@@ -210,11 +253,36 @@ class MapleMessage{
     }
 
     cm(){
-        
+        this.cmExecuted     =       false
+        const update = (typeSend, txt) => {
+            this.style = txt
+            this.cmExecuted = true
+            this.cmSend = typeSend
+
+            switch (typeSend) {
+                case 'simple'           :   this.type       = 4
+                    break
+                case 'ok'               :   this.type       = 0
+                    break
+                case 'next'             :   this.type       = 0
+                    break
+                case 'prev'             :   this.type       = 5 //???????????
+                    break
+                case 'nextprev'         :   this.type       = 0
+                    break
+                case 'yesno'            :   this.type       = 1
+                    break
+                case 'acceptdecline'    :   this.type       = 12
+                    break
+                case 'test'             :   this.type       = -1
+                    break
+                default                 :   this.cmExecuted = false
+                    break
+            }
+        }
+
         return {
-            sendSimple  :   text => {
-                this.type = 4
-                this.style = text
+            sendSimple  :   text => {                
                 switch(this.cmSend){
                     case 'ok':
                         this.btnsInterrogate2.removeChild(this.btnYes)
@@ -241,12 +309,10 @@ class MapleMessage{
                         console.log('same')
                         break;
                 }
-                this.cmSend = 'simple'
+                update('simple', text)
             },
 
-            sendOk      :   text => {
-                this.type = 0
-                this.style = text
+            sendOk      :   text => {                
                 this.btnYes.innerHTML = 'OK'
                 switch(this.cmSend){
                     case 'simple':
@@ -275,12 +341,10 @@ class MapleMessage{
                         console.log('same')
                         break;
                 }
-                this.cmSend = 'ok'
+                update('ok', text)         
             },
 
-            sendNext        :   text => {
-                this.type = 0
-                this.style = text
+            sendNext        :   text => {                
                 switch (this.cmSend) {
                     case 'simple':
                         this.btnsInterrogate1.appendChild(this.btnNext)
@@ -309,12 +373,10 @@ class MapleMessage{
                         console.log('same')
                         break
                 }
-                this.cmSend = 'next'
+                update('next', text)
             },
 
-            sendPrev        :   text => {
-                this.type = 5   //??????...
-                this.style = text
+            sendPrev        :   text => {                
                 this.btnYes.innerHTML = 'OK'
                 switch (this.cmSend) {
                     case 'simple':
@@ -346,12 +408,10 @@ class MapleMessage{
                         console.log('same')
                         break
                 }
-                this.cmSend = 'prev'
+                update('prev', text)                
             },
 
-            sendNextPrev    :   text => {
-                this.type = 0
-                this.style = text
+            sendNextPrev    :   text => {                
                 switch (this.cmSend) {
                     case 'simple':
                         this.btnsInterrogate1.appendChild(this.btnPrev)
@@ -379,13 +439,11 @@ class MapleMessage{
                     default:
                         console.log('same')                        
                         break;
-                }
-                this.cmSend = 'nextprev'
+                }                
+                update('nextprev', text)
             },
 
-            sendYesNo       :   text => {
-                this.type = 1
-                this.style = text
+            sendYesNo       :   text => {                
                 this.btnYes.innerHTML   =   'YES'
                 this.btnNo.innerHTML    =   'NO'
                 switch (this.cmSend) {
@@ -414,13 +472,11 @@ class MapleMessage{
                     default:
                         console.log('same');                        
                         break;
-                }
-                this.cmSend = 'yesno'
+                }                
+                update('yesno', text)
             },
 
-            sendAcceptDecline   :   text => {
-                this.type = 12
-                this.style = text
+            sendAcceptDecline   :   text => {                
                 this.btnYes.innerHTML   =   'Accept'
                 this.btnNo.innerHTML    =   'Decline'
                 switch (this.cmSend) {
@@ -449,13 +505,11 @@ class MapleMessage{
                     default:
                         console.log('same');                        
                         break;
-                }
-                this.cmSend = 'acceptdecline'
+                }                
+                update('acceptdecline', text)
             },
 
-            sendTest        :   text => {
-                this.type = -1
-                this.style = text
+            sendTest        :   text => {                
                 this.btnYes.innerHTML = 'YES'
                 switch (this.cmSend) {
                     case 'simple':
@@ -490,8 +544,8 @@ class MapleMessage{
                     default:
                         console.log('same')
                         break
-                }
-                this.cmSend = 'test'
+                }                
+                update('test', text)
             },
 
             dispose         :   () => this.dispose = true
@@ -530,7 +584,7 @@ class MapleMessage{
         }
                 
         let i = 0
-        const assyncWrite = () => {
+        const asyncWrite = () => {
              
             if(i >= childText.length) return
 
@@ -555,7 +609,7 @@ class MapleMessage{
                     }else{
                         clearInterval(writing1)
                         i++
-                        assyncWrite()
+                        asyncWrite()
                         return
                     }
                 }, 35)
@@ -582,42 +636,47 @@ class MapleMessage{
                     }else{
                         clearInterval(writing2)
                         i++
-                        assyncWrite()
+                        asyncWrite()
                         return
                     }
                 }, 35)
             }            
         }
         
-        assyncWrite()
+        asyncWrite()
          
     }
 
-    set send(m){
+    set send(m){        
         if(this.config.transition !== 'step'){ 
             this.container.style.opacity = 0
 
             setTimeout( () => {
-                if(this.config.transition === 'ease') this.container.style.transition = '0.1s ease'
+                if(this.config.transition === 'ease') this.container.style.transition = '0.2s ease'                
                 this.npc.action(m, this.type, this.selection)
                 this.selection = 0 //reset
                 this.container.style.opacity = 1
+                if(!this.cmExecuted && this.dispose) this.end()
             }, 100)
 
             if(this.config.transition === 'ease') this.container.style.transition = '0s'            
+            this.cmExecuted = false
             return
         }        
         this.npc.action(m, this.type, this.selection)        
         this.selection = 0 //reset
+        if(!this.cmExecuted && this.dispose) this.end()
+        this.cmExecuted = false
     }    
 
     events(){        
-        //Button        
-        this.btnEndChat.onclick     =   ()  =>  { this.npc.action(-1, this.type, 0); this.end() }            //endchat
-        this.btnYes.onclick         =   ()  =>  { if ( !this.dispose ) this.send = 1; else { this.end() } }  //yes
-        this.btnNo.onclick          =   ()  =>  { if ( !this.dispose ) this.send = 0; else { this.end() } }  //no
-        this.btnPrev.onclick        =   ()  =>  { if ( !this.dispose ) this.send = 0; else { this.end() } }  //prev
-        this.btnNext.onclick        =   ()  =>  { if ( !this.dispose ) this.send = 1; else { this.end() } }  //next
+        //Button
+        const evSend                =   n   =>  { if ( !this.dispose ) this.send = n; else { this.end() } }
+        this.btnEndChat.onclick     =   ()  =>  { this.npc.action(-1, this.type, 0); this.end() }        //endchat
+        this.btnYes.onclick         =   ()  =>  evSend(1)                                                //yes
+        this.btnNo.onclick          =   ()  =>  evSend(0)                                                //no
+        this.btnPrev.onclick        =   ()  =>  evSend(0)                                                //prev
+        this.btnNext.onclick        =   ()  =>  evSend(1)                                                //next
 
         //Dialog
         if(this.config.writing)
@@ -649,11 +708,18 @@ class MapleMessage{
     }
 
     show(){
-        this.getNPC()
+        this.getNPC()        
         this.container.classList.add('maple-message-container')
         this.container.style.display = 'flex'
-        this.container.appendChild(this.html)        
-        this.npc.start()
+        this.container.appendChild(this.html)
+        try{
+            this.npc.start()
+        }
+        catch(e){            
+            console.info('the start function was not found, executing action function...')
+            this.npc.action()
+        }
         this.events()
+        if(!this.cmExecuted && this.dispose) this.end()
     }
 }
