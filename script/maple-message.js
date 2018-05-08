@@ -222,18 +222,34 @@ class MapleMessage{
                     //#r
                     case 'r':
                         textElem.setAttribute('class', 'm-msg__style--color-red')
-                        break                                        
+                        break
+                    //#p
+                    case 'p':
+                        let idnpc = parseInt(cleanText.data.trim())
+                        if(isNaN(idnpc)){
+                            console.error(`This is id(${cleanText.data}) is not number`)
+                        }else{
+                            textElem.setAttribute('class', 'm-msg__style--color-blue')
+                            let _npc = this.listNPC.get(idnpc)
+                            if(_npc === undefined){
+                                console.error('NPC not found in the list.')
+                            }else{
+                                cleanText.data = new _npc().name                            
+                                break
+                            }
+                        }                        
+                        
                     default:
                         nothing = true
                         break;
                 }
             }
 
-            if(!nothing && !openSelection) findCode(cod)
+            if(!nothing && !openSelection) findCode(cod)            
 
-            if(!nothing && !openSelection){
-                textElem.appendChild(cleanText) //span || strong
-                p.appendChild(textElem)                
+            if(!nothing && !openSelection){                                
+                textElem.appendChild(cleanText) //span
+                p.appendChild(textElem)
             }else if(openSelection){
                 if(dataLi === 0){
                                         
@@ -255,8 +271,18 @@ class MapleMessage{
                                 
             }
             else{
-                let OriginalText = document.createTextNode(t)
-                p.appendChild(OriginalText)
+                if(t.search('\n') >= 0){                                        
+                    let newSplitText = t.split('\n')
+
+                    p.appendChild(document.createTextNode(newSplitText[0]))
+                    p.appendChild(document.createElement('br'))
+                    p.appendChild(document.createTextNode(newSplitText[1]))
+                    
+                }else{
+                    let OriginalText = document.createTextNode(t)
+                    p.appendChild(OriginalText)    
+                }
+                
                 nothing = false
             }
 
@@ -747,7 +773,7 @@ class MapleMessage{
         }
         catch(e){
             if(this.config.dev) console.info('the start function was not found, executing action function...')
-            this.npc.action()
+            this.npc.action(1, this.type, this.selection)
         }
         this.events()
         if(!this.cmExecuted && this.dispose) this.end()
