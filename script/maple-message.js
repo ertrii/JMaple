@@ -195,7 +195,7 @@ class MapleMessage{
             if(cod === 'l') {openSelection = false; t = t.slice(1) }    //#l <- close selection
             if(cod === 'L') openSelection = true                        //#L <- open selection
 
-            let textElem    =   document.createElement((cod === 'e') ? 'strong' : (openSelection) ? 'li' : 'span')
+            let textElem    =   document.createElement((openSelection) ? 'li' : 'span')
 
             let findCode = c => {
                 switch (c) {
@@ -620,12 +620,13 @@ class MapleMessage{
             let j = 0
 
             if (el.childNodes[i].nodeName === '#text') {
-                let writing1 = setInterval(() => {
-
-                    if(!this.progressWrite){
+                let writing1 = setInterval(() => {                    
+                    
+                    if(!this.progressWrite) {                        
                         writeNow()
+                        clearInterval(writing1)
                         return
-                    } 
+                    }
 
                     if(j < childText[i][1].length){
                         if(childText[i][1][j] === ' '){
@@ -636,20 +637,20 @@ class MapleMessage{
                             j++
                         }                        
                     }else{
-                        clearInterval(writing1)
                         i++
                         asyncWrite()
-                        return
+                        clearInterval(writing1)                        
                     }
-                }, 35)
-                    
+                }, 35)                
+                
             }
 
             else{
                 let writing2 = setInterval(() => {
-
+                    
                     if(!this.progressWrite){
                         writeNow()
+                        clearInterval(writing2)
                         return
                     }
                     
@@ -663,12 +664,12 @@ class MapleMessage{
                         }
                                                 
                     }else{
-                        clearInterval(writing2)
                         i++
                         asyncWrite()
-                        return
+                        clearInterval(writing2)                        
                     }
                 }, 35)
+                
             }            
         }
         
@@ -700,7 +701,7 @@ class MapleMessage{
 
     events(){        
         //Button
-        const evSend                =   n   =>  { if ( !this.dispose ) this.send = n; else { this.end() } }
+        const evSend                =   n   =>  { if ( !this.dispose ) this.send = n; else this.end() }
         this.btnEndChat.onclick     =   ()  =>  { this.npc.action(-1, this.type, 0); this.end() }        //endchat
         this.btnYes.onclick         =   ()  =>  evSend(1)                                                //yes
         this.btnNo.onclick          =   ()  =>  evSend(0)                                                //no
@@ -714,21 +715,21 @@ class MapleMessage{
         //Message
         let anchorPoint             =           { getted : false, x : 0, y : 0 },                             //Mag Anchor Point
             cssTranslate            =           { x : 0, y : 0 },
-            x, y,
+            x = 0, y = 0,
             stopMove                =   ()  =>  { this.container.onmousemove = null; anchorPoint.getted = false; cssTranslate.x = x; cssTranslate.y = y }
         this.head.onmouseup         =   ()  =>  stopMove()
-        this.container.onmouseup    =   ()  =>  stopMove()
+        this.container.onmouseup    =   ()  =>  stopMove()        
+        
         if(this.config.displace)
-        this.head.onmousedown       =   ()  =>  this.container.onmousemove  =   ev  => {
-
-            if(!anchorPoint.getted) {
+        this.head.onmousedown       =   ()  =>  this.container.onmousemove  =   ev  => {            
+            
+            if(!anchorPoint.getted) {                
                 anchorPoint.x       =   ev.clientX
                 anchorPoint.y       =   ev.clientY
                 anchorPoint.getted  =   true                
-            }
-
+            }            
             x = cssTranslate.x + ev.clientX - anchorPoint.x
-            y = cssTranslate.y + ev.clientY - anchorPoint.y
+            y = cssTranslate.y + ev.clientY - anchorPoint.y            
             
             this.container.firstChild.style.transform = `translate(${x}px, ${y}px)`
 

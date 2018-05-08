@@ -8,7 +8,7 @@ class N9010000 {
         this.status =   0
     }
     start(){
-        this.cm.sendYesNo('Hola, bienvenido a este #bnpc#, espero que te guste #restas# pruebas #L1# Lista 1 #l #L2# Lista 2#l')
+        this.cm.sendYesNo('Hola, bienvenido a este #enpc#, espero que te guste esta prueba #L1# Lista 1 #l #L2# Lista 2#l')
     }
     action(mode, type, selection){
         if(mode === 0 && this.status === 0){
