@@ -1,6 +1,6 @@
 'use strict';
 class MapleMessage{
-    constructor(el, NPC){
+    constructor(el, NPC, character = false){
         this.config         =       {
             displace        :       true,
             writing         :       true,
@@ -17,7 +17,11 @@ class MapleMessage{
         this.dispose        =       false
         this.type           =       4               //default
         this.selection      =       0        
-        this.setNPC = NPC
+        this.setNPC         =       NPC
+
+        //extensions
+        this.character      =       character //instance
+        this.items          =       new Map()
     }
 
     isNPC(_npc){
@@ -61,14 +65,30 @@ class MapleMessage{
     }
 
     get list(){
-        let NPCs = this.listNPC.values()
-        let listnpc = new Array()
+        let NPCs = this.listNPC.values(),
+            listnpc = new Array(),
+            npcObtained = null
         while(true){
-            let npcObtained = NPCs.next().value
-            if(npcObtained === undefined) break
-            listnpc.push(npcObtained)
+            npcObtained = NPCs.next()
+            if(npcObtained.done === true) break
+            listnpc.push(npcObtained.value)
         }
-        return listnpc
+
+        let _items = this.items.values(),
+            listItems = new Array(),
+            item = null
+        while(true){
+            item = _items.next()
+            if(item.done === true) break
+            listItems.push(item.value)
+        }
+
+        let allList = {
+            npc : listnpc,
+            item: listItems
+        }
+
+        return allList
     }
 
     set setNPC(NPCs){
@@ -336,7 +356,7 @@ class MapleMessage{
             }
         }
 
-        return {
+        let command = {
             sendSimple  :   text => {                
                 switch(this.cmSend){
                     case 'ok':
@@ -605,6 +625,13 @@ class MapleMessage{
 
             dispose         :   () => this.dispose = true
         }
+        
+        if(this.character !== false){
+            if(this.config.dev) console.info('Found Character, commands assigned to MapleMessage class')
+            return Object.assign(command, this.character.cm)
+        }
+
+        return command
     }
 
     set write(el) {
