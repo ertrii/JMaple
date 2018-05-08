@@ -30,7 +30,7 @@ class N1012118{
             //     return
             // }
 
-            var selStr = "Would you like to go into the Training Center?";
+            var selStr = "Would you like to go into the Training Center? #HRaining#";
             for (var i = 0; i < this.num; i++) {
                 selStr += "#L" + i + "#Training Center " + i + " (" + 7 + "/" + this.maxp + ")#l";
             }

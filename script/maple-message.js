@@ -136,10 +136,6 @@ class MapleMessage{
             this.dialog.setAttribute('class', 'm-msg__body__dialog')
                 this.info = document.createElement('div')
                 this.info.setAttribute('class', 'm-msg__body__dialog__info')                
-                //     let title = document.createElement('h3')
-                //     title.setAttribute('class', 'm-msg__body__dialog__info--title')
-                //     title.appendChild(document.createTextNode('TITLE'))//remember
-                // this.info.appendChild(title)                
             this.dialog.appendChild(this.info)
                 this.btnsInterrogate1 = document.createElement('div')
                 this.btnsInterrogate1.setAttribute('class', 'm-msg__body__dialog__btn-interrogate')
@@ -197,7 +193,7 @@ class MapleMessage{
     set style(text){        
         let p = document.createElement('p')
         p.setAttribute('class', 'm-msg__body__dialog__info--text')
-
+        let h3 = document.createElement('h3')
         let openSelection   =   false
         let ul = document.createElement('ul')
         ul.setAttribute('class', 'm-msg__body__dialog__info--alternatives')
@@ -206,7 +202,7 @@ class MapleMessage{
         let splitText   =   text.split('#')
         
         let nothing     =   (text.substr(0,1) === '#') ? false : true
-                
+        let title = false    
         for (let t of splitText) {
             let cod         =   t.substr(0,1)            
             let cleanText    =   document.createTextNode(t.slice(1))
@@ -216,7 +212,7 @@ class MapleMessage{
             if(cod === 'L') openSelection = true                        //#L <- open selection
 
             let textElem    =   document.createElement((openSelection) ? 'li' : 'span')
-
+            
             let findCode = c => {
                 switch (c) {
                     //#b
@@ -243,6 +239,11 @@ class MapleMessage{
                     case 'r':
                         textElem.setAttribute('class', 'm-msg__style--color-red')
                         break
+                    //#H
+                    case 'H':                        
+                        h3.setAttribute('class', 'm-msg__body__dialog__info--title')                        
+                        title = true                        
+                        break
                     //#p
                     case 'p':
                         let idnpc = parseInt(cleanText.data.trim())
@@ -267,10 +268,13 @@ class MapleMessage{
 
             if(!nothing && !openSelection) findCode(cod)            
 
-            if(!nothing && !openSelection){                                
+            if(!nothing && !openSelection && !title){
                 textElem.appendChild(cleanText) //span
                 p.appendChild(textElem)
-            }else if(openSelection){
+            }else if(!nothing && !openSelection && title){
+                h3.appendChild(cleanText)
+            }
+            else if(openSelection){
                 if(dataLi === 0){
                                         
                     let n = parseInt(cleanText.data)
@@ -322,6 +326,7 @@ class MapleMessage{
         }
         
         this.info.appendChild(p)
+        if(title) {this.info.appendChild(h3); title = false}
         this.info.appendChild(ul)
 
         this.write = p
