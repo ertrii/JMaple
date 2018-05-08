@@ -96,14 +96,27 @@ class MapleMessage{
             for (let i = 0; i < NPCs.length; i++){
                 let _npc = new NPCs[i]()                
                 if(this.listNPC.get(_npc.id) === undefined)
-                    this.listNPC.set(_npc.id, NPCs[i])
+                    this.listNPC.set(_npc.id, _npc)
                 }
         }else{
             let _npc = new NPCs()
-            if(this.listNPC.get(_npc.id) === undefined)         
-                this.listNPC.set(_npc.id, NPCs)
+            if(this.listNPC.get(_npc.id) === undefined)
+                this.listNPC.set(_npc.id, _npc)
         }
-        
+    }
+
+    set setItem(Item){
+        if(Array.isArray(Item)){
+            for (let i = 0; i < Item.length; i++){
+                let _item = new Item[i]()
+                if(this.listItems.get(_item.id) === undefined)
+                    this.listNPC.set(_item.id, _item)
+                }
+        }else{
+            let _item = new Item()
+            if(this.listItems.get(_item.id) === undefined)         
+                this.listItems.set(_item.id, _item)
+        }
     }
 
     /*===Creating Element===*/
