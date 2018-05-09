@@ -105,17 +105,15 @@ class MapleMessage{
         }
     }
 
-    set setItem(Item){
-        if(Array.isArray(Item)){
-            for (let i = 0; i < Item.length; i++){
-                let _item = new Item[i]()
-                if(this.listItems.get(_item.id) === undefined)
-                    this.listNPC.set(_item.id, _item)
+    set setItem(item){
+        if(Array.isArray(item)){
+            for (let i = 0; i < item.length; i++){                
+                if(this.listItems.get(item[i].id) === undefined)
+                    this.listNPC.set(item[i].id, item[i])
                 }
-        }else{
-            let _item = new Item()
-            if(this.listItems.get(_item.id) === undefined)         
-                this.listItems.set(_item.id, _item)
+        }else{            
+            if(this.listItems.get(item.id) === undefined)
+                this.listItems.set(item.id, item)
         }
     }
 
@@ -253,7 +251,7 @@ class MapleMessage{
                         textElem.setAttribute('class', 'm-msg__style--color-red')
                         break
                     //#H
-                    case 'H':                        
+                    case 'H': //This is not exists in the game
                         h3.setAttribute('class', 'm-msg__body__dialog__info--title')                        
                         title = true                        
                         break
@@ -399,7 +397,7 @@ class MapleMessage{
                         while(this.btnsInterrogate2.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate2.firstChild)                        
                         break
                     default:
-                        console.log('same')
+                        if(this.config.dev) console.info('Message type same as the previous')
                         break;
                 }
                 update('simple', text)
@@ -431,7 +429,7 @@ class MapleMessage{
                         this.btnsInterrogate2.removeChild(this.btnNo)
                         break
                     default:
-                        console.log('same')
+                        if(this.config.dev) console.info('Message type same as the previous')
                         break;
                 }
                 update('ok', text)         
@@ -463,7 +461,7 @@ class MapleMessage{
                         this.btnsInterrogate1.removeChild(this.btnPrev)
                         break
                     default:
-                        console.log('same')
+                        if(this.config.dev) console.info('Message type same as the previous')
                         break
                 }
                 update('next', text)
@@ -498,7 +496,7 @@ class MapleMessage{
                         this.btnsInterrogate2.removeChild(this.btnNo)
                         break
                     default:
-                        console.log('same')
+                        if(this.config.dev) console.info('Message type same as the previous')
                         break
                 }
                 update('prev', text)                
@@ -530,7 +528,7 @@ class MapleMessage{
                         while(this.btnsInterrogate2.firstChild) this.btnsInterrogate2.removeChild(this.btnsInterrogate2.firstChild)
                         break
                     default:
-                        console.log('same')                        
+                        if(this.config.dev) console.info('Message type same as the previous')
                         break;
                 }                
                 update('nextprev', text)
@@ -563,7 +561,7 @@ class MapleMessage{
                         while(this.btnsInterrogate1.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate1.firstChild)
                         break
                     default:
-                        console.log('same');                        
+                        if(this.config.dev) console.info('Message type same as the previous')
                         break;
                 }                
                 update('yesno', text)
@@ -596,7 +594,7 @@ class MapleMessage{
                         while(this.btnsInterrogate1.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate1.firstChild)
                         break
                     default:
-                        console.log('same');                        
+                        if(this.config.dev) console.info('Message type same as the previous')
                         break;
                 }                
                 update('acceptdecline', text)
@@ -635,7 +633,7 @@ class MapleMessage{
                         this.btnsInterrogate2.appendChild(this.btnNo)
                         break
                     default:
-                        console.log('same')
+                        if(this.config.dev) console.info('Message type same as the previous')
                         break
                 }                
                 update('test', text)
