@@ -33,7 +33,7 @@
   padding: 0;
 }
 
-.maple-message-container {
+.maple-message {
   display: flex;
   justify-content: center;
   align-items: center;

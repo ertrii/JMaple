@@ -33,7 +33,7 @@
   padding: 0;
 }
 
-.maple-message-container {
+.maple-message {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -63,7 +63,7 @@ body {
   font-family: encode-sans-light, sans-serif;
   font-size: 6pt;
   padding: 2px 20px 1px;
-  text-shadow: 0 0 1px black,                     0 0 1px black;
+  text-shadow: 0 0 1px black, 0 0 1px black;
   border: none;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3);
   cursor: pointer;

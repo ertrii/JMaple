@@ -808,7 +808,7 @@ class MapleMessage{
 
     show(){
         this.getNPC()        
-        this.container.classList.add('maple-message-container')
+        this.container.classList.add('maple-message')
         this.container.style.display = 'flex'
         this.container.appendChild(this.html)
         try{

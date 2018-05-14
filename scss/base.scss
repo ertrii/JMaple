@@ -25,6 +25,11 @@
     justify-content: $jc;
     align-items: $ai;
 }
-.maple-message-container{@include vh-center();}
+@mixin flex-row-center($jc : center, $ai : center){
+    display: flex;    
+    justify-content: $jc;
+    align-items: $ai;
+}
+.maple-message{ @include vh-center(); }
 
 .m-msg__bold{color: $text-color--bold}
