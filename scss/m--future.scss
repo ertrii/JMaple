@@ -33,21 +33,18 @@ body{
     &__body{
         display: flex;
         height: 165px;
-        min-height: 165px;
-        //background-color: rgba($f-bg-color3, 0.3);
-        box-shadow: inset 0 0 5px -1px black;
-        //padding: 0 4px 0px 10px;
+        min-height: 165px;        
+        box-shadow: inset 0 0 5px -1px black;        
         &__npc{
             background-color: $f-bg-color1;
-            width: 200px;            
+            width: 200px;
             @include flex-cl-center();
             text-align: center;
             font-size: 9pt;
             font-family: encode-sans-light, serif;            
             &__name{
                 padding: 0.1em 0.3em;
-                color: $f-bg-color3;
-                //transform: translate(0, -3px);
+                color: $f-bg-color3;                
             }
         }
         &__dialog{
