@@ -2,10 +2,7 @@
 
 class N1012118{
 
-    constructor(){
-        this.id = 1012118
-        this.name = 'Power B. Fore'
-        this.img = '1012118.png'
+    constructor(){        
         this.status = -1;
         this.map = 910060000;
         this.num = 5;

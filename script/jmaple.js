@@ -1,6 +1,6 @@
 'use strict';
-class MapleMessage{
-    constructor(el, NPC, character = false){
+class JMaple{
+    constructor(data, character = false){
         this.config         =       {
             displace        :       true,
             writing         :       true,
@@ -8,16 +8,17 @@ class MapleMessage{
             transition      :       'ease',          //ease, gross, step <- later check, reason: writing
             dev             :       true
         }
-        this.container      =       el
+        this.npc            =       data.npc
+        this.container      =       document.getElementById(data.el)
         this.container.style.display = 'none'
 
         this.listNPC        =       new Map()
-        this.getNPC         =       ()  =>  { this.npc = new NPC(); this.npc.cm = this.cm() }        
+        this.getScript      =       ()  =>  { this.script = new data.script(); this.script.cm = this.cm() }        
         this.cmSend         =       'simple'        //simple
         this.dispose        =       false
         this.type           =       4               //default
         this.selection      =       0        
-        this.setNPC         =       NPC
+        this.setScript      =       data.script
 
         //extensions
         this.character      =       character //instance
@@ -48,10 +49,6 @@ class MapleMessage{
                 itsNot('Was not found one of the required properties(id, name, img)')
                 return is
             }
-        
-        if (typeof npc.id           !==    'number')    itsNot('id is not type number')
-        if (typeof npc.name         !==    'string')    itsNot('name is not type string')
-        if (typeof npc.img          !==    'string')    itsNot('img is not type string')
         if (typeof npc.start        ===   'undefined')  {
             itsNot('the start function was not found, looking for the action function...', 'warn')
             if (typeof npc.action   === 'undefined')      itsNot('the start function was not found')
@@ -91,7 +88,7 @@ class MapleMessage{
         return allList
     }
 
-    set setNPC(NPCs){
+    set setScript(NPCs){
         if(Array.isArray(NPCs)){            
             for (let i = 0; i < NPCs.length; i++){
                 let _npc = new NPCs[i]()                
@@ -752,7 +749,7 @@ class MapleMessage{
 
             setTimeout( () => {
                 if(this.config.transition === 'ease') this.container.style.transition = '0.2s ease'                
-                this.npc.action(m, this.type, this.selection)
+                this.script.action(m, this.type, this.selection)
                 this.selection = 0 //reset
                 this.container.style.opacity = 1
                 if(!this.cmExecuted && this.dispose) this.end()
@@ -762,7 +759,7 @@ class MapleMessage{
             this.cmExecuted = false
             return
         }        
-        this.npc.action(m, this.type, this.selection)        
+        this.script.action(m, this.type, this.selection)        
         this.selection = 0 //reset
         if(!this.cmExecuted && this.dispose) this.end()
         this.cmExecuted = false
@@ -771,7 +768,7 @@ class MapleMessage{
     events(){        
         //Button
         const evSend                =   n   =>  { if ( !this.dispose ) this.send = n; else this.end() }
-        this.btnEndChat.onclick     =   ()  =>  { this.npc.action(-1, this.type, 0); this.end() }        //endchat
+        this.btnEndChat.onclick     =   ()  =>  { this.script.action(-1, this.type, 0); this.end() }        //endchat
         this.btnYes.onclick         =   ()  =>  evSend(1)                                                //yes
         this.btnNo.onclick          =   ()  =>  evSend(0)                                                //no
         this.btnPrev.onclick        =   ()  =>  evSend(0)                                                //prev
@@ -807,16 +804,16 @@ class MapleMessage{
     }
 
     show(){
-        this.getNPC()        
+        this.getScript()        
         this.container.classList.add('maple-message')
         this.container.style.display = 'flex'
         this.container.appendChild(this.html)
         try{
-            this.npc.start()
+            this.script.start()
         }
         catch(e){
             if(this.config.dev) console.info('the start function was not found, executing action function...')
-            this.npc.action(1, this.type, this.selection)
+            this.script.action(1, this.type, this.selection)
         }
         this.events()
         if(!this.cmExecuted && this.dispose) this.end()

@@ -1,10 +1,7 @@
 ////Read this -> http://forum.ragezone.com/f428/add-learning-npcs-start-finish-643364/
 
 class N9010000 {    
-    constructor(){
-        this.id     =   9010000
-        this.name   =   'Maple Administrator'
-        this.img    =   '9010000.png'
+    constructor(){        
         this.status =   0
     }
     start(){
