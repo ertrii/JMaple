@@ -367,6 +367,9 @@ class JMaple{
                 default                 :   this.cmExecuted = false
                     break
             }
+
+            if(this.config.dev) console.log(`Type: ${typeSend}(${this.type})`);
+            
         }
 
         let command = {
@@ -394,7 +397,7 @@ class JMaple{
                         while(this.btnsInterrogate2.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate2.firstChild)                        
                         break
                     default:
-                        if(this.config.dev) console.info('Message type same as the previous')
+                        if(this.config.dev) console.info('The same type of message as the previous one')
                         break;
                 }
                 update('simple', text)
@@ -426,7 +429,7 @@ class JMaple{
                         this.btnsInterrogate2.removeChild(this.btnNo)
                         break
                     default:
-                        if(this.config.dev) console.info('Message type same as the previous')
+                        if(this.config.dev) console.info('The same type of message as the previous one')
                         break;
                 }
                 update('ok', text)         
@@ -458,7 +461,7 @@ class JMaple{
                         this.btnsInterrogate1.removeChild(this.btnPrev)
                         break
                     default:
-                        if(this.config.dev) console.info('Message type same as the previous')
+                        if(this.config.dev) console.info('The same type of message as the previous one')
                         break
                 }
                 update('next', text)
@@ -493,7 +496,7 @@ class JMaple{
                         this.btnsInterrogate2.removeChild(this.btnNo)
                         break
                     default:
-                        if(this.config.dev) console.info('Message type same as the previous')
+                        if(this.config.dev) console.info('The same type of message as the previous one')
                         break
                 }
                 update('prev', text)                
@@ -525,7 +528,7 @@ class JMaple{
                         while(this.btnsInterrogate2.firstChild) this.btnsInterrogate2.removeChild(this.btnsInterrogate2.firstChild)
                         break
                     default:
-                        if(this.config.dev) console.info('Message type same as the previous')
+                        if(this.config.dev) console.info('The same type of message as the previous one')
                         break;
                 }                
                 update('nextprev', text)
@@ -558,7 +561,7 @@ class JMaple{
                         while(this.btnsInterrogate1.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate1.firstChild)
                         break
                     default:
-                        if(this.config.dev) console.info('Message type same as the previous')
+                        if(this.config.dev) console.info('The same type of message as the previous one')
                         break;
                 }                
                 update('yesno', text)
@@ -591,7 +594,7 @@ class JMaple{
                         while(this.btnsInterrogate1.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate1.firstChild)
                         break
                     default:
-                        if(this.config.dev) console.info('Message type same as the previous')
+                        if(this.config.dev) console.info('The same type of message as the previous one')
                         break;
                 }                
                 update('acceptdecline', text)
@@ -630,7 +633,7 @@ class JMaple{
                         this.btnsInterrogate2.appendChild(this.btnNo)
                         break
                     default:
-                        if(this.config.dev) console.info('Message type same as the previous')
+                        if(this.config.dev) console.info('The same type of message as the previous one')
                         break
                 }                
                 update('test', text)
