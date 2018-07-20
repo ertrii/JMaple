@@ -73,7 +73,7 @@
                             0px 0px 0px 2px $c-bg-color--name;
                 text-align: center;
                 font-size: 8pt;
-                font-family: inconsolata-regular, sans-serif;
+                font-family: roboto-light, sans-serif;
                 transform: translate(0px, 1px);
             }                        
         }        
@@ -88,7 +88,7 @@
                 @include flex-cl-center(center, flex-start);
                 &--text, &--alternatives{
                     font-size: 9pt;
-                    font-family: inconsolata-regular, sans-serif;
+                    font-family: roboto-light, sans-serif;
                 }                
                 &--title{
                     padding-top: 10px;
