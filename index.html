@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="css/m-msg--future.css">
+    <link rel="stylesheet" href="css/m--future.css">
     <title>JMaple</title>
 </head>
 <body>
@@ -13,13 +13,19 @@
     <script src="script/npc/9010000.js"></script>
     <script src="script/jmaple.js"></script>
     <script>
-        let jMaple = new JMaple({
+        new JMaple({
             el : 'm-msg',
             npc : {
                 id:  9010000,
                 name: 'Maple Administrator',
                 img: '9010000.png'
             },
+            map : [
+                {
+                    id: 123456,
+                    link: 'http://127.0.0.1:5500/index.html#'
+                }
+            ],
             script : function() {
                 this.status = 0
                 this.start = () => {
@@ -44,6 +50,7 @@
 
 
                     if(this.status === 2){
+                        this.cm.warp(123456)
                         this.cm.sendNext('Bien...!, vemos que esto está funcionando de maravilla, sigamos prosigando. ')
                         this.status++
                         return            
@@ -62,8 +69,7 @@
 
                 }
             }
-        })
-        jMaple.show()
+        }).show()        
         
     </script>
 </body>

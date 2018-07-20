@@ -21,8 +21,14 @@ class JMaple{
         this.setScript      =       data.script
 
         //extensions
+        this.map            =       new Map()
         this.character      =       character //instance
         this.items          =       new Map()
+
+        if(data.hasOwnProperty('map'))
+            data.map.forEach(m => {
+                this.map.set(m.id, m.link)
+            });
     }
 
     isNPC(_npc){
@@ -637,6 +643,12 @@ class JMaple{
                         break
                 }                
                 update('test', text)
+            },
+
+            warp            :   (mapid, portal = 0) => {
+                let link = this.map.get(mapid)
+                window.location.href = link                
+                if(this.config.dev) console.log(`warp: ${link}`)
             },
 
             dispose         :   () => this.dispose = true
