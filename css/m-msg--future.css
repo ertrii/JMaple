@@ -1,0 +1,220 @@
+/*
+ ==========Flat=========
+*/
+/*
+ ==========Classic=========
+*/
+/*
+==========Modern=========
+*/
+/*
+==========Futuren=========
+*/
+@font-face {
+  font-family: inconsolata-regular;
+  src: url(../source/font/Roboto-Light.ttf);
+}
+
+@font-face {
+  font-family: encode-sans-light;
+  src: url(../source/font/EncodeSans-Light.ttf);
+}
+
+@font-face {
+  font-family: open-sans-light;
+  src: url(../source/font/OpenSans-Light.ttf);
+}
+
+@font-face {
+  font-family: open-sans-bold;
+  src: url(../source/font/OpenSans-Bold.ttf);
+}
+
+*, *::after, *::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.maple-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  position: absolute;
+}
+
+.m-msg__bold {
+  color: #3839CC;
+}
+
+body {
+  background-image: url(https://orig00.deviantart.net/4eb7/f/2015/176/1/7/way_home_by_juh_juh-d8yqe7w.jpg);
+  background-size: cover;
+}
+
+.m-msg {
+  width: 524px;
+  min-height: 200px;
+  color: black;
+  overflow: hidden;
+  border-radius: 5px;
+  padding: 0px 5px 0px 10px;
+  border-top: 0 solid rgba(0, 151, 167, 0.3);
+  box-shadow: 0 0 0 1px #0097A7, 1px 1px 5px 0px black;
+}
+
+.m-msg button {
+  border: none;
+  font-size: 8pt;
+  padding: 1px 10px;
+  font-family: open-sans-bold, sans-serif;
+  border-radius: 5px;
+  transition: .3s;
+  cursor: pointer;
+}
+
+.m-msg__head {
+  cursor: -webkit-grab;
+  cursor: grab;
+  width: 100%;
+  height: 15px;
+  background-color: rgba(0, 151, 167, 0.3);
+}
+
+.m-msg__body {
+  display: flex;
+  height: 165px;
+  min-height: 165px;
+  background-color: rgba(0, 151, 167, 0.3);
+  box-shadow: inset 0 0 5px -1px black;
+}
+
+.m-msg__body__npc {
+  background-color: #F5F5F6;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 9pt;
+  font-family: encode-sans-light, serif;
+}
+
+.m-msg__body__npc__name {
+  padding: 0.1em 0.3em;
+  color: #0097A7;
+}
+
+.m-msg__body__dialog {
+  font-family: open-sans-light, sans-serif;
+  font-size: 10pt;
+  width: 100%;
+  height: 100%;
+  padding: 0.3em 1em;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  border-radius: 0 5px 5px 0;
+  box-shadow: 0 0 5px -2px black;
+}
+
+.m-msg__body__dialog__info {
+  padding: 1em 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.m-msg__body__dialog__info--alternatives {
+  padding-top: 1em;
+  padding-left: 0.5em;
+  list-style: none;
+  font-family: inconsolata-regular, sans-serif;
+}
+
+.m-msg__body__dialog__info--alternatives li {
+  cursor: pointer;
+  margin-bottom: 4px;
+  transition: 0.3s ease;
+}
+
+.m-msg__body__dialog__info--alternatives li::before {
+  content: '';
+  transition: 0.3s ease;
+  width: 5px;
+  height: 5px;
+  margin-right: 5px;
+  -webkit-transform: translate(0, -2px);
+          transform: translate(0, -2px);
+  background-color: rgba(0, 105, 120, 0.2);
+  display: inline-block;
+}
+
+.m-msg__body__dialog__info--alternatives li:hover {
+  padding-left: 5px;
+}
+
+.m-msg__body__dialog__info--alternatives li:hover::before {
+  background-color: #006978;
+}
+
+.m-msg__body__dialog__btn-interrogate {
+  align-self: flex-end;
+  padding-bottom: 5px;
+}
+
+.m-msg__body__dialog__btn-interrogate--next, .m-msg__body__dialog__btn-interrogate--prev {
+  background-color: transparent;
+}
+
+.m-msg__body__dialog__btn-interrogate--next {
+  color: #56C8D8;
+  text-decoration: underline;
+}
+
+.m-msg__body__dialog__btn-interrogate--prev {
+  color: #006978;
+  text-decoration: underline;
+}
+
+.m-msg__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 25px;
+  width: 100%;
+}
+
+.m-msg__footer button {
+  box-shadow: 1px 1px 5px -1px black;
+}
+
+.m-msg__footer__btn-exit--end-chat {
+  background-color: #006978;
+  color: #56C8D8;
+  text-align: left;
+}
+
+.m-msg__footer__btn-exit--end-chat:hover {
+  color: #F5F5F6;
+}
+
+.m-msg__footer__btn-interrogate--yes {
+  color: #F5F5F6;
+  background-color: #56C8D8;
+}
+
+.m-msg__footer__btn-interrogate--no {
+  color: #006978;
+  margin-left: 5px;
+  background-color: #006978;
+  color: #F5F5F6;
+}

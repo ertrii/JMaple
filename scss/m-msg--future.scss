@@ -1,0 +1,132 @@
+@import 'base';
+body{
+    background-image: url(https://orig00.deviantart.net/4eb7/f/2015/176/1/7/way_home_by_juh_juh-d8yqe7w.jpg);
+    background-size: cover;
+}
+.m-msg{    
+    width: 524px;
+    min-height: 200px;
+    //background-color: rgba($f-bg-color3, 0.4);
+    color: $f-color2;    
+    overflow: hidden;
+    border-radius: 5px;
+    padding: 0px 5px 0px 10px;
+    border-top: 0 solid rgba($f-bg-color3, 0.3);
+    box-shadow: 0 0 0 1px $f-bg-color3,
+                1px 1px 5px 0px black;
+    
+    button{
+        border: none;
+        font-size: 8pt;
+        padding: 1px 10px;
+        font-family: open-sans-bold, sans-serif;
+        //background-color: transparent;
+        border-radius: 5px;
+        transition: .3s;
+        cursor: pointer;
+    }
+    &__head{
+        cursor: grab;
+        width: 100%;
+        height: 15px;
+        background-color: rgba($f-bg-color3, 0.3);
+    }
+    &__body{
+        display: flex;
+        height: 165px;
+        min-height: 165px;
+        background-color: rgba($f-bg-color3, 0.3);
+        box-shadow: inset 0 0 5px -1px black;
+        //padding: 0 4px 0px 10px;
+        &__npc{
+            background-color: $f-bg-color1;
+            width: 200px;            
+            @include flex-cl-center();
+            text-align: center;
+            font-size: 9pt;
+            font-family: encode-sans-light, serif;            
+            &__name{
+                padding: 0.1em 0.3em;
+                color: $f-bg-color3;
+                //transform: translate(0, -3px);
+            }
+        }
+        &__dialog{
+            font-family: open-sans-light, sans-serif;
+            font-size: 10pt;            
+            width: 100%;                        
+            height: 100%;
+            padding: 0.3em 1em;
+            background-color: white;
+            @include flex-cl-center(center, flex-start);
+            border-radius: 0 5px 5px 0;
+            box-shadow: 0 0 5px -2px black;
+            &__info{
+                padding: 1em 0;                
+                height: 100%;
+                @include flex-cl-center(center, flex-start);                
+                &--alternatives{
+                    padding-top: 1em;
+                    padding-left: 0.5em;
+                    list-style: none;
+                    font-family:  inconsolata-regular, sans-serif;
+                    li{
+                        cursor: pointer;
+                        margin-bottom: 4px;                                                
+                        transition: 0.3s ease;
+                    }
+                    li::before{
+                        content: '';
+                        transition: 0.3s ease;
+                        width: 5px;
+                        height: 5px;
+                        margin-right: 5px;
+                        transform: translate(0, -2px);
+                        background-color: rgba($f-bg-color4, 0.2);
+                        display: inline-block;
+                    }
+                    li:hover{                                                
+                        padding-left: 5px;
+                    }
+                    li:hover::before{
+                        background-color: rgba($f-bg-color4, 1);
+                    }
+                }
+            }
+            &__btn-interrogate{
+                align-self: flex-end;
+                padding-bottom: 5px;
+                &--next, &--prev{
+                    background-color: transparent;
+                }
+                &--next{
+                    color: $f-color3;
+                    text-decoration: underline;
+                }
+                &--prev{
+                    color: $f-color4;
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+    &__footer{        
+        @include flex-row-center(space-between);  
+        //padding: 0 5px 0 10px;      
+        height: 25px;
+        width: 100%;
+        button{
+            box-shadow: 1px 1px 5px -1px black;
+        }
+        &__btn-exit--end-chat{
+            background-color: $f-cl-btn--end-chat;
+            color: $f-color3;            
+            text-align: left;
+            &:hover{color: $f-color1}
+        }
+        &__btn-interrogate{            
+            &--yes{ color: $f-color1; background-color: $f-cl-btn--yes; }
+            &--no{ color: $f-color4; margin-left: 5px; background-color: $f-cl-btn--no; color: $f-color1}
+        }
+    }
+}

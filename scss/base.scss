@@ -30,6 +30,6 @@
     justify-content: $jc;
     align-items: $ai;
 }
-.maple-message{ @include vh-center(); }
+.maple-message{ @include vh-center(); overflow: hidden; position: absolute;}
 
 .m-msg__bold{color: $text-color--bold}

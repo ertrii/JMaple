@@ -60,8 +60,34 @@ $m-btn-color--interrogative1--yes   :   linear-gradient(hsl(51,87,54) 10%,hsl(43
 $m-btn-color--interrogative1--no    :   linear-gradient(hsl(341,92,62) 10%,hsl(341,88,46));
 $m-btn-color--interrogative2        :   $m-btn-color--exit;
 
+
 //border
 $m-border--dark                     :   #626262;
+
+/*
+========== Future =========
+*/
+//color text
+$f-color1: #F5F5F6;
+$f-color2: black;
+$f-color3: #56C8D8;
+$f-color4: #006978;
+//color bg
+$f-bg-color1: #F5F5F6;
+$f-bg-color2: #E1E2E1;
+$f-bg-color3: #0097A7;
+$f-bg-color4: #006978;
+//color button
+$f-cl-btn--ok: #56C8D8;
+$f-cl-btn--end-chat: #006978;
+$f-cl-btn--yes: #56C8D8;
+$f-cl-btn--no:  #006978;
+$f-cl-btn-next: #0097A7;
+$f-cl-btn-prev: #006978;
+
+/*
+===========
+*/
 
 
 //Fonts
