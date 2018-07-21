@@ -27,7 +27,14 @@ class JMaple{
 
         if(data.hasOwnProperty('map'))
             data.map.forEach(m => {
-                this.map.set(m.id, m.link)
+                if(!m.hasOwnProperty('action')) m.action = null
+                if(!m.hasOwnProperty('warp')) m.warp = true                
+                let data = {
+                    link : m.link,
+                    action: m.action,
+                    warp : m.warp,                    
+                }
+                this.map.set(m.id, data)
             });
     }
 
@@ -645,10 +652,11 @@ class JMaple{
                 update('test', text)
             },
 
-            warp            :   (mapid, portal = 0) => {
-                let link = this.map.get(mapid)
-                window.location.href = link                
-                if(this.config.dev) console.log(`warp: ${link}`)
+            warp            :   (mapid, portal = 0) => {                
+                let data = this.map.get(mapid)
+                if(data.action !== null) data.action()
+                if(data.warp) window.location.href = data.link
+                if(this.config.dev) console.log(`warp: ${data.link}`)
             },
 
             dispose         :   () => this.dispose = true

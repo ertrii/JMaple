@@ -13,6 +13,7 @@
     <script src="script/npc/9010000.js"></script>
     <script src="script/jmaple.js"></script>
     <script>
+        let testing = () => alert('testing')
         new JMaple({
             el : 'm-msg',
             npc : {
@@ -23,7 +24,9 @@
             map : [
                 {
                     id: 123456,
-                    link: 'http://127.0.0.1:5500/index.html#'
+                    link: 'http://127.0.0.1:5500/index.html#',
+                    action : testing,
+                    warp : false
                 }
             ],
             script : function() {
