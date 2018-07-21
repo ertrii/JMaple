@@ -1,6 +1,6 @@
 'use strict';
 class JMaple{
-    constructor(data, character = false){
+    constructor(data, Character = false){
         this.config         =       {
             displace        :       true,
             writing         :       true,
@@ -22,7 +22,7 @@ class JMaple{
 
         //extensions
         this.map            =       new Map()
-        this.character      =       character //instance
+        this.character      =       (!Character) ? false : Character
         this.items          =       new Map()
 
         if(data.hasOwnProperty('map'))
@@ -116,15 +116,7 @@ class JMaple{
     }
 
     set setItem(item){
-        if(Array.isArray(item)){
-            for (let i = 0; i < item.length; i++){                
-                if(this.listItems.get(item[i].id) === undefined)
-                    this.listNPC.set(item[i].id, item[i])
-                }
-        }else{            
-            if(this.listItems.get(item.id) === undefined)
-                this.listItems.set(item.id, item)
-        }
+
     }
 
     /*===Creating Element===*/
@@ -663,7 +655,7 @@ class JMaple{
         }
         
         if(this.character !== false){
-            if(this.config.dev) console.info('Found Character, commands assigned to MapleMessage class')
+            if(this.config.dev) console.info('Found Character, commands assigned to this library')
             return Object.assign(command, this.character.cm)
         }
 

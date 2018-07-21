@@ -8,12 +8,12 @@
     <title>JMaple</title>
 </head>
 <body>
-    <div id="m-msg"></div>
-    <script src="script/npc/1012118.js"></script>
+    <div id="m-msg"></div>    
     <script src="script/npc/9010000.js"></script>
+    <script src="script/jcharacter.js"></script>
     <script src="script/jmaple.js"></script>
     <script>
-        let testing = () => alert('testing')
+        //let testing = () => alert('testing')
         new JMaple({
             el : 'm-msg',
             npc : {
@@ -24,9 +24,7 @@
             map : [
                 {
                     id: 123456,
-                    link: 'http://127.0.0.1:5500/index.html#',
-                    action : testing,
-                    warp : false
+                    link: 'http://127.0.0.1:5500/index.html#',                    
                 }
             ],
             script : function() {
@@ -60,6 +58,7 @@
                     }
                     
                     if(mode === 1 && this.status === 3){
+                        this.cm.openShop(156)
                         this.cm.sendNextPrev('¡Esto es genial!, vez lo emocionante que esto... f2')
                         this.status++
                         return
@@ -72,7 +71,10 @@
 
                 }
             }
-        }).show()        
+        }, new JCharacter({
+            name : 'erick',
+            lv : 10
+        })).show()
         
     </script>
 </body>
