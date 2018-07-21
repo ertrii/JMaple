@@ -1,5 +1,53 @@
 'use strict';
-
+class Item{
+    constructor(item){
+        if(item.type !== 'equip' || item.type !== 'use' || item.type !== 'setup' || item.type !== 'etc'){
+            console.error('unknown item type')
+            return;
+        }             
+        this.type = item.type
+        this.id = item.data.id
+        this.name = item.data.name
+        this.img = item.data.img
+        this.trade = (item.hasOwnProperty('trade')) ? item.data.trade : true
+        this.cash = (item.hasOwnProperty('trade')) ? item.data.cash : false        
+        this.desc = (item.hasOwnProperty('desc')) ? item.data.desc : ''
+        this.lv = (item.data.hasOwnProperty('level')) ? item.data.level : 0
+        this.list = new Map()
+    }
+    static addList(items){
+        items.forEach(item => {
+            if(item instanceof Item)
+                this.list.set(item.id, item)
+            else{                
+                console.error('Its not Item')
+                return
+            }
+        })        
+    }
+    static add(item){
+        if(item instanceof Item)
+            this.list.set(item.id, item)
+        else
+            console.error('Its not Item')
+    }
+    static get(iditem){        
+        let item = this.list.get(iditem)
+        return (item === undefined) ? null : item
+    }
+    get value(){
+        return {
+            id : this.id,
+            name : this.name,
+            img : this.img,
+            lv: this.lv,
+            type: this.type,
+            trade : this.trade,
+            cash : this.cash,
+            desc : this.desc
+        }
+    }
+}
 class JCharacter{
     constructor(data, item = false){
         this.nick   =   data.nick
@@ -22,28 +70,19 @@ class JCharacter{
             hp  : data.stat.hp,
             mp  : data.stat.mp
         }
-        this.item  =   new Map()
+        this.items  =   new Map()
         if(item) this.setItem(item)
     }
-    setItem(item){
-        item.forEach(i => {
-            if(!i.hasOwnProperty('ammount')) i.ammount = 1
-            const set = () => {
-                let data = {
-                    item : {
-                        id : i.id,
-                        name : i.name,
-                        img : i.img                        
-                    },
-                    ammount : i.ammount,
-                    type    : i.type                    
-                }
-                this.item.set(i.id, data)
-            }                
-            if(i.type !== 'equip' || i.type !== 'use' || i.type !== 'setup' || i.type !== 'etc' || i.type !== 'cash')
-                console.error('unknown item type')
-            else set()
-        })
+    setItem(item, ammount = 1){        
+        if(item instanceof Item) {                                
+            let dataPrepared = {
+                item : i.item,
+                ammount : ammount
+            }
+            this.items.set(i.item.id, dataPrepared)                            
+        }
+        else console.error("One it's not Item")
+        
     }
     quest(id){
         return {
@@ -70,10 +109,8 @@ class JCharacter{
                 else
                     return true
             },
-            gainItem    :   (itemid, ammount = 1)   => {
-                
-            },
-            changeJob   :   jobid   => {                
+            gainItem    :   (itemid, ammount = 1)   =>  this.setItem(Item.get(itemid), ammount),
+            changeJob   :   jobid   => {
                 if(isNaN(ammount))
                     this.job = jobid
                 else console.error('is not number')
