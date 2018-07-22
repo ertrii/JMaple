@@ -1,8 +1,4 @@
 @import 'base';
-body{
-    background-image: url(https://orig00.deviantart.net/4eb7/f/2015/176/1/7/way_home_by_juh_juh-d8yqe7w.jpg);
-    background-size: cover;
-}
 .m-msg{    
     width: 524px;
     min-height: 200px;    
@@ -13,7 +9,7 @@ body{
     border-top: 0 solid rgba($f-bg-color3, 0.3);
     box-shadow: 0 0 0 1px $f-bg-color3,
                 1px 1px 5px 0px black;
-    
+    background-color: rgba($f-bg-color3, 0.2);
     button{
         border: none;
         font-size: 8pt;

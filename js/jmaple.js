@@ -6,7 +6,7 @@ class JMaple{
             writing         :       true,
             img_directory   :       'source/img/npc/',
             transition      :       'ease',          //ease, gross, step <- later check, reason: writing
-            dev             :       true
+            dev             :       false
         }
         this.npc            =       data.npc
         this.container      =       document.getElementById(data.el)
