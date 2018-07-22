@@ -827,8 +827,8 @@ class JMaple{
             this.script.start()
         }
         catch(e){
-            if(this.config.dev) console.info('the start function was not found, executing action function...')
-            this.script.action(1, this.type, this.selection)
+            if(this.config.dev) console.info('the start function was not found, executing action function...')            
+            this.script.action(1, this.type, this.selection)            
         }
         this.events()
         if(!this.cmExecuted && this.dispose) this.end()

@@ -29,23 +29,21 @@ class Item{
         if(!Item.hasOwnProperty('list'))
             this.list = new Map()
     }
-    static addList(items){
-        this.prepareList()
+    static addList(items){        
         items.forEach(item => {
-            if(item instanceof Item)
-                this.list.set(item.id, item)
-            else{                
-                console.error('Its not Item')
-                return
-            }
-        })        
+            if(!this.add(item)) return
+        })
     }
     static add(item){
         this.prepareList()
-        if(item instanceof Item)
+        if(item instanceof Item){
             this.list.set(item.id, item)
-        else
+            return true
+        }            
+        else{
             console.error('Its not Item')
+            return false
+        }
     }
     static get(iditem){
         this.prepareList()
@@ -110,7 +108,7 @@ class JCharacter{
     get cm(){
         let command = {
             openShop    :   shopid  => {
-                console.log(shopid);                
+                console.log(`openShop: ${shopid}`)
             },
             haveItem    :   itemid  => {
                 if(this.items.get(itemid) === undefined)
