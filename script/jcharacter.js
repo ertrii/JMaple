@@ -1,21 +1,36 @@
 'use strict';
+class Stat{
+    constructor(stat = { str : 4, dex : 4, int : 4, luk : 4, hp : 50, mp : 50} ){
+        this.str = stat.str
+        this.dex = stat.dex
+        this.int = stat.int
+        this.luk = stat.luk
+        this.hp = stat.hp
+        this.mp = stat.mp
+    }    
+}
 class Item{
-    constructor(item){
-        if(item.type !== 'equip' || item.type !== 'use' || item.type !== 'setup' || item.type !== 'etc'){
-            console.error('unknown item type')
+    constructor(item){        
+        if(item.type === 'equip' || item.type === 'use' || item.type === 'setup' || item.type === 'etc'){
+            this.type = item.type
+            this.id = item.id
+            this.name = item.name
+            this.img = item.img
+            this.trade = (item.hasOwnProperty('trade')) ? item.trade : true
+            this.cash = (item.hasOwnProperty('cash')) ? item.cash : false        
+            this.desc = (item.hasOwnProperty('desc')) ? item.desc : ''
+            this.lv = (item.hasOwnProperty('level')) ? item.level : 0               
+        }else{
+            console.error('unknown item type ' + item.type)
             return;
-        }             
-        this.type = item.type
-        this.id = item.data.id
-        this.name = item.data.name
-        this.img = item.data.img
-        this.trade = (item.hasOwnProperty('trade')) ? item.data.trade : true
-        this.cash = (item.hasOwnProperty('trade')) ? item.data.cash : false        
-        this.desc = (item.hasOwnProperty('desc')) ? item.data.desc : ''
-        this.lv = (item.data.hasOwnProperty('level')) ? item.data.level : 0
-        this.list = new Map()
+        }
+    }
+    static prepareList(){
+        if(!Item.hasOwnProperty('list'))
+            this.list = new Map()
     }
     static addList(items){
+        this.prepareList()
         items.forEach(item => {
             if(item instanceof Item)
                 this.list.set(item.id, item)
@@ -26,12 +41,14 @@ class Item{
         })        
     }
     static add(item){
+        this.prepareList()
         if(item instanceof Item)
             this.list.set(item.id, item)
         else
             console.error('Its not Item')
     }
-    static get(iditem){        
+    static get(iditem){
+        this.prepareList()
         let item = this.list.get(iditem)
         return (item === undefined) ? null : item
     }
@@ -60,28 +77,20 @@ class JCharacter{
         this.nx     =   (data.hasOwnProperty('nx'))     ? data.nx       : 0        
         this.sp     =   (data.hasOwnProperty('sp'))     ? data.sp       : 0
         this.ap     =   (data.hasOwnProperty('ap'))     ? data.ap       : 0
-        if(!data.hasOwnProperty('stat'))
-            data.stat = { str : 4, dex : 4, int : 4, luk : 4, hp : 50, mp : 50 }
-        this.stat   =   {
-            str : data.stat.str,
-            dex : data.stat.dex,
-            int : data.stat.int,
-            luk : data.stat.luk,
-            hp  : data.stat.hp,
-            mp  : data.stat.mp
-        }
+        if(!data.hasOwnProperty('stat')) this.stat = new Stat()            
+        else this.stat = data.stat
         this.items  =   new Map()
         if(item) this.setItem(item)
     }
     setItem(item, ammount = 1){        
         if(item instanceof Item) {                                
             let dataPrepared = {
-                item : i.item,
+                item : item,
                 ammount : ammount
             }
-            this.items.set(i.item.id, dataPrepared)                            
+            this.items.set(item.id, dataPrepared)
         }
-        else console.error("One it's not Item")
+        else console.error("it's not Item Class")
         
     }
     quest(id){
@@ -104,12 +113,18 @@ class JCharacter{
                 console.log(shopid);                
             },
             haveItem    :   itemid  => {
-                if(this.item.get(itemid) === undefined)
+                if(this.items.get(itemid) === undefined)
                     return false
                 else
                     return true
             },
-            gainItem    :   (itemid, ammount = 1)   =>  this.setItem(Item.get(itemid), ammount),
+            gainItem    :   (itemid, ammount = 1)   =>  {
+                let item = Item.get(itemid)                
+                if(item !== null)
+                    this.setItem(item, ammount)
+                else
+                    console.error(`This item(${itemid}) is not exists in the list Item`)
+            },
             changeJob   :   jobid   => {
                 if(isNaN(ammount))
                     this.job = jobid
@@ -122,17 +137,17 @@ class JCharacter{
             getMeso         :   () => this.mesos,
             gainMeso    :   ammount => {
                 if(isNaN(ammount))
-                    this.meso = ammount
+                    this.meso += ammount
                 else console.error('is not number')
             },
             gainExp   :   ammount  => {
                 if(isNaN(ammount))
-                    this.exp = ammount
+                    this.exp += ammount
                 else console.error('is not number')
             },
             getLevel    :   ()  => this.lv,
             teachSkill  :   (skillid, skilllevel, maxskilllevel) => {
-
+                //thinking...
             },
             get         :   stat    => {
                 switch (stat) {
@@ -155,7 +170,7 @@ class JCharacter{
                     isGM    :   ()  => this.gm,
                     getGender : ()  => this.gender,
                     getitemQuantity : itemid => {
-                        return 0
+                        return 0//thinking...
                     }
                 }
             },

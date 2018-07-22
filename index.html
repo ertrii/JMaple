@@ -14,6 +14,13 @@
     <script src="script/jmaple.js"></script>
     <script>
         //let testing = () => alert('testing')
+        Item.add(new Item({
+            type : 'use',
+            id : 102,
+            name : 'other item',
+            img : 'other_item.png'
+        }))        
+        
         new JMaple({
             el : 'm-msg',
             npc : {
@@ -30,6 +37,7 @@
             script : function() {
                 this.status = 0
                 this.start = () => {
+                    this.cm.gainItem(102, 5)
                     this.cm.sendYesNo('Hola, bienvenido a este, #bespero# que te guste esta prueba #L1# Lista 1 #l #L2# Lista 2#l')
                 }
                 this.action = (mode, type, selection) => {
@@ -42,6 +50,8 @@
                     }
 
                     if(this.status === 1){
+                        console.log(this.cm.haveItem(102), this.cm.get('HP'));
+                        
                         this.cm.sendNext("Gracias por aceptar. Para proseguir con esta prueba le recomendamos darle click en siguiente..." + `mode: ${mode}, type: ${type}, selection: ${selection}`)
                         this.status++
                         return
@@ -74,7 +84,13 @@
         }, new JCharacter({
             name : 'erick',
             lv : 10
-        })).show()
+        }, new Item({
+            type: 'equip',
+            id : 156,
+            name : 'item test',
+            img : 'test.png'
+        })
+    )).show()
         
     </script>
 </body>
