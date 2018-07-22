@@ -36,7 +36,7 @@ $f-btn-color--interrogative-2       :   #2884CD;
 //colors maple-message
 $c-bg-color--primary                :   #F6F4F5;
 $c-bg-color--bar                    :   linear-gradient(hsl(213,28,90),hsl(211,28,70) 10%,hsl(213,28,77));
-$c-bg-color--texture                :   url(../source/img/texture/texture0.png);
+$c-bg-color--texture                :   url(../src/img/texture/texture0.png);
 $c-bg-color--name                   :   #223356;
 $c-bg-color--dark                   :   #898785;
 
@@ -93,17 +93,17 @@ $f-cl-btn-prev: #006978;
 //Fonts
 @font-face{
     font-family: roboto-light;
-    src: url(../source/font/Roboto-Light.ttf);
+    src: url(../src/font/Roboto-Light.ttf);
 }
 @font-face{
     font-family: encode-sans-light;
-    src: url(../source/font/EncodeSans-Light.ttf);
+    src: url(../src/font/EncodeSans-Light.ttf);
 }
 @font-face{
     font-family: open-sans-light;
-    src: url(../source/font/OpenSans-Light.ttf);
+    src: url(../src/font/OpenSans-Light.ttf);
 }
 @font-face{
     font-family: open-sans-bold;
-    src: url(../source/font/OpenSans-Bold.ttf);
+    src: url(../src/font/OpenSans-Bold.ttf);
 }

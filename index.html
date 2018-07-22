@@ -22,9 +22,12 @@
             },
             script : function() {
                 this.start = function(){
-                    this.cm.sendOk('This is my first message')
+                    this.cm.sendOk('This is my first message')                    
+                }
+                this.action = function(){
+                    this.cm.sendOk('This is the second message')
                     this.cm.dispose()
-                }                
+                }
             }
         }).show()
         

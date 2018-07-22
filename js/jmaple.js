@@ -4,7 +4,7 @@ class JMaple{
         this.config         =       {
             displace        :       true,
             writing         :       true,
-            img_directory   :       'source/img/npc/',
+            img_directory   :       'src/img/npc/',
             transition      :       'ease',          //ease, gross, step <- later check, reason: writing
             dev             :       false
         }

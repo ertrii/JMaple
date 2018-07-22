@@ -15,22 +15,22 @@
 */
 @font-face {
   font-family: roboto-light;
-  src: url(../source/font/Roboto-Light.ttf);
+  src: url(../src/font/Roboto-Light.ttf);
 }
 
 @font-face {
   font-family: encode-sans-light;
-  src: url(../source/font/EncodeSans-Light.ttf);
+  src: url(../src/font/EncodeSans-Light.ttf);
 }
 
 @font-face {
   font-family: open-sans-light;
-  src: url(../source/font/OpenSans-Light.ttf);
+  src: url(../src/font/OpenSans-Light.ttf);
 }
 
 @font-face {
   font-family: open-sans-bold;
-  src: url(../source/font/OpenSans-Bold.ttf);
+  src: url(../src/font/OpenSans-Bold.ttf);
 }
 
 *, *::after, *::before {
@@ -95,7 +95,7 @@
   padding: 10px 7px;
   display: flex;
   justify-content: space-between;
-  background-image: url(../source/img/texture/texture0.png);
+  background-image: url(../src/img/texture/texture0.png);
   width: 500px;
   min-height: 160px;
   margin-left: auto;

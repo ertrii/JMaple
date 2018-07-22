@@ -1,3 +1,4 @@
+// Init: 04/25/2018
 'use strict';
 class Stat{
     constructor(stat = { str : 4, dex : 4, int : 4, luk : 4, hp : 50, mp : 50} ){
