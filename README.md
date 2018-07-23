@@ -187,7 +187,7 @@ Dependiendo del tipo Ventana de Conversación, los parametros __type__ y __mode_
     | ok / accept / yes / next | 1 |
     | no / back | 0 |
 
-El parametro __selection__ devolverá un valor ```0``` por defecto. Solo puede devolver otro valor cuando exista en el cuadro de dialogo una lista de selección, dependerá del índice.
+El parametro __selection__ devolverá un valor ```0``` por defecto. Solo puede devolver otro valor cuando exista en el cuadro de dialogo una lista de selección, el valor dependerá de que le hayas asignado al item.
 ### Commands: Actions
 | cm | description |
 | -- | ----------- |
@@ -249,6 +249,7 @@ Son dos propiedades requeridos y dos propiedades opcionales:
 Text Color
 ----------
 Para dar color a los textos existen estas etiquetas:
+
 | code | Description |
 | ---- | ----------- |
 | #b | Blue text. |
@@ -275,3 +276,30 @@ new JMaple({
     }
 }).show()
 ```
+List
+----
+Para crear una lista se requieren ciertas etiquetas.
+
+| code | Description |
+| ---- | ----------- |
+| #L[int]# | Open Item |
+| #l | Close Item |
+
+#### Example:
+```javascript
+new JMaple({
+    el:'element',
+    npc: {
+        id: 9010000,
+        name: 'Maple Administrator',
+        img: '9010000.png'
+    },
+    script : function(){
+        this.start = function(){
+            this.cm.sendOk('This is a List: #L1# item 1 #l #L2# item 2 #l #L3# item 3 #l')
+            this.cm.dispose()
+        }
+    }
+}).show()
+```
+El número asignado podrá ser el valor para el parámetro __selection__, eso dependerá a que item seleciones en el cuadro de diálogo.
