@@ -30,6 +30,7 @@ class JMaple{
                 if(!m.hasOwnProperty('action')) m.action = null
                 if(!m.hasOwnProperty('warp')) m.warp = true                
                 let data = {
+                    id : m.id,
                     link : m.link,
                     action: m.action,
                     warp : m.warp,                    
@@ -648,7 +649,7 @@ class JMaple{
                 let data = this.map.get(mapid)
                 if(data.action !== null) data.action()
                 if(data.warp) window.location.href = data.link
-                if(this.config.dev) console.log(`warp: ${data.link}`)
+                if(this.config.dev) console.log(`warp(${data.id}): ${data.link}`)
             },
 
             dispose         :   () => this.dispose = true

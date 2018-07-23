@@ -20,11 +20,22 @@
                 name: 'Maple Administrator',
                 img: '9010000.png'
             },
+            map: [
+                {
+                    id : 123456,
+                    link : 'index.html#'//can be any link
+                },
+                {
+                    id : 201461,
+                    link : 'https://github.com/ertrii/JMaple'
+                }
+            ],
             script : function() {
                 this.start = function(){
                     this.cm.sendOk('This is my first message')                    
                 }
-                this.action = function(){
+                this.action = function(mode, type, selection){
+                    this.cm.warp(123456)
                     this.cm.sendOk('This is the second message')
                     this.cm.dispose()
                 }
