@@ -142,12 +142,14 @@ new JMaple({
 Dependiendo del tipo Ventana de Conversación, los parametros __type__ y __mode__ de ```action()``` devolveran un valor.
 * __sendOk or sendNext__
     type = 0
+
     | Button | mode |
     | ------ | ---- |
     | end chat | -1 |
     | next / ok | 1 |
 * __sendNextPrev__
     type = 0
+
     | Button | mode |
     | ------ | ---- |
     | end chat | -1 |
@@ -155,6 +157,7 @@ Dependiendo del tipo Ventana de Conversación, los parametros __type__ y __mode_
     | back | 0 |
 * __sendYesNo__
     type = 1
+
     | Button | mode |
     | ------ | ---- |
     | end chat | -1 |
@@ -162,12 +165,14 @@ Dependiendo del tipo Ventana de Conversación, los parametros __type__ y __mode_
     | no | 0 |
 * __sendSimple__
     type = 4
+
     | Button | mode |
     | ------ | ---- |
     | end chat | 0 |
     | select | 1 |
 * __sendAcceptDecline__
     type = 12
+
     | Button | mode |
     | ------ | ---- |
     | end chat | -1 |
@@ -175,6 +180,7 @@ Dependiendo del tipo Ventana de Conversación, los parametros __type__ y __mode_
     | decline | 0 |
 * __sendTest__
     type = -1
+
     | Button | mode |
     | ------ | ---- |
     | end chat | -1 |
@@ -187,6 +193,7 @@ El parametro __selection__ devolverá un valor ```0``` por defecto. Solo puede d
 | -- | ----------- |
 | dispose() | Ends the conversation window. |
 | warp(idMap, portal = 0) | Moves to a section page or other page, on MapleStory moves the player to a map. |
+
 Con la función ```dispose()``` es recomendable ser ejecutada al final de cualquier comando al finalizar una conversación.
 La función ```warp()``` requiere de dos valores:
 * __idMap__, es un valor numerico(int) que identifica un map.
@@ -239,3 +246,32 @@ Son dos propiedades requeridos y dos propiedades opcionales:
         action : myFunction
     }
     ```
+Text Color
+----------
+Para dar color a los textos existen estas etiquetas:
+| code | Description |
+| ---- | ----------- |
+| #b | Blue text. |
+| #d | Purple text. |
+| #e | Bold text. |
+| #g | Green text. |
+| #k | Black text. |
+| #r | Red text. |
+
+#### Example:
+```javascript
+new JMaple({
+    el:'element',
+    npc: {
+        id: 9010000,
+        name: 'Maple Administrator',
+        img: '9010000.png'
+    },
+    script : function(){
+        this.start = function(){
+            this.cm.sendOk('This is #rRed Text# and this is #ePurple#')
+            this.cm.dispose()
+        }
+    }
+}).show()
+```
