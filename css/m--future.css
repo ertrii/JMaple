@@ -39,7 +39,7 @@
   padding: 0;
 }
 
-.maple-message {
+.jmaple {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -49,11 +49,31 @@
   position: absolute;
 }
 
-.m-msg__bold {
-  color: #3839CC;
+.m__color--blue {
+  color: #201EFF;
 }
 
-.m-msg {
+.m__color--purple {
+  color: purple;
+}
+
+.m__color--bold {
+  color: black;
+}
+
+.m__color--green {
+  color: green;
+}
+
+.m__color--black {
+  color: black;
+}
+
+.m__color--red {
+  color: red;
+}
+
+.m {
   width: 524px;
   min-height: 200px;
   color: black;
@@ -65,7 +85,7 @@
   background-color: rgba(0, 151, 167, 0.2);
 }
 
-.m-msg button {
+.m button {
   border: none;
   font-size: 8pt;
   padding: 1px 10px;
@@ -76,21 +96,22 @@
   outline: 0;
 }
 
-.m-msg__head {
+.m__head {
   cursor: -webkit-grab;
   cursor: grab;
   width: 100%;
   height: 15px;
 }
 
-.m-msg__body {
+.m__body {
   display: flex;
   height: 165px;
   min-height: 165px;
   box-shadow: inset 0 0 5px -1px black;
+  border-radius: 0 5px 5px 0;
 }
 
-.m-msg__body__npc {
+.m__body__npc {
   background-color: #F5F5F6;
   width: 200px;
   display: flex;
@@ -102,12 +123,12 @@
   font-family: encode-sans-light, serif;
 }
 
-.m-msg__body__npc__name {
+.m__body__npc__name {
   padding: 0.1em 0.3em;
   color: #0097A7;
 }
 
-.m-msg__body__dialog {
+.m__body__dialog {
   font-family: open-sans-light, sans-serif;
   font-size: 10pt;
   width: 100%;
@@ -122,7 +143,7 @@
   box-shadow: 0 0 5px -2px black;
 }
 
-.m-msg__body__dialog__info {
+.m__body__dialog__info {
   padding: 1em 0;
   height: 100%;
   display: flex;
@@ -131,20 +152,20 @@
   align-items: flex-start;
 }
 
-.m-msg__body__dialog__info--alternatives {
+.m__body__dialog__info--alternatives {
   padding-top: 1em;
   padding-left: 0.5em;
   list-style: none;
   font-family: roboto-light, sans-serif;
 }
 
-.m-msg__body__dialog__info--alternatives li {
+.m__body__dialog__info--alternatives li {
   cursor: pointer;
   margin-bottom: 4px;
   transition: 0.3s ease;
 }
 
-.m-msg__body__dialog__info--alternatives li::before {
+.m__body__dialog__info--alternatives li::before {
   content: '';
   transition: 0.3s ease;
   width: 5px;
@@ -156,34 +177,34 @@
   display: inline-block;
 }
 
-.m-msg__body__dialog__info--alternatives li:hover {
+.m__body__dialog__info--alternatives li:hover {
   padding-left: 5px;
 }
 
-.m-msg__body__dialog__info--alternatives li:hover::before {
+.m__body__dialog__info--alternatives li:hover::before {
   background-color: #006978;
 }
 
-.m-msg__body__dialog__btn-interrogate {
+.m__body__dialog__btn-interrogate {
   align-self: flex-end;
   padding-bottom: 5px;
 }
 
-.m-msg__body__dialog__btn-interrogate--next, .m-msg__body__dialog__btn-interrogate--prev {
+.m__body__dialog__btn-interrogate--next, .m__body__dialog__btn-interrogate--prev {
   background-color: transparent;
 }
 
-.m-msg__body__dialog__btn-interrogate--next {
+.m__body__dialog__btn-interrogate--next {
   color: #56C8D8;
   text-decoration: underline;
 }
 
-.m-msg__body__dialog__btn-interrogate--prev {
+.m__body__dialog__btn-interrogate--prev {
   color: #006978;
   text-decoration: underline;
 }
 
-.m-msg__footer {
+.m__footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -191,31 +212,31 @@
   width: 100%;
 }
 
-.m-msg__footer button {
+.m__footer button {
   box-shadow: 1px 1px 5px -1px black;
   transition: 0.2s;
 }
 
-.m-msg__footer button:active {
+.m__footer button:active {
   box-shadow: 1px 1px 1px -1px black;
 }
 
-.m-msg__footer__btn-exit--end-chat {
+.m__footer__btn-exit--end-chat {
   background-color: #006978;
   color: #56C8D8;
   text-align: left;
 }
 
-.m-msg__footer__btn-exit--end-chat:hover {
+.m__footer__btn-exit--end-chat:hover {
   color: #F5F5F6;
 }
 
-.m-msg__footer__btn-interrogate--yes {
+.m__footer__btn-interrogate--yes {
   color: #F5F5F6;
   background-color: #56C8D8;
 }
 
-.m-msg__footer__btn-interrogate--no {
+.m__footer__btn-interrogate--no {
   color: #006978;
   margin-left: 5px;
   background-color: #006978;

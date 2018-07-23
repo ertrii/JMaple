@@ -30,6 +30,14 @@
     justify-content: $jc;
     align-items: $ai;
 }
-.maple-message{ @include vh-center(); overflow: hidden; position: absolute;}
+.jmaple{ @include vh-center(); overflow: hidden; position: absolute;}
 
-.m-msg__bold{color: $text-color--bold}
+//color text
+.m{    
+    &__color--blue{color: $color--b}
+    &__color--purple{color: $color--d}
+    &__color--bold{color: $color--e}
+    &__color--green{color: $color--g}
+    &__color--black{color: $color--k}
+    &__color--red{color: $color--r}
+}

@@ -46,6 +46,8 @@ Existen algunas propiedades de configuración que usted puede editar a su gusto,
     * __gross__, una transición de golpe.
     * __step__, no hay transición.
 * __dev(bool=false)__, muestra por consola datos necesarios para el desarrollo.
+* __key(string=m)__, clase de la ventana de conversación, un identificador en los css styles. En caso de ser cambiado usted tendría que editar el css con ese nombre que le asignado.
+* __zIndex(int=100)__, posicionamiento ```z``` del contenedor principal.
 #### Example:
 ```javascript
 const jmaple = new JMaple({
@@ -75,7 +77,7 @@ Los script NPC están programado dentro de dos funciones principales:
         //code
     }
     ```
-* __action__, es la siguiente acción que se mostrara, aquí será donde se programara todas las acciones del npc. Contiene tres parámetros, son opcionales:
+* __action__, es la siguiente acción que se mostrara, aquí será donde se programara todas las acciones del npc. Contiene tres parámetros:
     * __mode__, devuelve un valor(int) del boton pulsado.
     * __type__, devuelve un valor(int) del tipo de conversación.
     * __selection__, devuelve un valor(int) de una lista de selección.
@@ -141,53 +143,53 @@ new JMaple({
 ```
 Dependiendo del tipo Ventana de Conversación, los parametros __type__ y __mode__ de ```action()``` devolveran un valor.
 * __sendOk or sendNext__
-    type = 0
+    ```type = 0```
 
-    | Button | mode |
-    | ------ | ---- |
-    | end chat | -1 |
-    | next / ok | 1 |
+    | Button    | mode |
+    | --------- | ---- |
+    | end chat  | -1   |
+    | next / ok | 1    |
 * __sendNextPrev__
-    type = 0
+    ```type = 0```
 
-    | Button | mode |
-    | ------ | ---- |
-    | end chat | -1 |
-    | next | 1 |
-    | back | 0 |
+    | Button   | mode |
+    | -------- | ---- |
+    | end chat | -1   |
+    | next     | 1    |
+    | back     | 0    |
 * __sendYesNo__
-    type = 1
+    ```type = 1```
 
-    | Button | mode |
-    | ------ | ---- |
-    | end chat | -1 |
-    | yes | 1 |
-    | no | 0 |
+    | Button   | mode |
+    | -------- | ---- |
+    | end chat | -1   |
+    | yes      | 1    |
+    | no       | 0    |
 * __sendSimple__
-    type = 4
+    ```type = 4```
 
-    | Button | mode |
-    | ------ | ---- |
-    | end chat | 0 |
-    | select | 1 |
+    | Button   | mode |
+    | -------- | ---- |
+    | end chat | 0    |
+    | select   | 1    |
 * __sendAcceptDecline__
-    type = 12
+    ```type = 12```
 
-    | Button | mode |
-    | ------ | ---- |
-    | end chat | -1 |
-    | accept | 1 |
-    | decline | 0 |
+    | Button   | mode |
+    | -------- | ---- |
+    | end chat | -1   |
+    | accept   | 1    |
+    | decline  | 0    |
 * __sendTest__
-    type = -1
+    ```type = -1```
 
-    | Button | mode |
-    | ------ | ---- |
-    | end chat | -1 |
-    | ok / accept / yes / next | 1 |
-    | no / back | 0 |
+    | Button                   | mode |
+    | ------------------------ | ---- |
+    | end chat                 | -1   |
+    | ok / accept / yes / next | 1    |
+    | no / back                | 0    |
 
-El parametro __selection__ devolverá un valor ```0``` por defecto. Solo puede devolver otro valor cuando exista en el cuadro de dialogo una lista de selección, el valor dependerá de que le hayas asignado al item.
+El parametro __selection__ devolverá un valor ```0``` por defecto. Solo puede devolver otro valor cuando exista en el cuadro de dialogo una lista de selección, el valor dependerá de que item de la lista hayas selecionado. El valor tambien dependerá del valor que le hayas asignado al item.
 ### Commands: Actions
 | cm | description |
 | -- | ----------- |
@@ -250,14 +252,14 @@ Text Color
 ----------
 Para dar color a los textos existen estas etiquetas:
 
-| code | Description |
-| ---- | ----------- |
-| #b | Blue text. |
-| #d | Purple text. |
-| #e | Bold text. |
-| #g | Green text. |
-| #k | Black text. |
-| #r | Red text. |
+| code | Description  |
+| ---- | ------------ |
+| #b   | Blue text.   |
+| #d   | Purple text. |
+| #e   | Bold text.   |
+| #g   | Green text.  |
+| #k   | Black text.  |
+| #r   | Red text.    |
 
 #### Example:
 ```javascript
@@ -280,10 +282,10 @@ List
 ----
 Para crear una lista se requieren ciertas etiquetas.
 
-| code | Description |
-| ---- | ----------- |
-| #L[int]# | Open Item |
-| #l | Close Item |
+| code     | Description |
+| -------- | ----------- |
+| #L[int]# | Open Item   |
+| #l       | Close Item  |
 
 #### Example:
 ```javascript
@@ -302,4 +304,4 @@ new JMaple({
     }
 }).show()
 ```
-El número asignado podrá ser el valor para el parámetro __selection__, eso dependerá a que item seleciones en el cuadro de diálogo.
+El número asignado podrá ser el valor para el parámetro __selection__, eso dependerá a que item seleciones en el cuadro de diálogo. Es recomendable que le des un espacio entre la etiqueta y el texto.

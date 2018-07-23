@@ -1,6 +1,6 @@
 @import 'base';
 
-.m-msg{
+.m{
     width: 524px;
     min-height: 200px;    
     background-color: $c-bg-color--primary;
@@ -39,7 +39,7 @@
         padding: 10px 7px;
         display: flex;
         justify-content: space-between;
-        background-image: $c-bg-color--texture;
+        background-image: $c-bg-color--texture;        
         width: 500px;
         min-height: 160px;
         margin-left: auto;

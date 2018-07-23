@@ -39,7 +39,7 @@
   padding: 0;
 }
 
-.maple-message {
+.jmaple {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -49,11 +49,31 @@
   position: absolute;
 }
 
-.m-msg__bold {
-  color: #3839CC;
+.m__color--blue {
+  color: #201EFF;
 }
 
-.m-msg {
+.m__color--purple {
+  color: purple;
+}
+
+.m__color--bold {
+  color: black;
+}
+
+.m__color--green {
+  color: green;
+}
+
+.m__color--black {
+  color: black;
+}
+
+.m__color--red {
+  color: red;
+}
+
+.m {
   width: 524px;
   min-height: 200px;
   background-color: #F6F4F5;
@@ -61,7 +81,7 @@
   box-shadow: 1px 2px 10px -2px black;
 }
 
-.m-msg__body__dialog button, .m-msg__footer button {
+.m__body__dialog button, .m__footer button {
   font-family: encode-sans-light, sans-serif;
   font-size: 7pt;
   padding: 1px 10px 2px;
@@ -71,11 +91,11 @@
   outline: none;
 }
 
-.m-msg__body__dialog button:active, .m-msg__footer button:active {
+.m__body__dialog button:active, .m__footer button:active {
   box-shadow: inset 0px 0px 4px -1px black;
 }
 
-.m-msg__head {
+.m__head {
   border-radius: 11px 11px 0 0;
   background-color: #A1B4CB;
   width: 100%;
@@ -83,11 +103,11 @@
   cursor: move;
 }
 
-.m-msg__body, .m-msg__footer {
+.m__body, .m__footer {
   display: flex;
 }
 
-.m-msg__body {
+.m__body {
   padding: 10px 7px;
   display: flex;
   justify-content: space-between;
@@ -103,7 +123,7 @@
           transform: translate(0px, -3px);
 }
 
-.m-msg__body__npc {
+.m__body__npc {
   width: 126px;
   border-right: 1px solid #eee;
   display: flex;
@@ -112,7 +132,7 @@
   align-items: center;
 }
 
-.m-msg__body__npc__img {
+.m__body__npc__img {
   max-height: 100px;
   max-width: 110px;
   display: flex;
@@ -121,11 +141,11 @@
   align-items: flex-end;
 }
 
-.m-msg__body__npc__img img {
+.m__body__npc__img img {
   width: 100%;
 }
 
-.m-msg__body__npc__name {
+.m__body__npc__name {
   width: 90%;
   padding: 1px;
   margin-right: 7px;
@@ -139,7 +159,7 @@
           transform: translate(0px, -4px);
 }
 
-.m-msg__body__dialog {
+.m__body__dialog {
   width: 355px;
   background-color: #F6F4F5;
   padding: 10px;
@@ -150,7 +170,7 @@
   align-items: flex-start;
 }
 
-.m-msg__body__dialog__info {
+.m__body__dialog__info {
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -158,33 +178,33 @@
   align-items: flex-start;
 }
 
-.m-msg__body__dialog__info--text, .m-msg__body__dialog__info--alternatives {
+.m__body__dialog__info--text, .m__body__dialog__info--alternatives {
   font-size: 9pt;
   font-family: roboto-light, sans-serif;
 }
 
-.m-msg__body__dialog__info--text {
+.m__body__dialog__info--text {
   padding-bottom: 10px;
 }
 
-.m-msg__body__dialog__info--title {
+.m__body__dialog__info--title {
   color: transparent;
   font-size: 9pt;
   text-shadow: 0 0 0 #F09EA1, 0 0 1px #C60900, 0 0 1px #C60900, 0 0 1px #C60900, 0 0 1px #C60900, 0 0 1px #C60900, 0 0 1px #C60900, 0 0 1px #C60900;
 }
 
-.m-msg__body__dialog__info--alternatives {
+.m__body__dialog__info--alternatives {
   list-style: none;
   color: #3839CC;
   cursor: pointer;
   padding: 10px 0 10px 20px;
 }
 
-.m-msg__body__dialog__info li {
+.m__body__dialog__info li {
   margin-bottom: 4px;
 }
 
-.m-msg__body__dialog__info li::before {
+.m__body__dialog__info li::before {
   content: url("../source/svg/heart-mouse-leave.svg");
   width: 7px;
   height: 7px;
@@ -196,24 +216,24 @@
   margin-left: -14px;
 }
 
-.m-msg__body__dialog__info li:hover {
+.m__body__dialog__info li:hover {
   text-decoration: underline;
 }
 
-.m-msg__body__dialog__info li:hover::before {
+.m__body__dialog__info li:hover::before {
   content: url("../source/svg/heart-mouse-hover.svg");
 }
 
-.m-msg__body__dialog__btn-interrogate {
+.m__body__dialog__btn-interrogate {
   width: 100%;
   text-align: right;
 }
 
-.m-msg__body__dialog__btn-interrogate button {
+.m__body__dialog__btn-interrogate button {
   background-color: #2884CD;
 }
 
-.m-msg__footer {
+.m__footer {
   background-color: #A1B4CB;
   height: 100%;
   padding: 1px 10px 4px;
@@ -222,15 +242,15 @@
   border-radius: 0 0 10px 10px;
 }
 
-.m-msg__footer__btn-exit button {
+.m__footer__btn-exit button {
   padding: 1px 20px 2px;
   background-color: #ADC817;
 }
 
-.m-msg__footer__btn-interrogate button {
+.m__footer__btn-interrogate button {
   background-color: #FF9C52;
 }
 
-.m-msg__footer__btn-interrogate button:nth-child(2) {
+.m__footer__btn-interrogate button:nth-child(2) {
   margin-left: 3px;
 }

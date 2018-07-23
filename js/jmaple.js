@@ -6,7 +6,9 @@ class JMaple{
             writing         :       true,
             img_directory   :       'src/img/npc/',
             transition      :       'ease',          //ease, gross, step <- later check, reason: writing
-            dev             :       false
+            dev             :       false,
+            key             :       'm',
+            zIndex          :       100
         }
         this.npc            =       data.npc
         this.container      =       document.getElementById(data.el)
@@ -124,42 +126,42 @@ class JMaple{
     get html(){
         //parent
         let parentElement = document.createElement('div')
-        parentElement.setAttribute('class', 'm-msg')
+        parentElement.setAttribute('class', this.config.key)
 
         //head
         this.head = document.createElement('div')
-        this.head.setAttribute('class', 'm-msg__head')
+        this.head.setAttribute('class', this.config.key + '__head')
 
         //body
         let body = document.createElement('div')
-        body.setAttribute('class', 'm-msg__body')
+        body.setAttribute('class', this.config.key + '__body')
             let npc = document.createElement('div')
-            npc.setAttribute('class', 'm-msg__body__npc')
+            npc.setAttribute('class', this.config.key + '__body__npc')
                 let npcImg = document.createElement('div')
-                npcImg.setAttribute('class', 'm-msg__body__npc__img')
+                npcImg.setAttribute('class', this.config.key + '__body__npc__img')
                     let imgElem = document.createElement('img')
                     imgElem.setAttribute('src', this.config.img_directory + this.npc.img)
                 npcImg.appendChild(imgElem);
             npc.appendChild(npcImg);
                 let pNameElem = document.createElement('p')
-                pNameElem.setAttribute('class', 'm-msg__body__npc__name')
+                pNameElem.setAttribute('class', this.config.key + '__body__npc__name')
                 pNameElem.appendChild(document.createTextNode(this.npc.name))
             npc.appendChild(pNameElem)
         body.appendChild(npc)
             this.dialog = document.createElement('div')
-            this.dialog.setAttribute('class', 'm-msg__body__dialog')
+            this.dialog.setAttribute('class', this.config.key + '__body__dialog')
                 this.info = document.createElement('div')
-                this.info.setAttribute('class', 'm-msg__body__dialog__info')                
+                this.info.setAttribute('class', this.config.key + '__body__dialog__info')                
             this.dialog.appendChild(this.info)
                 this.btnsInterrogate1 = document.createElement('div')
-                this.btnsInterrogate1.setAttribute('class', 'm-msg__body__dialog__btn-interrogate')
+                this.btnsInterrogate1.setAttribute('class', this.config.key + '__body__dialog__btn-interrogate')
                     this.btnPrev = document.createElement('button')
-                    this.btnPrev.setAttribute('class', 'm-msg__body__dialog__btn-interrogate--prev')                    
+                    this.btnPrev.setAttribute('class', this.config.key + '__body__dialog__btn-interrogate--prev')                    
                     this.btnPrev.appendChild(document.createTextNode('PREV'))
                 if(this.cmSend === 'test' || this.cmSend === 'nextprev')
                 this.btnsInterrogate1.appendChild(this.btnPrev)
                     this.btnNext = document.createElement('button')
-                    this.btnNext.setAttribute('class', 'm-msg__body__dialog__btn-interrogate--next')
+                    this.btnNext.setAttribute('class', this.config.key + '__body__dialog__btn-interrogate--next')
                     this.btnNext.appendChild(document.createTextNode('NEXT'))
                 if(this.cmSend === 'test' || this.cmSend === 'next' || this.cmSend === 'nextprev')
                 this.btnsInterrogate1.appendChild(this.btnNext)
@@ -168,23 +170,23 @@ class JMaple{
         
         //footer
         let footer = document.createElement('div')
-        footer.setAttribute('class', 'm-msg__footer')
+        footer.setAttribute('class', this.config.key + '__footer')
             let exit = document.createElement('div')
-            exit.setAttribute('class', 'm-msg__footer__btn-exit')
+            exit.setAttribute('class', this.config.key + '__footer__btn-exit')
                 this.btnEndChat = document.createElement('button')
-                this.btnEndChat.setAttribute('class', 'm-msg__footer__btn-exit--end-chat')
+                this.btnEndChat.setAttribute('class', this.config.key + '__footer__btn-exit--end-chat')
                 this.btnEndChat.appendChild(document.createTextNode('END CHAT'))
             exit.appendChild(this.btnEndChat)
         footer.appendChild(exit)
             this.btnsInterrogate2 = document.createElement('div')
-            this.btnsInterrogate2.setAttribute('class', 'm-msg__footer__btn-interrogate')
+            this.btnsInterrogate2.setAttribute('class', this.config.key + '__footer__btn-interrogate')
                 this.btnYes = document.createElement('button')
-                this.btnYes.setAttribute('class', 'm-msg__footer__btn-interrogate--yes')
+                this.btnYes.setAttribute('class', this.config.key + '__footer__btn-interrogate--yes')
                 this.btnYes.appendChild(document.createTextNode((this.cmSend === 'ok') ? 'OK' : (this.cmSend === 'acceptdecline') ? 'Accept' : 'YES'))//ok === yes === Accept
             if(this.cmSend === 'test' || this.cmSend === 'yesno' || this.cmSend === 'ok' || this.cmSend === 'acceptdecline')
             this.btnsInterrogate2.appendChild(this.btnYes)
                 this.btnNo = document.createElement('button')
-                this.btnNo.setAttribute('class', 'm-msg__footer__btn-interrogate--no')
+                this.btnNo.setAttribute('class', this.config.key + '__footer__btn-interrogate--no')
                 this.btnNo.appendChild(document.createTextNode((this.cmSend === 'acceptdecline') ? 'Decline' : 'NO'))
             if(this.cmSend === 'test' || this.cmSend === 'yesno' || this.cmSend === 'acceptdecline')
             this.btnsInterrogate2.appendChild(this.btnNo)
@@ -206,11 +208,11 @@ class JMaple{
 
     set style(text){        
         let p = document.createElement('p')
-        p.setAttribute('class', 'm-msg__body__dialog__info--text')
+        p.setAttribute('class', this.config.key + '__body__dialog__info--text')
         let h3 = document.createElement('h3')
         let openSelection   =   false
         let ul = document.createElement('ul')
-        ul.setAttribute('class', 'm-msg__body__dialog__info--alternatives')
+        ul.setAttribute('class', this.config.key + '__body__dialog__info--alternatives')
         let nLi = new Array(), dataLi = 0
 
         let splitText   =   text.split('#')
@@ -231,31 +233,31 @@ class JMaple{
                 switch (c) {
                     //#b
                     case 'b':
-                        textElem.setAttribute('class', 'm-msg__style--color-blue')
+                        textElem.setAttribute('class', this.config.key + '__color--blue')
                         break
                     //#d
                     case 'd':
-                        textElem.setAttribute('class', 'm-msg__style--color-purple')
+                        textElem.setAttribute('class', this.config.key + '__color--purple')
                         break
                     //#e
                     case 'e':
-                        textElem.setAttribute('class', 'm-msg__style--color-bold')
+                        textElem.setAttribute('class', this.config.key + '__color--bold')
                         break
                     //#g
                     case 'g':
-                        textElem.setAttribute('class', 'm-msg__style--color-green')
+                        textElem.setAttribute('class', this.config.key + '__color--green')
                         break
                     //#k
                     case 'k':
-                        textElem.setAttribute('class', 'm-msg__style--color-black')
+                        textElem.setAttribute('class', this.config.key + '__color--black')
                         break
                     //#r
                     case 'r':
-                        textElem.setAttribute('class', 'm-msg__style--color-red')
+                        textElem.setAttribute('class', this.config.key + '__color--red')
                         break
                     //#H
                     case 'H': //This is not exists in the game
-                        h3.setAttribute('class', 'm-msg__body__dialog__info--title')                        
+                        h3.setAttribute('class', this.config.key + '__body__dialog__info--title')                        
                         title = true                        
                         break
                     //#p
@@ -264,7 +266,7 @@ class JMaple{
                         if(isNaN(idnpc)){
                             console.error(`This is id(${cleanText.data}) is not number`)
                         }else{
-                            textElem.setAttribute('class', 'm-msg__style--color-blue')
+                            textElem.setAttribute('class', this.config.key + '__color--blue')
                             let _npc = this.listNPC.get(idnpc)
                             if(_npc === undefined){
                                 console.error('NPC not found in the list.')
@@ -821,8 +823,10 @@ class JMaple{
 
     show(){
         this.getScript()        
-        this.container.classList.add('maple-message')
+        this.container.classList.add('jmaple')
         this.container.style.display = 'flex'
+        this.container.style.position = 'relative'
+        this.container.style.zIndex = `${this.config.zIndex}`;
         this.container.appendChild(this.html)
         try{
             this.script.start()
