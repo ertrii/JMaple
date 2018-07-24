@@ -104,7 +104,7 @@
                     }
                     li{margin-bottom: 4px;}
                     li::before{
-                        content: url('../source/svg/heart-mouse-leave.svg');
+                        content: url('../src/svg/heart-mouse-leave.svg');
                         width: 7px;
                         height: 7px;
                         position: absolute;                    
@@ -115,7 +115,7 @@
                     }                
                     li:hover{
                         text-decoration: underline;
-                        &::before{content: url('../source/svg/heart-mouse-hover.svg');}
+                        &::before{content: url('../src/svg/heart-mouse-hover.svg');}
                     }
             }            
             &__btn-interrogate{
