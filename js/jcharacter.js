@@ -81,8 +81,8 @@ class JCharacter{
         this.items  =   new Map()
         if(item) this.setItem(item)
     }
-    setItem(item, ammount = 1){        
-        if(item instanceof Item) {                                
+    setItem(item, ammount = 1){
+        if(item instanceof Item) {
             let dataPrepared = {
                 item : item,
                 ammount : ammount
