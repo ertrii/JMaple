@@ -351,7 +351,7 @@ new JMaple({
 | getLevel() | level User/Player. |
 | teachSkill(skillid, skilllevel, maxskilllevel) | not enabled. |
 | get(string) | Returns the number of spicified stat(STR, DEX, INT, LUK, HP, MP). |
-| modifyNX() | Gives/Takes the player nx/cash. |
+| modifyNX(int) | Gives/Takes the player nx/cash. |
 
 ### Properties:
 * __nick(String)__, name User.
@@ -495,7 +495,7 @@ const character = new JCharacter({
 * __trade(bool=true)__, si es tradeable(trueque).
 * __cash(int=0)__.
 
-Para asignar un item por medio de una Conversation Window se necesita registrar a lista de items.
+Para asignar un item por medio de una Conversation Window se necesita registrar a la lista de items.
 #### Example:
 ```javascript
 //adding a item
@@ -538,11 +538,11 @@ new JMaple({
         img: '9010000.png'
     },
     script : function(){
-        this.start(){
+        this.start = () => {//using arrow function hehe
             this.cm.gainItem(4556, 2)//idItem, quantity
             this.cm.sendOk('Take two items...')
         }
-        this.action(){
+        this.action = () => {
             this.cm.sendOk('Ready! ^_^')
             this.cm.dispose()
         }

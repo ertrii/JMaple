@@ -80,6 +80,14 @@ class JCharacter{
         else this.stat = data.stat
         this.items  =   new Map()
         if(item) this.setItem(item)
+        this.setExp()
+    }
+    setExp(){
+        const Exp = [1, 15, 34, 57, 92, 135, 372, 560, 840, 1242, 1144, 1573, 2144, 2800, 3640, 4700, 5893, 7360, 9144, 11120, 13477, 16268, 19320, 22880, 27008, 31477, 36600, 42444, 48720, 55813, 63800, 86784, 98208, 110932, 124432, 139372, 155865, 173280, 192400, 213345];
+        while (this.exp >= Exp[this.lv]){
+			this.exp -= Exp[this.lv];
+            this.lv++
+		}
     }
     setItem(item, ammount = 1){
         if(item instanceof Item) {
@@ -140,8 +148,10 @@ class JCharacter{
                 else console.error('is not number')
             },
             gainExp   :   ammount  => {
-                if(isNaN(ammount))
+                if(isNaN(ammount)){
                     this.exp += ammount
+                    this.setExp()
+                }
                 else console.error('is not number')
             },
             getLevel    :   ()  => this.lv,
