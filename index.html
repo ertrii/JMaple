@@ -16,7 +16,10 @@
         const character = new JCharacter({
             nick : 'myNameUser',
             gender : 0,  //male(0), female(1)
-            exp : 0
+            exp : 0,
+            stat : new Stat({
+                exp : 123
+            })
         })
         new JMaple({
             el : 'element',

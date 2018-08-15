@@ -228,7 +228,7 @@ new JMaple({
             this.cm.sendOk('This is a test.')
         }
         this.action = function(){
-            this.warp(456789)//the id of the registered map
+            this.cm.warp(456789)//the id of the registered map
             this.cm.sendOk('warp...')
             this.cm.dispose()
         }
@@ -358,13 +358,11 @@ new JMaple({
 * __gender(int)__, male(0), female(1).
 * __job(int=0)__, id job.
 * __gm(bool=false)__, if gm.
-* __lv(int=1)__, level.
-* __exp(int=0)__, experience.
 * __mesos(int=0)__, money.
 * __nx(int=0)__, cash.
 * __sp(int=0)__, stat point.
 * __ap(int=0)__, skill point.
-* __stat(Stat[str=4,dex=4,int=4,luk=4,hp=50,mp=50])__, stat.
+* __stat(Stat)__, stat.
 
 #### Example:
 ```javascript
@@ -467,6 +465,8 @@ const character = new JCharacter({
 * __luk(int=4)__.
 * __hp(int=50)__, life.
 * __mp(int=50)__, manna.
+* __lv(int=1)__, level.
+* __exp(int=0)__, experiencie.
 
 Item
 ----

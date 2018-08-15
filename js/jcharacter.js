@@ -2,24 +2,19 @@
 'use strict';
 const Exp = [1, 15, 34, 57, 92, 135, 372, 560, 840, 1242, 1144, 1573, 2144, 2800, 3640, 4700, 5893, 7360, 9144, 11120, 13477, 16268, 19320, 22880, 27008, 31477, 36600, 42444, 48720, 55813, 63800, 86784, 98208, 110932, 124432, 139372, 155865, 173280, 192400, 213345];
 class Stat{
-    constructor(stat = {
-        str : 4,
-        dex : 4,
-        int : 4,
-        luk : 4,
-        hp : 50,
-        mp : 50
-    }){
-        this.str = stat.str
-        this.dex = stat.dex
-        this.int = stat.int
-        this.luk = stat.luk
-        this.hp = stat.hp
-        this.mp = stat.mp
-        this.lv = 1
-        this.exp = 0
+    constructor(stat){
+        this.str = (stat.hasOwnProperty('str')) ? stat.str : 4
+        this.dex = (stat.hasOwnProperty('dex')) ? stat.dex : 4
+        this.int = (stat.hasOwnProperty('int')) ? stat.int : 4
+        this.luk = (stat.hasOwnProperty('luk')) ? stat.luk : 4
+        this.hp = (stat.hasOwnProperty('hp')) ? stat.hp : 50
+        this.mp = (stat.hasOwnProperty('mp')) ? stat.mp : 50
+        this.lv = (stat.hasOwnProperty('lv')) ? stat.lv : 1
+        this.exp = (stat.hasOwnProperty('exp')) ? stat.exp : 0
+
+        this.refresh()
     }
-    setExp(){        
+    refresh(){        
         while (this.exp >= Exp[this.lv]){
 			this.exp -= Exp[this.lv];
             this.lv++
@@ -93,8 +88,7 @@ class JCharacter{
         if(!data.hasOwnProperty('stat')) this.stat = new Stat()            
         else this.stat = data.stat
         this.items  =   new Map()
-        if(item) this.setItem(item)
-        this.stat.setExp()
+        if(item) this.setItem(item)        
     }
 
     setItem(item, ammount = 1){
@@ -158,7 +152,7 @@ class JCharacter{
             gainExp   :   ammount  => {
                 if(!isNaN(ammount)){
                     this.stat.exp += ammount
-                    this.stat.setExp()
+                    this.stat.refresh()
                 }
                 else console.error('is not number')
             },
