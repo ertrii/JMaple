@@ -22,8 +22,8 @@ new JMaple({
         name: 'Maple Administrator',
         img: '9010000.png'
     },
-    script : function(){//you cant use arrow function
-        this.start = function(){//but here you can use arrow function
+    script : function(){
+        this.start = function(){
             this.cm.sendOk('This is my first conversation')
             this.cm.dispose()
         }
@@ -476,7 +476,7 @@ Para asignar un item a un character debemos instanciar de la class Item.
 const character = new JCharacter({
     nick : 'myNameUser',
     gender : 0,
-}, new Stat({
+}, new Item({
     type : 'use',
     id : 1234,//I dont remember him id of this item.
     name : 'potion blue',
@@ -538,7 +538,7 @@ new JMaple({
         img: '9010000.png'
     },
     script : function(){
-        this.start = () => {//using arrow function hehe
+        this.start = () => {
             this.cm.gainItem(4556, 2)//idItem, quantity
             this.cm.sendOk('Take two items...')
         }

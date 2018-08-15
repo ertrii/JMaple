@@ -16,7 +16,7 @@
         const character = new JCharacter({
             nick : 'myNameUser',
             gender : 0,  //male(0), female(1)
-            exp : 56516
+            exp : 0
         })
         new JMaple({
             el : 'element',
@@ -41,6 +41,7 @@
                 }
                 this.action = function(){
                     this.cm.sendOk("Ready...")
+                    this.cm.gainExp(123)
                     this.cm.dispose()
                 }
             }

@@ -1,14 +1,30 @@
 // Init: 04/25/2018
 'use strict';
+const Exp = [1, 15, 34, 57, 92, 135, 372, 560, 840, 1242, 1144, 1573, 2144, 2800, 3640, 4700, 5893, 7360, 9144, 11120, 13477, 16268, 19320, 22880, 27008, 31477, 36600, 42444, 48720, 55813, 63800, 86784, 98208, 110932, 124432, 139372, 155865, 173280, 192400, 213345];
 class Stat{
-    constructor(stat = { str : 4, dex : 4, int : 4, luk : 4, hp : 50, mp : 50} ){
+    constructor(stat = {
+        str : 4,
+        dex : 4,
+        int : 4,
+        luk : 4,
+        hp : 50,
+        mp : 50
+    }){
         this.str = stat.str
         this.dex = stat.dex
         this.int = stat.int
         this.luk = stat.luk
         this.hp = stat.hp
         this.mp = stat.mp
-    }    
+        this.lv = 1
+        this.exp = 0
+    }
+    setExp(){        
+        while (this.exp >= Exp[this.lv]){
+			this.exp -= Exp[this.lv];
+            this.lv++
+		}
+    }
 }
 class Item{
     constructor(item){        
@@ -69,9 +85,7 @@ class JCharacter{
         this.nick   =   data.nick
         this.gender =   data.gender
         this.job    =   (data.hasOwnProperty('job'))    ? data.job      : 0
-        this.gm     =   (data.hasOwnProperty('gm'))     ? data.gm       : false
-        this.lv     =   (data.hasOwnProperty('lv'))     ? data.lv       : 1
-        this.exp    =   (data.hasOwnProperty('exp'))    ? data.exp      : 0
+        this.gm     =   (data.hasOwnProperty('gm'))     ? data.gm       : false        
         this.mesos  =   (data.hasOwnProperty('mesos'))  ? data.mesos    : 0
         this.nx     =   (data.hasOwnProperty('nx'))     ? data.nx       : 0        
         this.sp     =   (data.hasOwnProperty('sp'))     ? data.sp       : 0
@@ -80,15 +94,9 @@ class JCharacter{
         else this.stat = data.stat
         this.items  =   new Map()
         if(item) this.setItem(item)
-        this.setExp()
+        this.stat.setExp()
     }
-    setExp(){
-        const Exp = [1, 15, 34, 57, 92, 135, 372, 560, 840, 1242, 1144, 1573, 2144, 2800, 3640, 4700, 5893, 7360, 9144, 11120, 13477, 16268, 19320, 22880, 27008, 31477, 36600, 42444, 48720, 55813, 63800, 86784, 98208, 110932, 124432, 139372, 155865, 173280, 192400, 213345];
-        while (this.exp >= Exp[this.lv]){
-			this.exp -= Exp[this.lv];
-            this.lv++
-		}
-    }
+
     setItem(item, ammount = 1){
         if(item instanceof Item) {
             let dataPrepared = {
@@ -133,7 +141,7 @@ class JCharacter{
                     console.error(`This item(${itemid}) is not exists in the list Item`)
             },
             changeJob   :   jobid   => {
-                if(isNaN(ammount))
+                if(!isNaN(ammount))
                     this.job = jobid
                 else console.error('is not number')
             },
@@ -143,18 +151,18 @@ class JCharacter{
             forfeitQuest    :   questid => this.quest(questid).forfeit(),
             getMeso         :   () => this.mesos,
             gainMeso    :   ammount => {
-                if(isNaN(ammount))
+                if(!isNaN(ammount))
                     this.meso += ammount
                 else console.error('is not number')
             },
             gainExp   :   ammount  => {
-                if(isNaN(ammount)){
-                    this.exp += ammount
-                    this.setExp()
+                if(!isNaN(ammount)){
+                    this.stat.exp += ammount
+                    this.stat.setExp()
                 }
                 else console.error('is not number')
             },
-            getLevel    :   ()  => this.lv,
+            getLevel    :   ()  => this.stat.lv,
             teachSkill  :   (skillid, skilllevel, maxskilllevel) => {
                 //thinking...
             },
@@ -170,7 +178,7 @@ class JCharacter{
                 }
             },
             modifyNX    :   ammount => {
-                if(isNaN(ammount))
+                if(!isNaN(ammount))
                     this.nx = ammount
                 else console.error('is not number')
             },
