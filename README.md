@@ -4,7 +4,12 @@ JMaple(Alpha)
 Una librería para crear ventanas de conversación al estilo maplestory usando el diseño clásico o actual entre otros. Programa tu npc usando una sintaxis cercana al script de los npc del juego.
 ![Alt Demo](http://img.fenixzone.net/i/2W6b9CG.png)
 # Starting
-### Include in your HTML file
+```
+# npm
+npm install jmaple
+```
+
+### Use
 #### Style
 ```html
 <link rel="stylesheet" href="css/m--modern.css">
@@ -358,7 +363,7 @@ new JMaple({
 * __gender(int)__, male(0), female(1).
 * __job(int=0)__, id job.
 * __gm(bool=false)__, if gm.
-* __mesos(int=0)__, money.
+* __meso(int=0)__, money.
 * __nx(int=0)__, cash.
 * __sp(int=0)__, stat point.
 * __ap(int=0)__, skill point.

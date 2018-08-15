@@ -81,7 +81,7 @@ class JCharacter{
         this.gender =   data.gender
         this.job    =   (data.hasOwnProperty('job'))    ? data.job      : 0
         this.gm     =   (data.hasOwnProperty('gm'))     ? data.gm       : false        
-        this.mesos  =   (data.hasOwnProperty('mesos'))  ? data.mesos    : 0
+        this.mesos  =   (data.hasOwnProperty('meso'))  ? data.meso      : 0
         this.nx     =   (data.hasOwnProperty('nx'))     ? data.nx       : 0        
         this.sp     =   (data.hasOwnProperty('sp'))     ? data.sp       : 0
         this.ap     =   (data.hasOwnProperty('ap'))     ? data.ap       : 0
@@ -143,7 +143,7 @@ class JCharacter{
             startQuest      :   questid => this.quest(questid).start(),
             completeQuest   :   questid => this.quest(questid).complete(),
             forfeitQuest    :   questid => this.quest(questid).forfeit(),
-            getMeso         :   () => this.mesos,
+            getMeso         :   () => this.meso,
             gainMeso    :   ammount => {
                 if(!isNaN(ammount))
                     this.meso += ammount
