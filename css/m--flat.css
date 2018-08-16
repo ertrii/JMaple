@@ -76,15 +76,15 @@
 .m {
   width: 524px;
   min-height: 200px;
-  background-color: #F6F4F5;
-  border-radius: 10px;
-  box-shadow: 1px 2px 10px -2px black;
+  background-color: white;
+  box-shadow: 1px 2px 10px -5px black;
+  border-radius: 0 0 5px 5px;
 }
 
 .m__body__dialog button, .m__footer button {
   font-family: encode-sans-light, sans-serif;
   font-size: 7pt;
-  padding: 1px 10px 2px;
+  padding: 2px 10px 3px;
   border: none;
   cursor: pointer;
   color: white;
@@ -96,10 +96,9 @@
 }
 
 .m__head {
-  border-radius: 11px 11px 0 0;
-  background-color: #A1B4CB;
+  background-color: #ffa000;
   width: 100%;
-  height: 13px;
+  height: 21px;
   cursor: move;
 }
 
@@ -108,24 +107,16 @@
 }
 
 .m__body {
-  padding: 10px 7px;
+  padding: 0 10px;
   display: flex;
   justify-content: space-between;
-  background-color: #DFDCD2;
-  width: 500px;
-  min-height: 160px;
+  min-height: 150px;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 9px;
-  border-radius: 4px;
-  box-shadow: 0px 0px 0px 4px #898785, 0px 0px 0px 5px white;
-  -webkit-transform: translate(0px, -3px);
-          transform: translate(0px, -3px);
 }
 
 .m__body__npc {
-  width: 126px;
-  border-right: 1px solid #eee;
+  width: 121px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -146,24 +137,18 @@
 }
 
 .m__body__npc__name {
-  width: 90%;
   padding: 1px;
-  margin-right: 7px;
-  background-color: #223356;
-  color: white;
-  box-shadow: 0px 0px 0px 1px wihte;
   text-align: center;
-  font-size: 8pt;
+  color: #ffa000;
+  font-size: 9pt;
+  padding-top: 5px;
   font-family: roboto-light, sans-serif;
-  -webkit-transform: translate(0px, -4px);
-          transform: translate(0px, -4px);
 }
 
 .m__body__dialog {
-  width: 355px;
-  background-color: #F6F4F5;
-  padding: 10px;
-  border-radius: 5px;
+  width: 400px;
+  padding: 10px 0 10px 35px;
+  color: #616161;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -230,25 +215,27 @@
 }
 
 .m__body__dialog__btn-interrogate button {
-  background-color: #2884CD;
+  background-color: transparent;
+  color: black;
+  text-decoration: underline;
+  font-family: open-sans-bold;
 }
 
 .m__footer {
-  background-color: #A1B4CB;
-  height: 100%;
-  padding: 1px 10px 4px;
+  padding: 0 10px 10px;
   display: flex;
+  background-color: transparent;
   justify-content: space-between;
-  border-radius: 0 0 10px 10px;
 }
 
 .m__footer__btn-exit button {
-  padding: 1px 20px 2px;
-  background-color: #ADC817;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #ffa000;
 }
 
 .m__footer__btn-interrogate button {
-  background-color: #FF9C52;
+  background-color: #ffa000;
 }
 
 .m__footer__btn-interrogate button:nth-child(2) {
