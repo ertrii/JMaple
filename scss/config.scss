@@ -36,20 +36,23 @@ $f-btn--interrogative-2             :   transparent;
 
 $f-nameNpc                          :   $f-bg--head;
 $f-dialog                           :   #616161;
+
 /*
  ==========Classic=========
 */
-//colors
-$c-bg-color--primary                :   #F6F4F5;
-$c-bg-color--bar                    :   linear-gradient(hsl(213,28,90),hsl(211,28,70) 10%,hsl(213,28,77));
-$c-bg-color--texture                :   url(../src/img/texture/texture0.png);
-$c-bg-color--name                   :   #223356;
-$c-bg-color--dark                   :   #898785;
+//bg
+$c-head                             :   linear-gradient(hsl(213,28,90),hsl(211,28,70) 10%,hsl(213,28,77));
+$c-footer                           :   $c-head;
+$c-body                             :   url(../src/img/texture/texture0.png);
+$c-name-npc                         :   #223356;
+$c-bg-dialog                        :   #F6F4F5;
+//text
+$c-dialog                           :   black;
 
-//colors buttons
-$c-btn-color--exit                  :   linear-gradient(hsl(64,65,64),hsl(70,80,41) 10%,hsl(64,65,64) 120%);
-$c-btn-color--interrogative-1       :   linear-gradient(hsl(24,100,67),hsl(29,83,47) 12%,hsl(24,100,67));
-$c-btn-color--interrogative-2       :   linear-gradient(hsl(205,77,65),hsl(207,73,50) 15%,hsl(205,77,65) 120%);
+//buttons
+$c-btn--exit                  :   linear-gradient(hsl(64,65,64),hsl(70,80,41) 10%,hsl(64,65,64) 120%);
+$c-btn--interrogative-1       :   linear-gradient(hsl(24,100,67),hsl(29,83,47) 12%,hsl(24,100,67));
+$c-btn--interrogative-2       :   linear-gradient(hsl(205,77,65),hsl(207,73,50) 15%,hsl(205,77,65) 120%);
 
 
 /*
@@ -73,22 +76,26 @@ $m-border--dark                     :   #626262;
 ========== Future =========
 */
 //color text
-$f-color1: #F5F5F6;
-$f-color2: black;
-$f-color3: #56C8D8;
-$f-color4: #006978;
+$fu-dialog: #616161;
+$fu-name-npc: $fu-dialog;
 //color bg
-$f-bg-color1: #F5F5F6;
-$f-bg-color2: #E1E2E1;
-$f-bg-color3: #0097A7;
-$f-bg-color4: #006978;
+$fu-main: #0097A7;
+$fu-npc: #FBFBFB;
+$fu-body : white;
 //color button
-$f-cl-btn--ok: #56C8D8;
-$f-cl-btn--end-chat: #006978;
-$f-cl-btn--yes: #56C8D8;
-$f-cl-btn--no:  #006978;
-$f-cl-btn-next: #0097A7;
-$f-cl-btn-prev: #006978;
+$fu-light : white;
+@mixin fu-btn--end-chat() {
+    color: $fu-light;
+    background-color: $fu-main;    
+}
+@mixin fu-btn--yes-and-ok() {
+    color: $fu-light;
+    background-color: $fu-main;
+}
+@mixin fu-btn--no() {
+    color: $fu-light;
+    background-color: $fu-main;
+}
 
 /*
 ===========

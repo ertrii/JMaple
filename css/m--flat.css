@@ -101,7 +101,7 @@
 }
 
 .m__body {
-  padding: 0 10px;
+  padding: 0 25px;
   display: flex;
   justify-content: space-between;
   min-height: 150px;
@@ -111,11 +111,12 @@
 }
 
 .m__body__npc {
-  width: 121px;
+  min-width: 115px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-right: 5px;
 }
 
 .m__body__npc__img {
@@ -141,8 +142,8 @@
 }
 
 .m__body__dialog {
-  width: 400px;
-  padding: 10px 0 10px 35px;
+  width: 100%;
+  padding: 20px 0 0 15px;
   color: #616161;
   display: flex;
   flex-direction: column;

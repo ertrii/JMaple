@@ -7,48 +7,28 @@
     <link rel="stylesheet" href="css/m--flat.css">
     <title>JMaple</title>
 </head>
-<body>
+<body>    
     <div id="element"></div>
     <script src="js/jcharacter.js"></script>
     <script src="js/jmaple.js"></script>
     <script>
-        const character = new JCharacter({
-            nick : 'myNameUser',
-            gender : 0,  //male(0), female(1)
-            exp : 0,
-            stat : new Stat({
-                exp : 123
-            })
-        })
-        const jmaple = new JMaple({
+        new JMaple({
             el : 'element',
             npc : {
-                id:  9010000,
-                name: 'Maple Administrator',
-                img: '9010000.png'
+                id : '9010000',
+                name : 'Maple Administrator',
+                img : 'src/img/npc/9010000.png'
             },
-            map: [
-                {
-                    id : 123456,
-                    link : 'index.html#'//can be any link
-                },
-                {
-                    id : 201461,
-                    link : 'https://github.com/ertrii/JMaple'
-                }
-            ],
             script : function() {
                 this.start = function(){
-                    this.cm.sendOk("Thanks for install")
+                    this.cm.sendOk("Thank you for install.")
                 }
                 this.action = function(){
                     this.cm.sendOk("This library is a vertion Alpha. Read documentation please: https://github.com/ertrii/JMaple")
                     this.cm.dispose()
                 }
             }
-            
-        }, character)
-        jmaple.show()
+        }).show()
     </script>
 </body>
 </html>

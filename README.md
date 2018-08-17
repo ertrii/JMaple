@@ -21,11 +21,6 @@ npm install jmaple
 ```javascript
 new JMaple({
     el:'element',
-    npc: {
-        id: 9010000,
-        name: 'Maple Administrator',
-        img: '9010000.png'
-    },
     script : function(){
         this.start = function(){
             this.cm.sendOk('This is my first conversation')
@@ -44,7 +39,6 @@ new JMaple({
 Existen algunas propiedades de configuración que usted puede editar a su gusto, yo en mi caso lo dejaré por defecto:
 * __displace(bool=true)__, desplazamiento de la ventana.
 * __writing(bool=true)__, animación de escritura.
-* __img_directory(string)__, ruta en donde se ubica las imagenes de los npc, por defecto es 'src/img/npc/'.
 * __transition(string)__, tipo de transición de una ventana a otra:
     * __ease__, una transición suave.
     * __gross__, una transición de golpe.
@@ -52,15 +46,10 @@ Existen algunas propiedades de configuración que usted puede editar a su gusto,
 * __dev(bool=false)__, muestra por consola datos necesarios para el desarrollo.
 * __key(string='m')__, clase de la ventana de conversación, un identificador en los css styles. En caso de ser cambiado usted tendría que editar el css con ese nombre que le ha asignado.
 * __zIndex(int=100)__, posicionamiento ```z``` del contenedor principal.
-#### Example:
+
 ```javascript
 const jmaple = new JMaple({
     el:'element',
-    npc: {
-        id: 9010000,
-        name: 'Maple Administrator',
-        img: '9010000.png'
-    },
     script : function(){
         this.start = function(){
             this.cm.sendOk('This is my first conversation')
@@ -73,6 +62,30 @@ jmaple.config.transition = 'gross'
 jmaple.config.dev = true
 jmaple.show()
 ```
+
+## NPC
+Los npc representan un personaje:
+* __id__, identificador.
+* __name__.
+* __img__, ruta de la imagen.
+
+```javascript
+new JMaple({
+    el:'element',
+    npc: {
+        id: 9010000,
+        name: 'Maple Administrator',
+        img: 'src/img/npc/9010000.png'
+    },
+    script : function(){
+        this.start = function(){
+            this.cm.sendOk('This is my first conversation')
+            this.cm.dispose()
+        }
+    }
+}).show()
+```
+
 ## Conversation
 Los script NPC están programado dentro de dos funciones principales:
 * __start__, es el inicio del npc, la primera muestra.
@@ -97,7 +110,7 @@ new JMaple({
     npc: {
         id: 9010000,
         name: 'Maple Administrator',
-        img: '9010000.png'
+        img: 'src/img/npc/9010000.png'
     },
     script : function(){
         this.start = function(){
@@ -125,14 +138,13 @@ Los commands(cm) son funciones que se ejecutarán dentro de las funciones princi
 | sendTest(string) | Shows a conversation window with all button. This is cm does not exist in MapleStory, it was created for the development in the design |
 ###### Credits: Description by Shawn in Ragezone Forum, [here](http://forum.ragezone.com/f428/add-learning-npcs-start-finish-643364/)
 
-#### Example:
 ```javascript
 new JMaple({
     el:'element',
     npc: {
         id: 9010000,
         name: 'Maple Administrator',
-        img: '9010000.png'
+        img: 'src/img/npc/9010000.png'
     },
     script : function(){
         this.start = function(){
@@ -206,14 +218,14 @@ La función ```warp()``` requiere de dos valores:
 * __portal__, es un valor numerico(int) que identifica un portal, esto es opcional, por defecto será ```0```.
 
 Antes de usar ```warp``` debemos registrar el mapa(map) en la lista.
-#### Example:
+
 ```javascript
 new JMaple({
     el:'element',
     npc: {
         id: 9010000,
         name: 'Maple Administrator',
-        img: '9010000.png'
+        img: 'src/img/npc/9010000.png'
     },
     //register
     map: [
@@ -265,14 +277,13 @@ Para dar color a los textos existen estas etiquetas:
 | #k   | Black text.  |
 | #r   | Red text.    |
 
-#### Example:
 ```javascript
 new JMaple({
     el:'element',
     npc: {
         id: 9010000,
         name: 'Maple Administrator',
-        img: '9010000.png'
+        img: 'src/img/npc/9010000.png'
     },
     script : function(){
         this.start = function(){
@@ -291,14 +302,13 @@ Para crear una lista se requieren ciertas etiquetas.
 | #L[int]# | Open Item   |
 | #l       | Close Item  |
 
-#### Example:
 ```javascript
 new JMaple({
     el:'element',
     npc: {
         id: 9010000,
         name: 'Maple Administrator',
-        img: '9010000.png'
+        img: 'src/img/npc/9010000.png'
     },
     script : function(){
         this.start = function(){
@@ -330,7 +340,7 @@ new JMaple({
     npc: {
         id: 9010000,
         name: 'Maple Administrator',
-        img: '9010000.png'
+        img: 'src/img/npc/9010000.png'
     },
     script : function(){
         //code
@@ -368,7 +378,6 @@ new JMaple({
 * __ap(int=0)__, skill point.
 * __stat(Stat)__, stat.
 
-#### Example:
 ```javascript
 const character = new JCharacter({
     nick : 'myNameUser',
@@ -454,7 +463,7 @@ const character = new JCharacter({
 Stat
 ----
 Al crear un character se le asigna por defecto un __Stat__, str, dex, int, luk con valor 4, y hp, mp con valor 50. Podemos asignarle unos valores de manera personalizada.
-#### Example:
+
 ```javascript
 const character = new JCharacter({
     nick : 'myNameUser',
@@ -475,7 +484,7 @@ const character = new JCharacter({
 Item
 ----
 Para asignar un item a un character debemos instanciar de la class Item.
-#### Example:
+
 ```javascript
 const character = new JCharacter({
     nick : 'myNameUser',
@@ -500,7 +509,7 @@ const character = new JCharacter({
 * __cash(int=0)__.
 
 Para asignar un item por medio de una Conversation Window se necesita registrar a la lista de items.
-#### Example:
+
 ```javascript
 //adding a item
 Item.add(new Item({
@@ -539,7 +548,7 @@ new JMaple({
     npc: {
         id: 9010000,
         name: 'Maple Administrator',
-        img: '9010000.png'
+        img: 'src/img/npc/9010000.png'
     },
     script : function(){
         this.start = () => {
@@ -557,7 +566,7 @@ new JMaple({
 En caso de que el item no exista en la lista le retornará por consola un error.
 
 Si desea agregar un item al character que no sea por el medio ya visto, use la funcion ```setItem()```.
-#### Example:
+
 ```javascript
 //we will add the item of the List already created in the previous example.
 character.setItem(961, 5)//idItem, quantity

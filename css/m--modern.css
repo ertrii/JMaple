@@ -124,7 +124,7 @@
 }
 
 .m__body__npc {
-  width: 135px;
+  min-width: 140px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -157,7 +157,7 @@
 }
 
 .m__body__dialog {
-  width: 355px;
+  width: 100%;
   background-color: white;
   padding: 15px 17px 7px;
   border-radius: 5px;

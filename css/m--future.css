@@ -76,7 +76,6 @@
 .m {
   width: 524px;
   min-height: 200px;
-  color: black;
   overflow: hidden;
   border-radius: 5px;
   padding: 0px 5px 0px 10px;
@@ -111,7 +110,7 @@
 }
 
 .m__body__npc {
-  background-color: #F5F5F6;
+  background-color: #FBFBFB;
   width: 200px;
   display: flex;
   flex-direction: column;
@@ -124,16 +123,17 @@
 
 .m__body__npc__name {
   padding: 0.1em 0.3em;
-  color: #0097A7;
+  color: #616161;
 }
 
 .m__body__dialog {
   font-family: open-sans-light, sans-serif;
-  font-size: 10pt;
+  color: #616161;
+  font-size: 9pt;
   width: 100%;
   min-height: 165px;
   overflow-y: auto;
-  padding: 0.3em 1em;
+  padding: 0.5em 2em;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -173,7 +173,7 @@
   margin-right: 5px;
   -webkit-transform: translate(0, -2px);
           transform: translate(0, -2px);
-  background-color: rgba(0, 105, 120, 0.2);
+  background-color: rgba(0, 151, 167, 0.2);
   display: inline-block;
 }
 
@@ -182,7 +182,7 @@
 }
 
 .m__body__dialog__info--alternatives li:hover::before {
-  background-color: #006978;
+  background-color: #0097a7;
 }
 
 .m__body__dialog__btn-interrogate {
@@ -195,12 +195,12 @@
 }
 
 .m__body__dialog__btn-interrogate--next {
-  color: #56C8D8;
+  color: #0097A7;
   text-decoration: underline;
 }
 
 .m__body__dialog__btn-interrogate--prev {
-  color: #006978;
+  color: #0097A7;
   text-decoration: underline;
 }
 
@@ -209,6 +209,7 @@
   justify-content: space-between;
   align-items: center;
   height: 25px;
+  margin-bottom: 2px;
   width: 100%;
 }
 
@@ -222,23 +223,17 @@
 }
 
 .m__footer__btn-exit--end-chat {
-  background-color: #006978;
-  color: #56C8D8;
-  text-align: left;
-}
-
-.m__footer__btn-exit--end-chat:hover {
-  color: #F5F5F6;
+  color: white;
+  background-color: #0097A7;
 }
 
 .m__footer__btn-interrogate--yes {
-  color: #F5F5F6;
-  background-color: #56C8D8;
+  color: white;
+  background-color: #0097A7;
 }
 
 .m__footer__btn-interrogate--no {
-  color: #006978;
+  color: white;
+  background-color: #0097A7;
   margin-left: 5px;
-  background-color: #006978;
-  color: #F5F5F6;
 }

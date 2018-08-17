@@ -3,8 +3,7 @@ class JMaple{
     constructor(data, Character = false){
         this.config         =       {
             displace        :       true,
-            writing         :       true,
-            img_directory   :       'src/img/npc/',
+            writing         :       true,            
             transition      :       'ease',          //ease, gross, step <- later check, reason: writing
             dev             :       false,
             key             :       'm',
@@ -16,8 +15,8 @@ class JMaple{
         this.items          =       new Map()
         //getting
         this.container      =       document.getElementById(data.el)
-        this.npc            =       data.npc
-        this.setnpc(this.npc)
+        this.npc            =       data.hasOwnProperty('npc') ? data.npc : false
+        if(this.npc) this.setnpc(this.npc)
         if(data.hasOwnProperty('map'))
         data.map.forEach(m => {                
                 if(!m.hasOwnProperty('action')) m.action = null
@@ -99,13 +98,14 @@ class JMaple{
                 let npcImg = document.createElement('div')
                 npcImg.setAttribute('class', this.config.key + '__body__npc__img')
                     let imgElem = document.createElement('img')
-                    imgElem.setAttribute('src', this.config.img_directory + this.npc.img)
+                    if(this.npc) imgElem.setAttribute('src', this.npc.img)
                 npcImg.appendChild(imgElem);
             npc.appendChild(npcImg);
                 let pNameElem = document.createElement('p')
                 pNameElem.setAttribute('class', this.config.key + '__body__npc__name')
-                pNameElem.appendChild(document.createTextNode(this.npc.name))
+                if(this.npc) pNameElem.appendChild(document.createTextNode(this.npc.name))
             npc.appendChild(pNameElem)
+        if(this.npc)
         body.appendChild(npc)
             this.dialog = document.createElement('div')
             this.dialog.setAttribute('class', this.config.key + '__body__dialog')

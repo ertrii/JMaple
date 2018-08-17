@@ -25,7 +25,7 @@
         display: flex;
     }
     &__body{
-        padding: 0 10px;
+        padding: 0 25px;
         display: flex;
         justify-content: space-between;        
         min-height: 150px;
@@ -33,9 +33,9 @@
         margin-right: auto;
         background-color: $f-bg--body;        
         &__npc{
-            width: 121px;            
-            @include flex-center(column);
-            //background-color: red;
+            min-width: 115px;            
+            @include flex-center(column);            
+            margin-right: 5px;
             &__img{
                 max-height: 100px;
                 max-width: 110px;
@@ -53,8 +53,8 @@
                         
         }
         &__dialog{
-            width: 400px;            
-            padding: 10px 0 10px 35px;
+            width: 100%;
+            padding: 20px 0 0 15px;
             color: $f-dialog;
             @include flex-center(column, center, flex-start);            
             &__info{
