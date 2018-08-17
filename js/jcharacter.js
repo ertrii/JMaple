@@ -76,7 +76,7 @@ class Item{
     }
 }
 class JCharacter{
-    constructor(data, item = false){
+    constructor(data){
         this.nick   =   data.nick
         this.gender =   data.gender
         this.job    =   (data.hasOwnProperty('job'))    ? data.job      : 0
@@ -88,14 +88,17 @@ class JCharacter{
         if(!data.hasOwnProperty('stat')) this.stat = new Stat()            
         else this.stat = data.stat
         this.items  =   new Map()
-        if(item) this.setItems(item)
+        if(data.hasOwnProperty('item')) this.setItem(data.item)
+        if(data.hasOwnProperty('items')) this.setItems(data.items)
     }
+
     setItems(items){
         if(!Array.isArray(items)) {
             console.error('Is not a Array Items')
             return
         }
         items.forEach(item => {
+            if(!item.hasOwnProperty('quantity')) item.quantity = 1
             this.setItem(item.id, item.quantity)
         })
     }

@@ -377,6 +377,10 @@ new JMaple({
 * __sp(int=0)__, stat point.
 * __ap(int=0)__, skill point.
 * __stat(Stat)__, stat.
+* __item(int=null)__, item identifier(iditem)
+* __items(Array(int)=null)__, Array item identifier.
+    * __id(int)__, identifier.
+    * __quantity(int)__.
 
 ```javascript
 const character = new JCharacter({
@@ -483,18 +487,39 @@ const character = new JCharacter({
 
 Item
 ----
-Para asignar un item a un character debemos instanciar de la class Item.
+Para asignar un item a un character debemos primero crear y luego registrar a la lista de items.
 
 ```javascript
+//creating
+const item1 = new Item({
+        type : 'use',
+        id : 1234,//id example
+        name : 'potion blue',
+        img : 'potion.png'
+    })
+const item2 = new Item({
+        type : 'equip',
+        id : 491,// id example
+        name : 'eclipse',
+        img : 'eclipse.png'
+    })
+
+Item.addList([item1, item2])//registered
+
 const character = new JCharacter({
     nick : 'myNameUser',
     gender : 0,
-}, new Item({
-    type : 'use',
-    id : 1234,//I dont remember him id of this item.
-    name : 'potion blue',
-    img : 'potion.png'
-}))
+    //assigning
+    items : [
+        {
+            item: 1234,
+            quantity: 2
+        },
+        {
+            item: 491,            
+        }
+    ]
+})
 ```
 ### Properties: 
 * __type(string)__, tipo de item:
@@ -508,7 +533,7 @@ const character = new JCharacter({
 * __trade(bool=true)__, si es tradeable(trueque).
 * __cash(int=0)__.
 
-Para asignar un item por medio de una Conversation Window se necesita registrar a la lista de items.
+Para asignar un item por medio de una Conversation Window.
 
 ```javascript
 //adding a item
