@@ -10,112 +10,71 @@ class JMaple{
             key             :       'm',
             zIndex          :       100
         }
-        this.npc            =       data.npc
-        this.container      =       document.getElementById(data.el)
-        this.container.style.display = 'none'
-
-        this.listNPC        =       new Map()
-        this.getScript      =       ()  =>  { this.script = new data.script(); this.script.cm = this.cm() }        
-        this.cmSend         =       'simple'        //simple
-        this.dispose        =       false
-        this.type           =       4               //default
-        this.selection      =       0        
-        this.setScript      =       data.script
-
-        //extensions
-        this.map            =       new Map()
-        this.character      =       (!Character) ? false : Character
+        //Map
+        this.listnpc        =       new Map()
+        this.maps           =       new Map()
         this.items          =       new Map()
-
+        //getting
+        this.container      =       document.getElementById(data.el)
+        this.npc            =       data.npc
+        this.setnpc(this.npc)
         if(data.hasOwnProperty('map'))
-            data.map.forEach(m => {
+        data.map.forEach(m => {                
                 if(!m.hasOwnProperty('action')) m.action = null
                 if(!m.hasOwnProperty('warp')) m.warp = true                
-                let data = {
+                let data    = {
                     id : m.id,
                     link : m.link,
                     action: m.action,
                     warp : m.warp,                    
                 }
-                this.map.set(m.id, data)
-            });
+                this.maps.set(m.id, data)
+            })
+        //preparing
+        this.prepareScript  =       ()  =>  {
+            this.script     =       new data.script();
+            this.script.cm  =       this.cm()
+        }
+        this.container.style.display = 'none'
+        this.cmSend         =       'simple'
+        this.dispose        =       false
+        this.type           =       4               //default
+        this.selection      =       0
+        //extensions
+        this.character      =       (!Character) ? false : Character
     }
 
-    isNPC(_npc){
-        let is = true
-        const itsNot    =  (msg, type = 'error')  => {
-            if(this.config.dev)
-                switch (type) {
-                    case 'info':
-                        console.info(msg)
-                        break
-                    case 'warn':
-                        console.warn(msg)
-                        break
-                    default:
-                        console.error(msg)
-                        is = false                        
+    get registerednpc(){
+        let keys = [];
+        this.listnpc.forEach((value, key) => {
+            keys.push(key)
+        })
+        return keys
+    }
+
+    setnpc(npc){
+        const isnpc = obj => {            
+            let prop = ['id', 'name', 'img']
+            for (let key of prop) {                
+                if (!obj.hasOwnProperty(key)) {
+                    console.error('An npc requires as properties: {id, name, img}')
+                    return false
                 }
-        }        
-        if(typeof _npc !== 'function') itsNot('Its not a class or function')
-        let npc = new _npc()
-        let requeriments = ['id', 'name', 'img']//Property
-        for (let i = 0; i < requeriments.length; i++)
-            if(!npc.hasOwnProperty(requeriments[i])) {
-                itsNot('Was not found one of the required properties(id, name, img)')
-                return is
             }
-        if (typeof npc.start        ===   'undefined')  {
-            itsNot('the start function was not found, looking for the action function...', 'warn')
-            if (typeof npc.action   === 'undefined')      itsNot('the start function was not found')
-            if (typeof npc.action   !== 'function')     itsNot('action is not a function')
-            itsNot('Done.', 'info')
-            return is
+            return true
         }
-        if (typeof npc.start        !==  'function')    itsNot('start is not a function')
-
-        return is
-    }
-
-    get list(){
-        let NPCs = this.listNPC.values(),
-            listnpc = new Array(),
-            npcObtained = null
-        while(true){
-            npcObtained = NPCs.next()
-            if(npcObtained.done === true) break
-            listnpc.push(npcObtained.value)
-        }
-
-        let _items = this.items.values(),
-            listItems = new Array(),
-            item = null
-        while(true){
-            item = _items.next()
-            if(item.done === true) break
-            listItems.push(item.value)
-        }
-
-        let allList = {
-            npc : listnpc,
-            item: listItems
-        }
-
-        return allList
-    }
-
-    set setScript(NPCs){
-        if(Array.isArray(NPCs)){            
-            for (let i = 0; i < NPCs.length; i++){
-                let _npc = new NPCs[i]()                
-                if(this.listNPC.get(_npc.id) === undefined)
-                    this.listNPC.set(_npc.id, _npc)
-                }
-        }else{
-            let _npc = new NPCs()
-            if(this.listNPC.get(_npc.id) === undefined)
-                this.listNPC.set(_npc.id, _npc)
-        }
+        
+        if(Array.isArray(npc))
+            for (let _npc of npc) {
+                if(!isnpc(_npc)) return
+                if(this.listnpc.get(_npc.id) === undefined)
+                    this.listnpc.set(_npc.id, _npc)
+            }      
+        else{
+            if(!isnpc(npc)) return
+            if(this.listnpc.get(npc.id) === undefined)
+                this.listnpc.set(npc.id, npc)
+        }            
     }
 
     set setItem(item){
@@ -267,7 +226,7 @@ class JMaple{
                             console.error(`This is id(${cleanText.data}) is not number`)
                         }else{
                             textElem.setAttribute('class', this.config.key + '__color--blue')
-                            let _npc = this.listNPC.get(idnpc)
+                            let _npc = this.listnpc.get(idnpc)
                             if(_npc === undefined){
                                 console.error('NPC not found in the list.')
                             }else{
@@ -648,7 +607,7 @@ class JMaple{
             },
 
             warp            :   (mapid, portal = 0) => {                
-                let data = this.map.get(mapid)
+                let data = this.maps.get(mapid)
                 if(data.action !== null) data.action()
                 if(data.warp) window.location.href = data.link
                 if(this.config.dev) console.log(`warp(${data.id}): ${data.link}`)
@@ -766,12 +725,12 @@ class JMaple{
             this.container.style.opacity = 0
 
             setTimeout( () => {
-                if(this.config.transition === 'ease') this.container.style.transition = '0.2s ease'                
+                if(this.config.transition === 'ease') this.container.style.transition = '0.3s ease'                
                 this.script.action(m, this.type, this.selection)
                 this.selection = 0 //reset
                 this.container.style.opacity = 1
                 if(!this.cmExecuted && this.dispose) this.end()
-            }, 100)
+            }, 150)
 
             if(this.config.transition === 'ease') this.container.style.transition = '0s'            
             this.cmExecuted = false
@@ -822,10 +781,10 @@ class JMaple{
     }
 
     show(){
-        this.getScript()        
+        this.prepareScript()        
         this.container.classList.add('jmaple')
         this.container.style.display = 'flex'
-        this.container.style.position = 'relative'
+        this.container.style.position = 'fixed'
         this.container.style.zIndex = `${this.config.zIndex}`;
         this.container.appendChild(this.html)
         try{

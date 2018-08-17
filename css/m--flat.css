@@ -76,9 +76,7 @@
 .m {
   width: 524px;
   min-height: 200px;
-  background-color: white;
-  box-shadow: 1px 2px 10px -5px black;
-  border-radius: 0 0 5px 5px;
+  box-shadow: 1px 2px 10px 0 #D6D6D6;
 }
 
 .m__body__dialog button, .m__footer button {
@@ -89,10 +87,6 @@
   cursor: pointer;
   color: white;
   outline: none;
-}
-
-.m__body__dialog button:active, .m__footer button:active {
-  box-shadow: inset 0px 0px 4px -1px black;
 }
 
 .m__head {
@@ -113,6 +107,7 @@
   min-height: 150px;
   margin-left: auto;
   margin-right: auto;
+  background-color: white;
 }
 
 .m__body__npc {
@@ -232,12 +227,24 @@
   padding-left: 20px;
   padding-right: 20px;
   background-color: #ffa000;
+  box-shadow: 1px 1px 5px -1px #777;
+  transition: .1s all;
+}
+
+.m__footer__btn-exit button:active {
+  box-shadow: 1px 1px 0px -1px #777;
 }
 
 .m__footer__btn-interrogate button {
   background-color: #ffa000;
+  box-shadow: 1px 1px 5px -1px #777;
+  transition: .1s all;
 }
 
 .m__footer__btn-interrogate button:nth-child(2) {
   margin-left: 3px;
+}
+
+.m__footer__btn-interrogate button:active {
+  box-shadow: 1px 1px 0px -1px #777;
 }

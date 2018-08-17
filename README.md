@@ -9,10 +9,9 @@ Una librería para crear ventanas de conversación al estilo maplestory usando e
 npm install jmaple
 ```
 
-### Use
 #### Style
 ```html
-<link rel="stylesheet" href="css/m--modern.css">
+<link rel="stylesheet" href="css/m--flat.css">
 ```
 
 #### jmaple.js
