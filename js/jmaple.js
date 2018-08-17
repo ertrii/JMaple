@@ -11,8 +11,7 @@ class JMaple{
         }
         //Map
         this.listnpc        =       new Map()
-        this.maps           =       new Map()
-        this.items          =       new Map()
+        this.maps           =       new Map()        
         //getting
         this.container      =       document.getElementById(data.el)
         this.npc            =       data.hasOwnProperty('npc') ? data.npc : false
@@ -43,12 +42,29 @@ class JMaple{
         this.character      =       (!Character) ? false : Character
     }
 
-    get registerednpc(){
-        let keys = [];
-        this.listnpc.forEach((value, key) => {
-            keys.push(key)
-        })
-        return keys
+    registered(list){
+        let keys = []
+        switch(list){
+            case 'npc':
+                this.listnpc.forEach((value, key) => keys.push(key))
+                break
+            case 'map':
+                this.maps.forEach((value, key) => keys.push(key))
+                break
+            case 'item':
+                if(this.character)
+                    keys = this.character.listItem
+                else
+                    console.error('Extension character is requerid.');
+                break
+            default:
+                console.error('null, just type this["npc", "map", "item"]')
+                break
+        }
+        if(keys.length <= 0)
+            return null
+        else
+            return keys
     }
 
     setnpc(npc){
@@ -74,10 +90,6 @@ class JMaple{
             if(this.listnpc.get(npc.id) === undefined)
                 this.listnpc.set(npc.id, npc)
         }            
-    }
-
-    set setItem(item){
-
     }
 
     /*===Creating Element===*/

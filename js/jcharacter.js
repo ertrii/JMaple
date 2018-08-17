@@ -2,7 +2,7 @@
 'use strict';
 const Exp = [1, 15, 34, 57, 92, 135, 372, 560, 840, 1242, 1144, 1573, 2144, 2800, 3640, 4700, 5893, 7360, 9144, 11120, 13477, 16268, 19320, 22880, 27008, 31477, 36600, 42444, 48720, 55813, 63800, 86784, 98208, 110932, 124432, 139372, 155865, 173280, 192400, 213345];
 class Stat{
-    constructor(stat){
+    constructor(stat = {}){
         this.str = (stat.hasOwnProperty('str')) ? stat.str : 4
         this.dex = (stat.hasOwnProperty('dex')) ? stat.dex : 4
         this.int = (stat.hasOwnProperty('int')) ? stat.int : 4
@@ -88,20 +88,51 @@ class JCharacter{
         if(!data.hasOwnProperty('stat')) this.stat = new Stat()            
         else this.stat = data.stat
         this.items  =   new Map()
-        if(item) this.setItem(item)        
+        if(item) this.setItems(item)
+    }
+    setItems(items){
+        if(!Array.isArray(items)) {
+            console.error('Is not a Array Items')
+            return
+        }
+        items.forEach(item => {
+            this.setItem(item.id, item.quantity)
+        })
     }
 
-    setItem(item, ammount = 1){
-        if(item instanceof Item) {
-            let dataPrepared = {
-                item : item,
-                ammount : ammount
-            }
-            this.items.set(item.id, dataPrepared)
+    setItem(iditem, quantity = 1){
+        let item = Item.get(iditem)
+        if(item === null) {
+            console.error('This iditem not found in the list Item');
+            return;
         }
-        else console.error("it's not Item Class")
-        
+        if(this.items.get(item.id) === undefined){
+            let preparedItem = {
+                item : item,
+                quantity : quantity
+            }
+            this.items.set(item.id, preparedItem);
+        }else{
+            this.items.get(iditem).quantity += quantity;
+        }
     }
+
+    get listItem(){
+        let keys = []
+        this.items.forEach((value, key) => keys.push(key))
+        return keys;
+    }
+
+    removeItem(iditem, quantity = null){
+        let item = this.items.get(iditem)
+        if(item === undefined) return false        
+        if(quantity === null || item.quantity <= quantity)
+            this.items.delete(iditem)
+        else
+            this.items.get(iditem).quantity -= quantity        
+        return true
+    }
+
     quest(id){
         return {
             start : () => {

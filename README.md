@@ -65,9 +65,9 @@ jmaple.show()
 
 ## NPC
 Los npc representan un personaje:
-* __id__, identificador.
-* __name__.
-* __img__, ruta de la imagen.
+* __id(int)__, identificador.
+* __name(string)__.
+* __img(string)__, ruta de la imagen.
 
 ```javascript
 new JMaple({

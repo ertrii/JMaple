@@ -12,7 +12,11 @@
     <script src="js/jcharacter.js"></script>
     <script src="js/jmaple.js"></script>
     <script>
-        new JMaple({
+        const character = new JCharacter({
+            nick : 'churano',
+            gender : 0            
+        })
+        const jmaple = new JMaple({
             el : 'element',
             npc : {
                 id : '9010000',
@@ -28,7 +32,9 @@
                     this.cm.dispose()
                 }
             }
-        }).show()
+        }, character)
+        jmaple.show()
+        
     </script>
 </body>
 </html>
