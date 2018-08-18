@@ -9,9 +9,12 @@ class Stat{
         this.luk = (stat.hasOwnProperty('luk')) ? stat.luk : 4
         this.hp = (stat.hasOwnProperty('hp')) ? stat.hp : 50
         this.mp = (stat.hasOwnProperty('mp')) ? stat.mp : 50
+
         this.lv = (stat.hasOwnProperty('lv')) ? stat.lv : 1
         this.exp = (stat.hasOwnProperty('exp')) ? stat.exp : 0
-
+        this.def = (stat.hasOwnProperty('def')) ? stat.def : 0
+        this.att = (stat.hasOwnProperty('att')) ? stat.att : 0
+        this.attM = (stat.hasOwnProperty('attM')) ? stat.attM : 0
         this.refresh()
     }
     refresh(){        
@@ -22,20 +25,16 @@ class Stat{
     }
 }
 class Item{
-    constructor(item){        
-        if(item.type === 'equip' || item.type === 'use' || item.type === 'setup' || item.type === 'etc'){
-            this.type = item.type
-            this.id = item.id
-            this.name = item.name
-            this.img = item.img
-            this.trade = (item.hasOwnProperty('trade')) ? item.trade : true
-            this.cash = (item.hasOwnProperty('cash')) ? item.cash : false        
-            this.desc = (item.hasOwnProperty('desc')) ? item.desc : ''
-            this.lv = (item.hasOwnProperty('level')) ? item.level : 0               
-        }else{
-            console.error('unknown item type ' + item.type)
-            return;
-        }
+    constructor(id, name, inventory){
+        this.id = id
+        this.name = name
+        this.inventory = inventory
+        this.type = null;
+        this.lvRequerid = 1        
+        //this.img = item.img
+        this.trade = true
+        this.cash = false
+        this.desc = ''
     }
     static prepareList(){
         if(!Item.hasOwnProperty('list'))
@@ -65,15 +64,70 @@ class Item{
     get value(){
         return {
             id : this.id,
-            name : this.name,
-            img : this.img,
-            lv: this.lv,
-            type: this.type,
+            name : this.name,            
             trade : this.trade,
             cash : this.cash,
             desc : this.desc
         }
     }
+}
+class Equip extends Item{
+    constructor(id, name, type){
+        super(id, name, 'Equip')
+        super.type          = type        
+        this.strRequerid    = 0
+        this.dexRequerid    = 0
+        this.intRequerid    = 0
+        this.lukRequerid    = 0
+        this.fameRequerid   = 0
+        this.job            = {
+            beginner        : true,
+            warrior         : true,
+            magician        : true,
+            bowman          : true,
+            tief            : true,
+            pirate          : true
+        }
+        this.stat = new Stat({
+            hp  : 0,
+            mp  : 0
+        })
+    }
+}
+class Use extends Item{
+    constructor(id, name, type = 'potion'){
+        super(id, name, 'Use')
+        this.stat = new Stat({
+            str : 0,
+            dex : 0,
+            int : 0,
+            luk : 0,
+            hp  : 0,
+            mp  : 0
+        })
+        super.type = type
+        this.warp = false
+    }    
+}
+class Setup extends Item{
+    constructor(id, name, type){
+        super(id, name, 'Setup')
+        super.lvRequerid = 0
+        this.sec = 10
+        this.stat = new Stat({
+            str : 0,
+            dex : 0,
+            int : 0,
+            luk : 0
+        })
+        super.type = type
+    }
+}
+class Etc extends Item{
+    constructor(id, name, type){
+        super(id, name, 'Etc')
+        super.type = type
+    }    
 }
 class JCharacter{
     constructor(data){

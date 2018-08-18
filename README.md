@@ -487,78 +487,46 @@ const character = new JCharacter({
 
 Item
 ----
-Para asignar un item a un character debemos primero crear y luego registrar a la lista de items.
+Todo item creado se debe agregar a la lista, para crear uno necesitamos instanciar la clase.
 
 ```javascript
 //creating
-const item1 = new Item({
-        type : 'use',
-        id : 1234,//id example
-        name : 'potion blue',
-        img : 'potion.png'
-    })
-const item2 = new Item({
-        type : 'equip',
-        id : 491,// id example
-        name : 'eclipse',
-        img : 'eclipse.png'
-    })
+const item1 = new Equip(123, 'un arma', 'claw')
+const item2 = new Use(540, 'potion blue', 'potion')
 
 Item.addList([item1, item2])//registered
 
-const character = new JCharacter({
-    nick : 'myNameUser',
-    gender : 0,
-    //assigning
-    items : [
-        {
-            item: 1234,
-            quantity: 2
-        },
-        {
-            item: 491,            
-        }
-    ]
-})
 ```
-### Properties: 
-* __type(string)__, tipo de item:
-    * __equip__.
-    * __use__.
-    * __setup__.
-    * __etc__.
+### Class:
+Existen varias clases de item dependiendo de lo que deseas crear:
+* __Equip__, armas, accesorios, capas, etc.
+* __Use__, elementos que su uso altera o mejora al Character.
+* __Setup__, chair, elementos que no quepan en las demas clases.
+* __Etc__, son elementos simples.
+* 
+Estas clases requieren como parametros requeridos:
 * __id(int)__, identificador del item.
 * __name(string)__, nombre del item(jeje).
-* __img(string)__, nombre de la imagen del item.
+* __type(string)__, tipo de item.
+
+### Properties: 
+Dependiendo de la clase de item que hayamos creado tedremos dichas propiedades, hablaremos primero de los comunes que comparten.
 * __trade(bool=true)__, si es tradeable(trueque).
 * __cash(int=0)__.
+* __desc(string)__, descripción del item.
+* __lvRequerid(int)__, level requerido.
 
-Para asignar un item por medio de una Conversation Window.
+Ahora asignaremos un Item a un Character por medio de una Conversation Window:
 
 ```javascript
 //adding a item
-Item.add(new Item({
-    type : 'equip',
-    id : 961,
-    name : 'item1',
-    img : 'item1.png'
-}))
+Item.add(new Equip(961, 'Eclipse', 'polearm'))
 ```
 ```javascript
 //adding many items
 Item.addList([
-    new Item({
-        type : 'use',
-        id : 4556,
-        name : 'item2',
-        img : 'item2.png'
-    }),
-    new Item({
-        type : 'etc',
-        id : 156,
-        name : 'item3',
-        img : 'item3.png'
-    })
+    new Use(4556, 'Potion Blue', 'potion'),
+    new Etc(156, 'leaf', 'simple')
 ])
 ```
 ```javascript
@@ -590,10 +558,24 @@ new JMaple({
 ```
 En caso de que el item no exista en la lista le retornará por consola un error.
 
-Si desea agregar un item al character que no sea por el medio ya visto, use la funcion ```setItem()```.
+Si desea agregar un item al character que no sea por el medio ya visto, use la funcion ```setItem()``` o ```setItems()```.
 
 ```javascript
 //we will add the item of the List already created in the previous example.
 character.setItem(961, 5)//idItem, quantity
+character.setItems([
+    {id : 4556, quantity: 5},
+    {id : 156, quantity: 2}
+])
 ```
-Recuerde que debe agregar el item antes de instanciar ```JMaple()```.
+En caso de que el character ya tenga agregado aquel item entonces simplemente se le sumara la cantidad.
+
+Si deseamos eliminar el item del Character usaremos la function ```removeItem()```.
+```javascript
+character.removeItem(961)//idItem. 
+```
+O si solo queremos reducir la cantidad pues le asignaremos otro parametro que sería la cantidad.
+```javascript
+character.removeItem(4556, 2)//idItem. 
+```
+Atento, si la cantidad es mayor o igual a la cantidad que contiene el Character de dicho item, se le removera definitivamente.
