@@ -36,17 +36,15 @@ class Item{
         this.cash = false
         this.desc = ''
     }
-    static prepareList(){
-        if(!Item.hasOwnProperty('list'))
-            this.list = new Map()
+    static init(){        
+        this.list = new Map()
     }
     static addList(items){        
         items.forEach(item => {
             if(!this.add(item)) return
         })
     }
-    static add(item){
-        this.prepareList()
+    static add(item){        
         if(item instanceof Item){
             this.list.set(item.id, item)
             return true
@@ -56,8 +54,7 @@ class Item{
             return false
         }
     }
-    static get(iditem){
-        this.prepareList()
+    static get(iditem){        
         let item = this.list.get(iditem)
         return (item === undefined) ? null : item
     }
@@ -71,6 +68,9 @@ class Item{
         }
     }
 }
+
+Item.init()
+
 class Equip extends Item{
     constructor(id, name, type){
         super(id, name, 'Equip')
@@ -129,18 +129,123 @@ class Etc extends Item{
         super.type = type
     }    
 }
+
+class Quest{
+    static init(){
+        this.list = new Map()
+        this.active = new Map()
+        this.completed = new Map()
+    }
+    static create(id, name, min = false){
+        let quest = {
+            id : id,
+            name : name,
+            expires : (min) ? true : false,
+            timer : {
+                start : null,
+                time : min,
+                finished : null,
+                leftoverTime : null,
+                interval : () => {
+                    let timer = quest.timer
+                    if(timer.start === null || !timer.time) return false
+                    let date = new Date(timer.start)
+                    date.setMinutes(date.getMinutes() + timer.time)
+                    timer.leftoverTime = parseInt((date - timer.start) / 1000)
+                    let timeStart = setInterval( () =>{
+                        if(quest.completed){
+                            clearInterval(timeStart)
+                            return
+                        }
+                        timer.leftoverTime--
+                        if(timer.leftoverTime === 0){
+                            this.forfeit(quest.id)
+                            clearInterval(timeStart)
+                        } 
+                    }, 1000)
+                    return true
+                }
+            },
+            active : false,
+            completed : false
+        }
+        if(this.list.get(id) === undefined)
+            this.list.set(id, quest)
+        else
+            return false
+        
+        return true        
+    }
+    static start(idquest){
+        let quest = this.list.get(idquest)
+        if(quest === undefined || quest.active || quest.completed) return false
+            
+        this.list.get(idquest).timer.start = new Date()        
+        this.list.get(idquest).active = true
+        this.list.get(idquest).timer.interval()
+        const obj = {
+            id : quest.id,
+            name : quest.name,
+            expires : quest.expires
+        }
+        this.active.set(quest.id, obj)
+        
+        return true
+    }
+    static complete(idquest){
+        let quest = this.list.get(idquest)
+        if(quest === undefined || !quest.active || quest.completed) return false
+
+        const finished = new Date()
+        this.list.get(idquest).timer.finished = finished
+        this.list.get(idquest).active = false
+        this.list.get(idquest).completed = true
+        this.active.delete(idquest)
+        const obj = {
+            id : quest.id,
+            name : quest.name,
+            start : quest.timer.start,
+            finished : finished,
+            leftoverTime : quest.timer.leftoverTime
+        }
+        this.completed.set(idquest, obj)
+        return true
+    }
+    static forfeit(idquest){
+        let quest = this.list.get(idquest)
+        if(quest === undefined || !quest.active || quest.completed) return false
+
+        this.list.get(idquest).active = false
+        this.list.get(idquest).timer.start = null
+        this.list.get(idquest).timer.finished = null
+        this.active.delete(idquest)
+        return true
+    }
+    static timer(idquest){
+        let quest = this.list.get(idquest)
+        if(quest === undefined || !quest.active || quest.completed || !quest.timer.leftoverTime) return 0
+        else return this.list.get(idquest).timer.leftoverTime
+    }
+}
+
+Quest.init()
+
 class JCharacter{
     constructor(data){
         this.nick   =   data.nick
         this.gender =   data.gender
         this.job    =   (data.hasOwnProperty('job'))    ? data.job      : 0
         this.gm     =   (data.hasOwnProperty('gm'))     ? data.gm       : false        
-        this.mesos  =   (data.hasOwnProperty('meso'))  ? data.meso      : 0
+        this.mesos  =   (data.hasOwnProperty('meso'))   ? data.meso     : 0
         this.nx     =   (data.hasOwnProperty('nx'))     ? data.nx       : 0        
         this.sp     =   (data.hasOwnProperty('sp'))     ? data.sp       : 0
         this.ap     =   (data.hasOwnProperty('ap'))     ? data.ap       : 0
-        if(!data.hasOwnProperty('stat')) this.stat = new Stat()            
-        else this.stat = data.stat
+
+        if(!data.hasOwnProperty('stat'))
+            this.stat = new Stat()
+        else
+            this.stat = data.stat
+
         this.items  =   new Map()
         if(data.hasOwnProperty('item')) this.setItem(data.item)
         if(data.hasOwnProperty('items')) this.setItems(data.items)
@@ -192,15 +297,9 @@ class JCharacter{
 
     quest(id){
         return {
-            start : () => {
-
-            },
-            complete : () => {
-
-            },
-            forfeit : () => {
-
-            }
+            start:     ()  => Quest.start(id),
+            complete:  ()  => Quest.complete(id),
+            forfeit:   ()  => Quest.forfeit(id)            
         }
     }
 

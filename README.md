@@ -503,8 +503,8 @@ Existen varias clases de item dependiendo de lo que deseas crear:
 * __Use__, elementos que su uso altera o mejora al Character.
 * __Setup__, chair, elementos que no quepan en las demas clases.
 * __Etc__, son elementos simples.
-* 
-Estas clases requieren como parametros requeridos:
+
+Estas clases necesitan como parametros:
 * __id(int)__, identificador del item.
 * __name(string)__, nombre del item(jeje).
 * __type(string)__, tipo de item.
@@ -578,4 +578,4 @@ O si solo queremos reducir la cantidad pues le asignaremos otro parametro que se
 ```javascript
 character.removeItem(4556, 2)//idItem. 
 ```
-Atento, si la cantidad es mayor o igual a la cantidad que contiene el Character de dicho item, se le removera definitivamente.
+Atento, si la cantidad es mayor o igual a la cantidad que contiene el Character de dicho item entonces se le removera definitivamente.
