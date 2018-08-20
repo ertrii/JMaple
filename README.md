@@ -331,10 +331,7 @@ JCharacter es una extensión que amplia la lista de comandos(cm). JCharacter sol
 
 #### Example:
 ```javascript
-const character = new JCharacter({
-    nick : 'myNameUser',
-    gender : 0  //male(0), female(1)
-})
+const character = new JCharacter('myNameUser', 0)
 new JMaple({
     el:'element',
     npc: {
@@ -348,6 +345,10 @@ new JMaple({
 
 }, character).show()//added character to jmaple.
 ```
+JCharacter requiere de dos parametros, __name__, que sería el nombre de tu pj y __gender__, que es el género, que ```0``` sería male(hombre) y ```1```, sería female(mujer).
+
+Estos son los comandos que se usarán en el __script__.
+
 ### Commands: Character
 | cm | Description |
 | -- | ----------- |
@@ -364,33 +365,30 @@ new JMaple({
 | gainExp(int) | Gives the user/player exp/takes exp of user/player. |
 | getLevel() | level User/Player. |
 | teachSkill(skillid, skilllevel, maxskilllevel) | not enabled. |
-| get(string) | Returns the number of spicified stat(STR, DEX, INT, LUK, HP, MP). |
+| get(stat) | Returns the number of spicified stat(STR, DEX, INT, LUK, HP, MP). |
 | modifyNX(int) | Gives/Takes the player nx/cash. |
 
 ### Properties:
-* __nick(String)__, name User.
+* __nick(string)__, name User.
 * __gender(int)__, male(0), female(1).
-* __job(int=0)__, id job.
-* __gm(bool=false)__, if gm.
-* __meso(int=0)__, money.
-* __nx(int=0)__, cash.
-* __sp(int=0)__, stat point.
-* __ap(int=0)__, skill point.
+* __job(int)__, id job.
+* __gm(bool)__, if gm.
+* __meso(int)__, money.
+* __nx(int)__, cash.
+* __sp(int)__, stat point.
+* __ap(int)__, skill point.
 * __stat(Stat)__, stat.
-* __item(int=null)__, item identifier(iditem)
-* __items(Array(int)=null)__, Array item identifier.
+* __item(int)__, item identifier(iditem)
+* __items(Array(int))__, Array item identifier.
     * __id(int)__, identifier.
     * __quantity(int)__.
 
 ```javascript
-const character = new JCharacter({
-    nick : 'myNameUser',
-    gender : 0,
-    job : 110,//fighter
-    lv : 20,
-    exp : 500,
-    mesos : 95065012354//^^
-})
+const character = new JCharacter('myNameUser', 0)
+character.job = 110,//fighter
+character.lv = 20,
+character.exp = 500,
+character.mesos = 95065012354//^^
 ```
 ### List Job: Beginner
 | Job | id | level(old version) | level(current version) |
@@ -469,21 +467,25 @@ Stat
 Al crear un character se le asigna por defecto un __Stat__, str, dex, int, luk con valor 4, y hp, mp con valor 50. Podemos asignarle unos valores de manera personalizada.
 
 ```javascript
-const character = new JCharacter({
-    nick : 'myNameUser',
-    gender : 0,
-    stat : new Stat({str:30,dex:24, hp: 1235, mp:110})
+const character = new JCharacter('myNameUser', 0)
+character.stat = new Stat({
+    str : 30,
+    dex : 24,
+    hp  : 1235
 })
 ```
 ### Properties: 
-* __str(int=4)__.
-* __dex(int=4)__.
-* __int(int=4)__.
-* __luk(int=4)__.
-* __hp(int=50)__, life.
-* __mp(int=50)__, manna.
-* __lv(int=1)__, level.
-* __exp(int=0)__, experiencie.
+* __str(int)__.
+* __dex(int)__.
+* __int(int)__.
+* __luk(int)__.
+* __hp(int)__, life.
+* __mp(int)__, manna.
+* __lv(int)__, level.
+* __exp(int)__, experiencie.
+* __def(int)__, defense.
+* __att(int)__, attack.
+* __attM(int)__, attack magic.
 
 Item
 ----
@@ -531,10 +533,7 @@ Item.addList([
 ```
 ```javascript
 //creating my character
-const character = new JCharacter({
-    nick : 'myNameUser',
-    gender : 0
-})
+const character = new JCharacter('myNameUser', 0)
 //Convesation Window
 new JMaple({
     el:'element',

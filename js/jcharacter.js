@@ -161,7 +161,7 @@ class Quest{
                         if(timer.leftoverTime === 0){
                             this.forfeit(quest.id)
                             clearInterval(timeStart)
-                        } 
+                        }
                     }, 1000)
                     return true
                 }
@@ -179,10 +179,11 @@ class Quest{
     static start(idquest){
         let quest = this.list.get(idquest)
         if(quest === undefined || quest.active || quest.completed) return false
-            
-        this.list.get(idquest).timer.start = new Date()        
-        this.list.get(idquest).active = true
-        this.list.get(idquest).timer.interval()
+
+        quest.timer.start = new Date()        
+        quest.active = true        
+        quest.timer.interval()
+
         const obj = {
             id : quest.id,
             name : quest.name,
@@ -197,10 +198,11 @@ class Quest{
         if(quest === undefined || !quest.active || quest.completed) return false
 
         const finished = new Date()
-        this.list.get(idquest).timer.finished = finished
-        this.list.get(idquest).active = false
-        this.list.get(idquest).completed = true
+        quest.timer.finished = finished
+        quest.active = false
+        quest.completed = true
         this.active.delete(idquest)
+        
         const obj = {
             id : quest.id,
             name : quest.name,
@@ -231,24 +233,18 @@ class Quest{
 Quest.init()
 
 class JCharacter{
-    constructor(data){
-        this.nick   =   data.nick
-        this.gender =   data.gender
-        this.job    =   (data.hasOwnProperty('job'))    ? data.job      : 0
-        this.gm     =   (data.hasOwnProperty('gm'))     ? data.gm       : false        
-        this.mesos  =   (data.hasOwnProperty('meso'))   ? data.meso     : 0
-        this.nx     =   (data.hasOwnProperty('nx'))     ? data.nx       : 0        
-        this.sp     =   (data.hasOwnProperty('sp'))     ? data.sp       : 0
-        this.ap     =   (data.hasOwnProperty('ap'))     ? data.ap       : 0
-
-        if(!data.hasOwnProperty('stat'))
-            this.stat = new Stat()
-        else
-            this.stat = data.stat
-
-        this.items  =   new Map()
-        if(data.hasOwnProperty('item')) this.setItem(data.item)
-        if(data.hasOwnProperty('items')) this.setItems(data.items)
+    constructor(nick, gender){
+        this.nick   =   nick
+        this.gender =   gender //male(0), female(1)
+        this.job    =   0
+        this.gm     =   false
+        this.mesos  =   0
+        this.nx     =   0        
+        this.sp     =   0
+        this.ap     =   0
+        
+        this.stat = new Stat()
+        this.items  =   new Map()        
     }
 
     setItems(items){
