@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/m--flat.css">
-    <title>JMaple</title>
+    <title>JMaple</title>    
 </head>
 <body>    
     <div id="element"></div>
@@ -22,11 +22,11 @@
             },
             script : function() {                
                 this.start = function(){
-                    this.cm.sendOk("Thank you for install.", 0, 2, 99)
+                    this.cm.sendOk("Thank you for install.")
                 }
                 this.action = function(mode, type, selection){
-                    this.cm.sendOk("This library is a vertion Alpha. Read documentation please: https://github.com/ertrii/JMaple")
-                    this.cm.dispose()                                        
+                    this.cm.sendOk("This library is a vertion Alpha. Read documentation please: https://github.com/ertrii/JMaple" + selection)
+                    this.cm.dispose()
                 }
             }
         }, character)

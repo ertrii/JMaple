@@ -14,6 +14,18 @@
         color: $text-color--light;        
         outline: none;        
     }
+    &__input{
+        border: 1px solid #ddd;        
+        padding: 2px 3px;
+        width: 100%;        
+        outline: none;
+        font-size: 9pt;
+        transition: .2s;
+        background-color: transparent;
+        &:focus{
+            border: 1px solid $f-bg--head;
+        }
+    }
     //=================
     &__head{
         background-color: $f-bg--head;
@@ -59,12 +71,13 @@
             @include flex-center(column, center, flex-start);            
             &__info{
                 height: 100%;
+                width: 100%;
                 @include flex-cl-center(center, flex-start);
                 &--text, &--alternatives{
                     font-size: 9pt;
                     font-family: roboto-light, sans-serif;
                 }
-                &--text{padding-bottom: 10px}
+                //&--text{padding-bottom: 10px}
                 &--title{
                     color: transparent;
                     font-size: 9pt;
@@ -74,7 +87,7 @@
                     list-style: none;
                     color: $text-color--bold;
                     cursor: pointer;
-                    padding: 10px 0 10px 20px;
+                    padding: 15px 0 10px 10px;
                     }
                     li{margin-bottom: 4px;}
                     li::before{

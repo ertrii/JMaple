@@ -22,6 +22,12 @@
         box-shadow: 0px 0px 2px 1px #222, 1px 1px 1px 2px white;
         &:active{box-shadow: 0px 0px 2px 1px #222, 1px 1px 1px 2px white, inset 0px 0px 4px -1px black}
     }
+    &__input{
+        width: 100%;
+        outline: none;
+        padding: 1px 3px;
+        font-size: 9pt;
+    }
     //=================
     &__head{
         border-radius: 10px 10px 0 0;
@@ -86,6 +92,7 @@
             @include flex-center(column, center, flex-start);
             &__info{
                 height: 100%;
+                width: 100%;
                 @include flex-cl-center(center, flex-start);
                 &--text, &--alternatives{
                     font-size: 9pt;
@@ -101,7 +108,7 @@
                     list-style: none;
                     color: $text-color--bold;
                     cursor: pointer;
-                    padding: 10px 0 10px 20px;
+                    padding: 10px 0 7px 10px;
                     }
                     li{margin-bottom: 4px;}
                     li::before{

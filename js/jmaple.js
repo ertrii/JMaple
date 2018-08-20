@@ -12,7 +12,8 @@ class JMaple{
                 info        :       '#2264C8',
                 success     :       '#22C85C',
                 warning     :       '#FFD232',
-                danger      :       '#FF0050'
+                danger      :       '#FF0050',
+                apply       :       true
             }
         }
         //Map
@@ -46,17 +47,17 @@ class JMaple{
         this.selection      =       0
         this.input          =       {
             el              :       document.createElement('input'),
-            bydefault       :       0,
+            defaultValue    :       0,
             min             :       0,
             max             :       null,
             restart         :       () => {
-                this.input.bydefault    = 0
+                this.input.defaultValue    = 0
                 this.input.min          = 0
                 this.input.max          = null
             }
         }
 
-        this.input.el.setAttribute('class', this.config.key + '_input')
+        this.input.el.setAttribute('class', this.config.key + '__input')
         //extensions
         this.character      =       (!Character) ? false : Character
     }
@@ -336,10 +337,11 @@ class JMaple{
 
         this.info.appendChild(ul)
         
-        if(this.cmSend === 'getnumber') {
-            this.input.el.setAttribute('value', this.input.bydefault)
+        if(this.cmSend === 'getnumber' || this.cmSend === 'test') {
+            this.input.el.setAttribute('value', this.input.defaultValue)
             this.info.appendChild(this.input.el)
             this.input.el.focus()
+            this.input.el.select()
         }
         this.write = p
     }
@@ -622,9 +624,9 @@ class JMaple{
                 update('acceptdecline', text)
             },
 
-            sendGetNumber   :   (text, bydefault, min, max) => {
+            sendGetNumber   :   (text, defaultValue, min, max) => {
                 this.btnYes.innerHTML = 'ok'
-                this.input.bydefault = bydefault
+                this.input.defaultValue = defaultValue
                 this.input.min = min
                 this.input.max = max
                 switch(this.cmSend){
@@ -661,6 +663,9 @@ class JMaple{
 
             sendTest        :   text => {                
                 this.btnYes.innerHTML = 'YES'
+                this.input.defaultValue = 0
+                this.input.min = 0
+                this.input.max = null
                 switch (this.cmSend) {
                     case 'simple':
                         this.btnsInterrogate1.appendChild(this.btnPrev)
@@ -812,10 +817,13 @@ class JMaple{
     }
 
     set send(mode){
-        if(this.cmSend === 'getnumber'){
+        if(this.cmSend === 'getnumber' || this.cmSend === 'test'){
             let value = parseInt(this.input.el.value)
             if(value < this.input.min || value > this.input.max && this.input.max !== null || isNaN(value)) {
                 this.input.el.style.color = this.config.color.danger
+                setTimeout(()=>{
+                    this.input.el.style.color = 'initial'
+                }, 500)
                 return
             }
             this.selection = value

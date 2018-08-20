@@ -89,6 +89,20 @@
   outline: none;
 }
 
+.m__input {
+  border: 1px solid #ddd;
+  padding: 2px 3px;
+  width: 100%;
+  outline: none;
+  font-size: 9pt;
+  transition: .2s;
+  background-color: transparent;
+}
+
+.m__input:focus {
+  border: 1px solid #ffa000;
+}
+
 .m__head {
   background-color: #ffa000;
   width: 100%;
@@ -153,6 +167,7 @@
 
 .m__body__dialog__info {
   height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -162,10 +177,6 @@
 .m__body__dialog__info--text, .m__body__dialog__info--alternatives {
   font-size: 9pt;
   font-family: roboto-light, sans-serif;
-}
-
-.m__body__dialog__info--text {
-  padding-bottom: 10px;
 }
 
 .m__body__dialog__info--title {
@@ -178,7 +189,7 @@
   list-style: none;
   color: #3839CC;
   cursor: pointer;
-  padding: 10px 0 10px 20px;
+  padding: 15px 0 10px 10px;
 }
 
 .m__body__dialog__info li {

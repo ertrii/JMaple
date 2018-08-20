@@ -135,7 +135,7 @@ Los commands(cm) son funciones que se ejecutarán dentro de las funciones princi
 | sendYesNo(string) | Shows a conversation window with a 'Yes' and 'No' button |
 | sendAcceptDecline(string) | Shows a conversation window with an 'Accept' and 'Decline' button |
 | sendSimple(string) | Shows a conversation window with no buttons |
-| sendGetNumber(string, valueDefault, min, max) | Shows a conversation window with ok buttons and a input text. |
+| sendGetNumber(string, valueDefault, min, max) | Shows a conversation window with ok button and a input text. |
 | sendTest(string) | Shows a conversation window with all button. This is cm does not exist in MapleStory, it was created for the development in the design |
 ###### Credits: Description by Shawn in Ragezone Forum, [here](http://forum.ragezone.com/f428/add-learning-npcs-start-finish-643364/)
 
@@ -355,7 +355,7 @@ new JMaple({
 ```
 JCharacter requiere de dos parametros, __name__, que sería el nombre de tu pj y __gender__, que es el género, que ```0``` sería male(hombre) y ```1```, sería female(mujer).
 
-Estos son los comandos que se usarán en el __script__.
+Estos son los nuevos comandos que se usarán en el __script__.
 
 ### Commands: Character
 | cm | Description |

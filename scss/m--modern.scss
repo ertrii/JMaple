@@ -24,6 +24,10 @@
         border-radius: 3px;
         &:active{box-shadow: 0 0 0 1px rgba(black, 0.3), inset 0px 0px 4px -1px black}
     }
+    &__input{
+        outline: none;
+        width: 100%;
+    }
     //=================
     &__head{
         border-radius: 7px 7px 0 0;
@@ -81,6 +85,7 @@
                 font-size: 9pt;
                 font-family: open-sans-light, sans-serif;
                 height: 100%;
+                width: 100%;
                 @include flex-cl-center(center, flex-start);
                 &--text{padding-bottom: 10px}
                 &--title{
@@ -90,7 +95,7 @@
                 }                
                 &--alternatives{
                     line-height: 1.4em;
-                    padding: 10px 0;                    
+                    padding-bottom: 10px;
                     list-style: none;
                     color: $text-color--bold;
                     cursor: pointer;
