@@ -1,6 +1,6 @@
 {
   "name": "jmaple",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "its a library to show a conversation window on your website",
   "main": "index.html",
   "repository": "https://github.com/ertrii/JMaple",

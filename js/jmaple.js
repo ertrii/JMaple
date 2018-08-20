@@ -7,7 +7,13 @@ class JMaple{
             transition      :       'ease',          //ease, gross, step <- later check, reason: writing
             dev             :       false,
             key             :       'm',
-            zIndex          :       100
+            zIndex          :       100,
+            color           :       {
+                info        :       '#2264C8',
+                success     :       '#22C85C',
+                warning     :       '#FFD232',
+                danger      :       '#FF0050'
+            }
         }
         //Map
         this.listnpc        =       new Map()
@@ -38,6 +44,19 @@ class JMaple{
         this.dispose        =       false
         this.type           =       4               //default
         this.selection      =       0
+        this.input          =       {
+            el              :       document.createElement('input'),
+            bydefault       :       0,
+            min             :       0,
+            max             :       null,
+            restart         :       () => {
+                this.input.bydefault    = 0
+                this.input.min          = 0
+                this.input.max          = null
+            }
+        }
+
+        this.input.el.setAttribute('class', this.config.key + '_input')
         //extensions
         this.character      =       (!Character) ? false : Character
     }
@@ -314,17 +333,23 @@ class JMaple{
         
         this.info.appendChild(p)
         if(title) {this.info.appendChild(h3); title = false}
-        this.info.appendChild(ul)
 
+        this.info.appendChild(ul)
+        
+        if(this.cmSend === 'getnumber') {
+            this.input.el.setAttribute('value', this.input.bydefault)
+            this.info.appendChild(this.input.el)
+            this.input.el.focus()
+        }
         this.write = p
     }
 
     cm(){
         this.cmExecuted     =       false
         const update = (typeSend, txt) => {
-            this.style = txt
             this.cmExecuted = true
             this.cmSend = typeSend
+            this.style = txt
 
             switch (typeSend) {
                 case 'simple'           :   this.type       = 4
@@ -341,6 +366,8 @@ class JMaple{
                     break
                 case 'acceptdecline'    :   this.type       = 12
                     break
+                case 'getnumber'        :   this.type       = 3
+                    break
                 case 'test'             :   this.type       = -1
                     break
                 default                 :   this.cmExecuted = false
@@ -351,10 +378,15 @@ class JMaple{
             
         }
 
+        const infoByConsole = () => {
+            if(this.config.dev) console.info('The same cmSend of message as the previous one')
+        }
+
         let command = {
             sendSimple  :   text => {                
                 switch(this.cmSend){
                     case 'ok':
+                    case 'getNumber':
                         this.btnsInterrogate2.removeChild(this.btnYes)
                         break
                     case 'yesno':
@@ -376,7 +408,7 @@ class JMaple{
                         while(this.btnsInterrogate2.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate2.firstChild)                        
                         break
                     default:
-                        if(this.config.dev) console.info('The same type of message as the previous one')
+                        infoByConsole()
                         break;
                 }
                 update('simple', text)
@@ -387,6 +419,8 @@ class JMaple{
                 switch(this.cmSend){
                     case 'simple':
                         this.btnsInterrogate2.appendChild(this.btnYes)
+                        break
+                    case 'getnumber':
                         break
                     case 'yesno':
                     case 'acceptdecline':
@@ -408,7 +442,7 @@ class JMaple{
                         this.btnsInterrogate2.removeChild(this.btnNo)
                         break
                     default:
-                        if(this.config.dev) console.info('The same type of message as the previous one')
+                        infoByConsole()
                         break;
                 }
                 update('ok', text)         
@@ -420,6 +454,7 @@ class JMaple{
                         this.btnsInterrogate1.appendChild(this.btnNext)
                         break
                     case 'ok':
+                    case 'getnumber':
                         this.btnsInterrogate2.removeChild(this.btnYes)
                         this.btnsInterrogate1.appendChild(this.btnNext)
                         break
@@ -440,7 +475,7 @@ class JMaple{
                         this.btnsInterrogate1.removeChild(this.btnPrev)
                         break
                     default:
-                        if(this.config.dev) console.info('The same type of message as the previous one')
+                        infoByConsole()
                         break
                 }
                 update('next', text)
@@ -453,7 +488,8 @@ class JMaple{
                         this.btnsInterrogate1.appendChild(this.btnPrev)
                         this.btnsInterrogate2.appendChild(this.btnYes)
                         break
-                    case 'ok':                        
+                    case 'ok':
+                    case 'getnumber':
                         this.btnsInterrogate1.appendChild(this.btnPrev)
                         break
                     case 'yesno':
@@ -475,7 +511,7 @@ class JMaple{
                         this.btnsInterrogate2.removeChild(this.btnNo)
                         break
                     default:
-                        if(this.config.dev) console.info('The same type of message as the previous one')
+                        infoByConsole()
                         break
                 }
                 update('prev', text)                
@@ -488,6 +524,7 @@ class JMaple{
                         this.btnsInterrogate1.appendChild(this.btnNext)
                         break
                     case 'ok':
+                    case 'getnumber':
                         this.btnsInterrogate2.removeChild(this.btnYes)
                         break;
                     case 'yesno':
@@ -507,7 +544,7 @@ class JMaple{
                         while(this.btnsInterrogate2.firstChild) this.btnsInterrogate2.removeChild(this.btnsInterrogate2.firstChild)
                         break
                     default:
-                        if(this.config.dev) console.info('The same type of message as the previous one')
+                        infoByConsole()
                         break;
                 }                
                 update('nextprev', text)
@@ -522,7 +559,10 @@ class JMaple{
                         this.btnsInterrogate2.appendChild(this.btnNo)
                         break
                     case 'ok':
+                    case 'getnumber':
                         this.btnsInterrogate2.appendChild(this.btnNo)
+                        break
+                    case 'acceptdecline':
                         break
                     case 'next':
                         this.btnsInterrogate1.removeChild(this.btnNext)
@@ -540,7 +580,7 @@ class JMaple{
                         while(this.btnsInterrogate1.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate1.firstChild)
                         break
                     default:
-                        if(this.config.dev) console.info('The same type of message as the previous one')
+                        infoByConsole()
                         break;
                 }                
                 update('yesno', text)
@@ -555,7 +595,10 @@ class JMaple{
                         this.btnsInterrogate2.appendChild(this.btnNo)
                         break
                     case 'ok':
+                    case 'getnumber':
                         this.btnsInterrogate2.appendChild(this.btnNo)
+                        break
+                    case 'yesno':
                         break
                     case 'next':
                         this.btnsInterrogate1.removeChild(this.btnNext)
@@ -573,10 +616,47 @@ class JMaple{
                         while(this.btnsInterrogate1.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate1.firstChild)
                         break
                     default:
-                        if(this.config.dev) console.info('The same type of message as the previous one')
+                        infoByConsole()
                         break;
                 }                
                 update('acceptdecline', text)
+            },
+
+            sendGetNumber   :   (text, bydefault, min, max) => {
+                this.btnYes.innerHTML = 'ok'
+                this.input.bydefault = bydefault
+                this.input.min = min
+                this.input.max = max
+                switch(this.cmSend){
+                    case 'simple':
+                        this.btnsInterrogate2.appendChild(this.btnYes)
+                        break
+                    case 'ok':
+                        break
+                    case 'yesno':
+                    case 'acceptdecline':
+                        this.btnsInterrogate2.removeChild(this.btnNo)
+                        break
+                    case 'next':
+                        this.btnsInterrogate1.removeChild(this.btnNext)                        
+                        this.btnsInterrogate2.appendChild(this.btnYes)
+                        break
+                    case 'prev':
+                        this.btnsInterrogate1.removeChild(this.btnPrev)                        
+                        break
+                    case 'nextprev':
+                        while(this.btnsInterrogate1.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate1.firstChild)
+                        this.btnsInterrogate2.appendChild(this.btnYes)
+                        break
+                    case 'test':
+                        while(this.btnsInterrogate1.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate1.firstChild)
+                        this.btnsInterrogate2.removeChild(this.btnNo)
+                        break
+                    default:
+                        infoByConsole()
+                        break;
+                }
+                update('getnumber', text)
             },
 
             sendTest        :   text => {                
@@ -589,6 +669,7 @@ class JMaple{
                         this.btnsInterrogate2.appendChild(this.btnNo)
                         break
                     case 'ok':
+                    case 'getnumber':
                         this.btnsInterrogate1.appendChild(this.btnPrev)
                         this.btnsInterrogate1.appendChild(this.btnNext)
                         this.btnsInterrogate2.appendChild(this.btnNo)
@@ -612,9 +693,9 @@ class JMaple{
                         this.btnsInterrogate2.appendChild(this.btnNo)
                         break
                     default:
-                        if(this.config.dev) console.info('The same type of message as the previous one')
+                        infoByConsole()
                         break
-                }                
+                }
                 update('test', text)
             },
 
@@ -628,10 +709,8 @@ class JMaple{
             dispose         :   () => this.dispose = true
         }
         
-        if(this.character !== false){
-            if(this.config.dev) console.info('Found Character, commands assigned to this library')
+        if(this.character !== false)
             return Object.assign(command, this.character.cm)
-        }
 
         return command
     }
@@ -732,13 +811,22 @@ class JMaple{
          
     }
 
-    set send(m){        
+    set send(mode){
+        if(this.cmSend === 'getnumber'){
+            let value = parseInt(this.input.el.value)
+            if(value < this.input.min || value > this.input.max && this.input.max !== null || isNaN(value)) {
+                this.input.el.style.color = this.config.color.danger
+                return
+            }
+            this.selection = value
+            this.input.restart()
+        }
         if(this.config.transition !== 'step'){ 
             this.container.style.opacity = 0
 
             setTimeout( () => {
                 if(this.config.transition === 'ease') this.container.style.transition = '0.3s ease'                
-                this.script.action(m, this.type, this.selection)
+                this.script.action(mode, this.type, this.selection)
                 this.selection = 0 //reset
                 this.container.style.opacity = 1
                 if(!this.cmExecuted && this.dispose) this.end()
@@ -748,7 +836,7 @@ class JMaple{
             this.cmExecuted = false
             return
         }        
-        this.script.action(m, this.type, this.selection)        
+        this.script.action(mode, this.type, this.selection)
         this.selection = 0 //reset
         if(!this.cmExecuted && this.dispose) this.end()
         this.cmExecuted = false
@@ -756,7 +844,7 @@ class JMaple{
 
     events(){        
         //Button
-        const evSend                =   n   =>  { if ( !this.dispose ) this.send = n; else this.end() }
+        const evSend                =   mode=>  { if ( !this.dispose ) this.send = mode; else this.end() }
         this.btnEndChat.onclick     =   ()  =>  { this.script.action(-1, this.type, 0); this.end() }        //endchat
         this.btnYes.onclick         =   ()  =>  evSend(1)                                                //yes
         this.btnNo.onclick          =   ()  =>  evSend(0)                                                //no

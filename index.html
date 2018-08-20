@@ -20,16 +20,17 @@
                 name : 'Maple Administrator',
                 img : 'src/img/npc/9010000.png'
             },
-            script : function() {
+            script : function() {                
                 this.start = function(){
-                    this.cm.sendOk("Thank you for install.")
+                    this.cm.sendOk("Thank you for install.", 0, 2, 99)
                 }
-                this.action = function(){
+                this.action = function(mode, type, selection){
                     this.cm.sendOk("This library is a vertion Alpha. Read documentation please: https://github.com/ertrii/JMaple")
-                    this.cm.dispose()
+                    this.cm.dispose()                                        
                 }
             }
         }, character)
+        jmaple.config.dev = true
         jmaple.show()
         
     </script>
