@@ -4,7 +4,7 @@ class JMaple{
         this.config         =       {
             displace        :       true,
             writing         :       true,
-            transition      :       'ease',          //ease, gross, step <- later check, reason: writing
+            transition      :       'ease', // ease, gross, step <- later check, reason: writing
             dev             :       false,
             key             :       'm',
             zIndex          :       100,
@@ -856,7 +856,12 @@ class JMaple{
     events(){        
         //Button
         const evSend                =   mode=>  { if ( !this.dispose ) this.send = mode; else this.end() }
-        this.btnEndChat.onclick     =   ()  =>  { this.script.action(-1, this.type, 0); this.end() }        //endchat
+        //endchat
+        this.btnEndChat.onclick     =   ()  =>  {
+            if(this.script.hasOwnProperty('action'))
+                this.script.action(-1,this.type, 0)
+            this.end()
+        }
         this.btnYes.onclick         =   ()  =>  evSend(1)                                                //yes
         this.btnNo.onclick          =   ()  =>  evSend(0)                                                //no
         this.btnPrev.onclick        =   ()  =>  evSend(0)                                                //prev
@@ -890,17 +895,21 @@ class JMaple{
     show(){
         this.prepareScript()        
         this.container.classList.add('jmaple')
-        this.container.style.display = 'flex'
-        this.container.style.position = 'fixed'
+        this.container.style.display = 'flex'        
         this.container.style.zIndex = `${this.config.zIndex}`;
         this.container.appendChild(this.html)
-        try{
+
+        if(this.script.hasOwnProperty('start')){
             this.script.start()
-        }
-        catch(e){
-            if(this.config.dev) console.info('the start function was not found, executing action function...')            
-            this.script.action(1, this.type, this.selection)            
-        }
+        }else{
+            if(this.config.dev) console.info('the start function was not found, executing action function...')
+            
+            if(this.script.hasOwnProperty('action'))
+                this.script.action(1, this.type, this.selection)
+            else{
+                if(this.config.dev) console.warning('action function was not found')
+            }
+        }        
         this.events()
         if(!this.cmExecuted && this.dispose) this.end()
     }

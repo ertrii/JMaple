@@ -46,7 +46,8 @@
   width: 100%;
   min-height: 100vh;
   overflow: hidden;
-  position: absolute;
+  position: fixed;
+  top: 0;
 }
 
 .m__color--blue {

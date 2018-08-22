@@ -30,7 +30,12 @@
     justify-content: $jc;
     align-items: $ai;
 }
-.jmaple{ @include vh-center(); overflow: hidden; position: absolute;}
+.jmaple{
+    @include vh-center();
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+}
 
 //color text
 .m{    
