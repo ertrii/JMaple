@@ -3,7 +3,7 @@ class JMaple{
     constructor(data, Character = false){
         this.config         =       {
             displace        :       true,
-            writing         :       true,            
+            writing         :       true,
             transition      :       'ease',          //ease, gross, step <- later check, reason: writing
             dev             :       false,
             key             :       'm',
@@ -42,7 +42,7 @@ class JMaple{
                 {
                     id      :       '__color--blue',
                     cod     :       '#b',   //  Blue text
-                    el      :       'span'
+                    el      :       'b'
                 },
                 {
                     id      :       '__color--purple',
@@ -51,7 +51,7 @@ class JMaple{
                 },{
                     id      :       '__color--bold',
                     cod     :       '#e',   //  Bold text
-                    el      :       'span'
+                    el      :       'b'
                 },
                 {
                     id      :       '__color--green',
@@ -70,7 +70,7 @@ class JMaple{
                 }
             ],
             remove          :       '#n', // Normal text (removes bold)
-            list            :       ['#L', '#l'] // open/close list(<li></li>)
+            list            :       ['#L', '#l'] // open/close list(<li></li>)            
 
         }
         this.prepareScript  =       ()  =>  {
@@ -236,7 +236,7 @@ class JMaple{
     
     structure(dialog){
         //preparing dialog
-        let temText = ''
+        let tempText = ''
         let tempCod = null
         let listDiag = []
 
@@ -246,17 +246,17 @@ class JMaple{
 
 
         function setListDiag(){
-            if(temText === '') return
+            if(tempText === '') return
             let label = {                
                 cod : tempCod,
-                text : temText
+                text : tempText
             }
             if(openLi)
                 listDiagForLi.push(label)
             else
                 listDiag.push(label)                
             
-            temText = ''
+            tempText = ''
         }
         
         function setListLi(){
@@ -266,53 +266,28 @@ class JMaple{
             }
             listLi.push(li)
             tempValueLi = ''
-            temText = ''
+            tempText = ''
             openLi = false
             listDiagForLi = []
         }
 
         const findCode = txt => {
-            switch (txt) {
-                case this.codes.color[0].cod: //  #b
-                    setListDiag()
-                    tempCod = this.codes.color[0].cod
-                    return true
-
-                case this.codes.color[1].cod: //  #d
-                    setListDiag()
-                    tempCod = this.codes.color[1].cod
-                    return true
-
-                case this.codes.color[2].cod: //  #e
-                    setListDiag()
-                    tempCod = this.codes.color[2].cod
-                    return true
-
-                case this.codes.color[3].cod: //   #g
-                    setListDiag()
-                    tempCod = this.codes.color[3].cod
-                    return true
-
-                case this.codes.color[4].cod: //  #k
-                    setListDiag()
-                    tempCod = this.codes.color[4].cod
-                    return true
-
-                case this.codes.color[5].cod: //  #r
-                    setListDiag()
-                    tempCod = this.codes.color[5].cod
-                    return true
-
-                case this.codes.remove: //  #n
-                    setListDiag()
-                    tempCod = null
-                    return true 
-
-                default:
-                    temText += txt
-                    return false                    
+            if(txt === this.codes.remove){
+                setListDiag()
+                tempCod = null                
+            }
+            else{                   
+                for (const color of this.codes.color) {
+                    if(txt === color.cod){
+                        setListDiag()
+                        tempCod = txt
+                        return
+                    }
+                }
+                tempText += txt                 
             }
         }
+
         let i = 0
         while (i < dialog.length) {
             let textSplit = dialog.substr(i, 1)
@@ -354,7 +329,7 @@ class JMaple{
                 i+=2
             }
             else{
-                temText += textSplit
+                tempText += textSplit
                 i++
             } 
                 
@@ -362,6 +337,7 @@ class JMaple{
         setListDiag()//ending...        
         this.write(listDiag, (listLi.length === 0) ? null : listLi)
     }
+
     write(dialogs, listLi = null){
 
         const getTextStyle = node => {
@@ -381,16 +357,58 @@ class JMaple{
 
         while(this.info.firstChild) this.info.removeChild(this.info.firstChild)
                 
-        dialogs.forEach( nodes =>{            
-            if(nodes.cod === null){
-                //let charArray = nodes.text.split('')
-                p.appendChild(document.createTextNode(nodes.text))
+        dialogs.forEach(dialog =>{
+            if(dialog.cod === null){
+                let s = document.createElement('span')
+                s.appendChild(document.createTextNode(dialog.text))
+                p.appendChild(s)
             }else{                            
-                p.appendChild(getTextStyle(nodes))
+                p.appendChild(getTextStyle(dialog))
             }
         })
         this.info.appendChild(p)
 
+        //animating text
+        if(this.config.writing){
+            let childText = []
+            for (const child of p.children) {            
+                childText.push(child.innerHTML)
+                child.innerHTML = ''
+            }        
+            
+            const charArray = i => childText[i].split('')
+            let i = 0, j = 0, done = false
+            const writeNow = () =>{
+                let chars = charArray(i)
+                let length = chars.length
+                p.children[i].innerHTML += chars[j]
+                j++
+                if(j > length - 1){
+                    j = 0
+                    i++
+                }
+                if(i > p.children.length - 1){
+                    i = 0
+                    done = true
+                    return false
+                }
+                return true
+            }
+
+            const interval = setInterval( () => {                
+                if(!writeNow()){                    
+                    clearInterval(interval)
+                }
+            }, 35)
+            this.dialog.onclick = () => {
+                if(done) return
+                clearInterval(interval)
+                while(true) {
+                    if(!writeNow()) break
+                }
+            }
+        }
+        
         //list
         if(listLi !== null) {
             let ul = document.createElement('ul')
@@ -404,14 +422,12 @@ class JMaple{
                         li.appendChild(getTextStyle(content))
                     }
                 }
-                
                 li.onclick = () => {
                     if ( !this.dispose ) {
                         let value = parseInt(node.value)
                         this.selection = (isNaN(value)) ? node.value : value
                         this.send = 1
                      }
-
                     else this.end()
                 }
                 ul.appendChild(li)
@@ -426,8 +442,7 @@ class JMaple{
             this.input.el.focus()
             this.input.el.select()
         }
-        
-        this.animate = p//effect writing
+                
     }
 
     cm(){
@@ -804,102 +819,6 @@ class JMaple{
         return command
     }
 
-    set animate(el) {
-        this.progressWrite = this.config.writing
-
-        let childText = new Array()
-
-        for (const child of el.childNodes) {
-            if(child.nodeName === '#text'){
-                if(child.data == '' || child.data == ' '){
-                    el.removeChild(child)
-                }else{
-                    childText.push([child.data, child.data.split('')])
-                    child.data = ''
-                }
-                continue
-            }
-
-            childText.push([child.innerHTML, child.innerHTML.split('')])
-            child.innerHTML = ''
-                            
-        }
-        
-        const writeNow = () => {
-            for (let t = 0; t < childText.length; t++) {
-                if(el.childNodes[t].nodeName === '#text'){
-                    el.childNodes[t].data = childText[t][0]                    
-                }else{
-                    el.childNodes[t].innerHTML = childText[t][0]                    
-                }                
-            }
-        }
-                
-        let i = 0
-        const asyncWrite = () => {
-             
-            if(i >= childText.length) return
-
-            let j = 0
-
-            if (el.childNodes[i].nodeName === '#text') {
-                let writing1 = setInterval(() => {                    
-                    
-                    if(!this.progressWrite) {                        
-                        writeNow()
-                        clearInterval(writing1)
-                        return
-                    }
-
-                    if(j < childText[i][1].length){
-                        if(childText[i][1][j] === ' '){
-                            el.childNodes[i].data += (childText[i][1][j+1] === undefined) ? childText[i][1][j] : ' ' + childText[i][1][j+1]
-                            j += 2
-                        }else{
-                            el.childNodes[i].data += childText[i][1][j]
-                            j++
-                        }                        
-                    }else{
-                        i++
-                        asyncWrite()
-                        clearInterval(writing1)                        
-                    }
-                }, 35)                
-                
-            }
-
-            else{
-                let writing2 = setInterval(() => {
-                    
-                    if(!this.progressWrite){
-                        writeNow()
-                        clearInterval(writing2)
-                        return
-                    }
-                    
-                    if(j < childText[i][1].length){
-                        if(childText[i][1][j] === ' '){
-                            el.childNodes[i].innerHTML += (childText[i][1][j++] === undefined) ? childText[i][1][j] : ' ' + childText[i][1][j++]
-                            j += 2
-                        }else{
-                            el.childNodes[i].innerHTML += childText[i][1][j]
-                            j++
-                        }
-                                                
-                    }else{
-                        i++
-                        asyncWrite()
-                        clearInterval(writing2)                        
-                    }
-                }, 35)
-                
-            }            
-        }
-        
-        asyncWrite()
-         
-    }
-
     set send(mode){
         if(this.cmSend === 'getnumber' || this.cmSend === 'test'){
             let value = parseInt(this.input.el.value)
@@ -942,10 +861,6 @@ class JMaple{
         this.btnNo.onclick          =   ()  =>  evSend(0)                                                //no
         this.btnPrev.onclick        =   ()  =>  evSend(0)                                                //prev
         this.btnNext.onclick        =   ()  =>  evSend(1)                                                //next
-
-        //Dialog
-        if(this.config.writing)
-        this.dialog.onclick         =   ()  =>  this.progressWrite = false
         
         //Message
         let anchorPoint             =           { getted : false, x : 0, y : 0 },                             //Mag Anchor Point
