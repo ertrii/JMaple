@@ -284,6 +284,7 @@ Para dar color a los textos existen estas etiquetas:
 | #g   | Green text.  |
 | #k   | Black text.  |
 | #r   | Red text.    |
+| #n   | Normal text (removes bold) |
 
 ```javascript
 new JMaple({
@@ -320,13 +321,13 @@ new JMaple({
     },
     script : function(){
         this.start = function(){
-            this.cm.sendOk('This is a List: #L1# item 1 #l #L2# item 2 #l #L3# item 3 #l')
+            this.cm.sendOk('This is a List: #L1#item 1#l#L2#item2#l#L3#item3#l')
             this.cm.dispose()
         }
     }
 }).show()
 ```
-El número asignado podrá ser el valor para el parámetro __selection__, eso dependerá a que item selecciones en el cuadro de diálogo. Es recomendable que le des un espacio entre la etiqueta y el texto.
+El número asignado podrá ser el valor para el parámetro __selection__, eso dependerá a que item selecciones en el cuadro de diálogo. 
 
 JCharacter
 ==========

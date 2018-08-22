@@ -36,6 +36,43 @@ class JMaple{
                 this.maps.set(m.id, data)
             })
         //preparing
+        this.codes           =      {
+
+            color           :       [
+                {
+                    id      :       '__color--blue',
+                    cod     :       '#b',   //  Blue text
+                    el      :       'span'
+                },
+                {
+                    id      :       '__color--purple',
+                    cod     :       '#d',   //  Purple text
+                    el      :       'span'
+                },{
+                    id      :       '__color--bold',
+                    cod     :       '#e',   //  Bold text
+                    el      :       'span'
+                },
+                {
+                    id      :       '__color--green',
+                    cod     :       '#g',   //  Green text
+                    el      :       'span'
+                },
+                {
+                    id      :       '__color--black',
+                    cod     :       '#k',   //  Black text
+                    el      :       'span'
+                },
+                {
+                    id      :       '__color--red',
+                    cod     :       '#r',   //  Red text
+                    el      :       'span'
+                }
+            ],
+            remove          :       '#n', // Normal text (removes bold)
+            list            :       ['#L', '#l'] // open/close list(<li></li>)
+
+        }
         this.prepareScript  =       ()  =>  {
             this.script     =       new data.script();
             this.script.cm  =       this.cm()
@@ -196,154 +233,201 @@ class JMaple{
         this.dispose = false
         this.cmExecuted = false
     }
+    
+    structure(dialog){
+        //preparing dialog
+        let temText = ''
+        let tempCod = null
+        let listDiag = []
 
-    set style(text){        
-        let p = document.createElement('p')
-        p.setAttribute('class', this.config.key + '__body__dialog__info--text')
-        let h3 = document.createElement('h3')
-        let openSelection   =   false
-        let ul = document.createElement('ul')
-        ul.setAttribute('class', this.config.key + '__body__dialog__info--alternatives')
-        let nLi = new Array(), dataLi = 0
+        //preparing list
+        let openLi = false, tempValueLi = ''
+        let listLi = [], listDiagForLi = []
 
-        let splitText   =   text.split('#')
+
+        function setListDiag(){
+            if(temText === '') return
+            let label = {                
+                cod : tempCod,
+                text : temText
+            }
+            if(openLi)
+                listDiagForLi.push(label)
+            else
+                listDiag.push(label)                
+            
+            temText = ''
+        }
         
-        let nothing     =   (text.substr(0,1) === '#') ? false : true
-        let title = false    
-        for (let t of splitText) {
-            let cod         =   t.substr(0,1)            
-            let cleanText    =   document.createTextNode(t.slice(1))
-            
-            
-            if(cod === 'l') {openSelection = false; t = t.slice(1) }    //#l <- close selection
-            if(cod === 'L') openSelection = true                        //#L <- open selection
-
-            let textElem    =   document.createElement((openSelection) ? 'li' : 'span')
-            
-            let findCode = c => {
-                switch (c) {
-                    //#b
-                    case 'b':
-                        textElem.setAttribute('class', this.config.key + '__color--blue')
-                        break
-                    //#d
-                    case 'd':
-                        textElem.setAttribute('class', this.config.key + '__color--purple')
-                        break
-                    //#e
-                    case 'e':
-                        textElem.setAttribute('class', this.config.key + '__color--bold')
-                        break
-                    //#g
-                    case 'g':
-                        textElem.setAttribute('class', this.config.key + '__color--green')
-                        break
-                    //#k
-                    case 'k':
-                        textElem.setAttribute('class', this.config.key + '__color--black')
-                        break
-                    //#r
-                    case 'r':
-                        textElem.setAttribute('class', this.config.key + '__color--red')
-                        break
-                    //#H
-                    case 'H': //This is not exists in the game
-                        h3.setAttribute('class', this.config.key + '__body__dialog__info--title')                        
-                        title = true                        
-                        break
-                    //#p
-                    case 'p':
-                        let idnpc = parseInt(cleanText.data.trim())
-                        if(isNaN(idnpc)){
-                            console.error(`This is id(${cleanText.data}) is not number`)
-                        }else{
-                            textElem.setAttribute('class', this.config.key + '__color--blue')
-                            let _npc = this.listnpc.get(idnpc)
-                            if(_npc === undefined){
-                                console.error('NPC not found in the list.')
-                            }else{
-                                cleanText.data = new _npc().name                            
-                                break
-                            }
-                        }                        
-                        
-                    default:
-                        nothing = true
-                        break;
-                }
+        function setListLi(){
+            let li = {
+                value : tempValueLi,
+                content : listDiagForLi
             }
+            listLi.push(li)
+            tempValueLi = ''
+            temText = ''
+            openLi = false
+            listDiagForLi = []
+        }
 
-            if(!nothing && !openSelection) findCode(cod)            
+        const findCode = txt => {
+            switch (txt) {
+                case this.codes.color[0].cod: //  #b
+                    setListDiag()
+                    tempCod = this.codes.color[0].cod
+                    return true
 
-            if(!nothing && !openSelection && !title){
-                textElem.appendChild(cleanText) //span
-                p.appendChild(textElem)
-            }else if(!nothing && !openSelection && title){
-                h3.appendChild(cleanText)
+                case this.codes.color[1].cod: //  #d
+                    setListDiag()
+                    tempCod = this.codes.color[1].cod
+                    return true
+
+                case this.codes.color[2].cod: //  #e
+                    setListDiag()
+                    tempCod = this.codes.color[2].cod
+                    return true
+
+                case this.codes.color[3].cod: //   #g
+                    setListDiag()
+                    tempCod = this.codes.color[3].cod
+                    return true
+
+                case this.codes.color[4].cod: //  #k
+                    setListDiag()
+                    tempCod = this.codes.color[4].cod
+                    return true
+
+                case this.codes.color[5].cod: //  #r
+                    setListDiag()
+                    tempCod = this.codes.color[5].cod
+                    return true
+
+                case this.codes.remove: //  #n
+                    setListDiag()
+                    tempCod = null
+                    return true 
+
+                default:
+                    temText += txt
+                    return false                    
             }
-            else if(openSelection){
-                if(dataLi === 0){
-                                        
-                    let n = parseInt(cleanText.data)
-                    if(isNaN(n)){
-                        console.error('number Selection is ' + n);
-                        return
-                    }else{
-                        nLi.push(n)                        
+        }
+        let i = 0
+        while (i < dialog.length) {
+            let textSplit = dialog.substr(i, 1)
+            if(textSplit === '#'){
+                textSplit = dialog.substr(i, 2)                
+
+                if(textSplit === this.codes.list[0] && !openLi){                    
+                    let j = 1
+                    while(j < 3){                        
+                        if(dialog.substr(i + 2 + j, 1) === '#'){                            
+                            tempValueLi = dialog.substr(i + 2, j)
+                            break
+                        }
+                        j++
                     }
-                    
-                    dataLi++
-                }else{
-                    let li = document.createElement('li')
-                    li.appendChild(cleanText)
-                    ul.appendChild(li)
-                    dataLi = 0
+                    setListDiag()
+                    if(tempValueLi !== ''){
+                        openLi = true                        
+                        i = i + 3 + j                        
+                    }else{
+                        i = i + 2 + j
+                    }                    
+                    tempCod = null
+                    continue;
                 }
-                                
-            }
-            else{
-                if(t.search('\n') >= 0){                                        
-                    let newSplitText = t.split('\n')
-
-                    p.appendChild(document.createTextNode(newSplitText[0]))
-                    p.appendChild(document.createElement('br'))
-                    p.appendChild(document.createTextNode(newSplitText[1]))
-                    
-                }else{
-                    let OriginalText = document.createTextNode(t)
-                    p.appendChild(OriginalText)    
+    
+                else if(openLi){
+                    if(textSplit === this.codes.list[1]){
+                        setListDiag()
+                        setListLi()
+                        tempCod = null
+                    }else{
+                        findCode(textSplit)                        
+                    }                    
                 }
                 
-                nothing = false
+                else findCode(textSplit)
+
+                i+=2
             }
+            else{
+                temText += textSplit
+                i++
+            } 
+                
+        }
+        setListDiag()//ending...        
+        this.write(listDiag, (listLi.length === 0) ? null : listLi)
+    }
+    write(dialogs, listLi = null){
 
-        } 
-        
+        const getTextStyle = node => {
+            for (const color of this.codes.color) {
+                if (node.cod === color.cod) {
+                    let elem = document.createElement(color.el)
+                    elem.setAttribute('class', this.config.key + color.id)
+                    elem.appendChild(document.createTextNode(node.text))                    
+                    return elem
+                }
+            }
+        }
+
+        //text
+        let p = document.createElement('p')
+        p.setAttribute('class', this.config.key + '__body__dialog__info--text')        
+
         while(this.info.firstChild) this.info.removeChild(this.info.firstChild)
-        
-        let listLi = new Array(), i = 0
-        for (const _li of ul.children) { //no support edge
-            listLi.push( { li : _li, num : nLi[i] } )
-            i++                       
-        }
-
-        for (const list of listLi) list.li.onclick = () => {
-            if ( !this.dispose ) { this.selection = list.num; this.send = 1 }
-            else this.end()
-        }
-        
+                
+        dialogs.forEach( nodes =>{            
+            if(nodes.cod === null){
+                //let charArray = nodes.text.split('')
+                p.appendChild(document.createTextNode(nodes.text))
+            }else{                            
+                p.appendChild(getTextStyle(nodes))
+            }
+        })
         this.info.appendChild(p)
-        if(title) {this.info.appendChild(h3); title = false}
 
-        this.info.appendChild(ul)
-        
+        //list
+        if(listLi !== null) {
+            let ul = document.createElement('ul')
+            ul.setAttribute('class', this.config.key + '__body__dialog__info--alternatives')            
+            listLi.forEach( node => {
+                let li = document.createElement('li')
+                for (const content of node.content) {                    
+                    if(content.cod === null){
+                        li.appendChild(document.createTextNode(content.text))
+                    }else{
+                        li.appendChild(getTextStyle(content))
+                    }
+                }
+                
+                li.onclick = () => {
+                    if ( !this.dispose ) {
+                        let value = parseInt(node.value)
+                        this.selection = (isNaN(value)) ? node.value : value
+                        this.send = 1
+                     }
+
+                    else this.end()
+                }
+                ul.appendChild(li)
+            })
+            this.info.appendChild(ul)
+        }
+
+        //input
         if(this.cmSend === 'getnumber' || this.cmSend === 'test') {
             this.input.el.setAttribute('value', this.input.defaultValue)
             this.info.appendChild(this.input.el)
             this.input.el.focus()
             this.input.el.select()
         }
-        this.write = p
+        
+        this.animate = p//effect writing
     }
 
     cm(){
@@ -351,7 +435,7 @@ class JMaple{
         const update = (typeSend, txt) => {
             this.cmExecuted = true
             this.cmSend = typeSend
-            this.style = txt
+            this.structure(txt)
 
             switch (typeSend) {
                 case 'simple'           :   this.type       = 4
@@ -720,7 +804,7 @@ class JMaple{
         return command
     }
 
-    set write(el) {
+    set animate(el) {
         this.progressWrite = this.config.writing
 
         let childText = new Array()
