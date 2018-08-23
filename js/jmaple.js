@@ -73,11 +73,23 @@ class JMaple{
             identifier      :       [
                 {
                     cod     :       '#m',
-                    list    :       'Map'
+                    list    :       'Map',
+                    show    :       'name'
                 },
                 {
                     cod     :       '#p',
-                    list    :       'Npc'
+                    list    :       'Npc',
+                    show    :       'name'
+                },
+                {
+                    cod     :       '#t',
+                    list    :       'Item',
+                    show    :       'name',
+                },
+                {
+                    cod     :       '#z',
+                    list    :       'Item',
+                    show    :       'name'
                 }
             ],//map, npc
             remove          :       '#n', // Normal text (removes bold)
@@ -91,6 +103,7 @@ class JMaple{
         this.container.style.display = 'none'
         this.cmSend         =       'simple'
         this.dispose        =       false
+        this.mode           =       null
         this.type           =       4               //default
         this.selection      =       0
         this.input          =       {
@@ -242,7 +255,7 @@ class JMaple{
         while(this.container.firstChild) this.container.removeChild(this.container.firstChild)
         this.container.style.display = 'none'
         this.dispose = false
-        this.cmExecuted = false
+        this.cmExecuted = false        
     }
     
     structure(dialog){
@@ -307,6 +320,9 @@ class JMaple{
                         break;
                     case 'Npc':
                         data = this.listnpc.get(parseInt(getValue(maxChar)))
+                        break;
+                    case 'Item':
+                        data = Item.list.get(parseInt(getValue(maxChar)))
                         break;
                 }
                 if(data === undefined) console.error(`${list} not found or the value is long(max : ${maxChar})`)
@@ -384,7 +400,7 @@ class JMaple{
         this.write(listDiag, (listLi.length === 0) ? null : listLi)
     }
 
-    write(dialogs, listLi = null){
+    write(dialogs, list = null){
 
         const getTextStyle = node => {
             for (const color of this.codes.color) {
@@ -456,10 +472,10 @@ class JMaple{
         }
         
         //list
-        if(listLi !== null) {
+        if(list !== null) {
             let ul = document.createElement('ul')
             ul.setAttribute('class', this.config.key + '__body__dialog__info--alternatives')            
-            listLi.forEach( node => {
+            list.forEach( node => {
                 let li = document.createElement('li')
                 for (const content of node.content) {                    
                     if(content.cod === null){
@@ -472,7 +488,8 @@ class JMaple{
                     if ( !this.dispose ) {
                         let value = parseInt(node.value)
                         this.selection = (isNaN(value)) ? node.value : value
-                        this.send = 1
+                        this.mode = 1
+                        this.nextWindow()
                      }
                     else this.end()
                 }
@@ -521,14 +538,9 @@ class JMaple{
                     break
             }
 
-            if(this.config.dev) console.log(`Type: ${typeSend}(${this.type})`);
+            if(this.config.dev) console.log(`Mode: ${this.mode}, Type: ${typeSend}(${this.type}), Selection : ${this.selection}`);
             
         }
-
-        const infoByConsole = () => {
-            if(this.config.dev) console.info('The same cmSend of message as the previous one')
-        }
-
         let command = {
             sendSimple  :   text => {                
                 switch(this.cmSend){
@@ -554,9 +566,6 @@ class JMaple{
                         while(this.btnsInterrogate1.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate1.firstChild)
                         while(this.btnsInterrogate2.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate2.firstChild)                        
                         break
-                    default:
-                        infoByConsole()
-                        break;
                 }
                 update('simple', text)
             },
@@ -588,9 +597,6 @@ class JMaple{
                         while(this.btnsInterrogate1.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate1.firstChild)
                         this.btnsInterrogate2.removeChild(this.btnNo)
                         break
-                    default:
-                        infoByConsole()
-                        break;
                 }
                 update('ok', text)         
             },
@@ -620,9 +626,6 @@ class JMaple{
                     case 'test':
                         while(this.btnsInterrogate2.firstChild) this.btnsInterrogate2.removeChild(this.btnsInterrogate2.firstChild)
                         this.btnsInterrogate1.removeChild(this.btnPrev)
-                        break
-                    default:
-                        infoByConsole()
                         break
                 }
                 update('next', text)
@@ -657,9 +660,6 @@ class JMaple{
                         this.btnsInterrogate1.removeChild(this.next)
                         this.btnsInterrogate2.removeChild(this.btnNo)
                         break
-                    default:
-                        infoByConsole()
-                        break
                 }
                 update('prev', text)                
             },
@@ -690,9 +690,6 @@ class JMaple{
                     case 'test':
                         while(this.btnsInterrogate2.firstChild) this.btnsInterrogate2.removeChild(this.btnsInterrogate2.firstChild)
                         break
-                    default:
-                        infoByConsole()
-                        break;
                 }                
                 update('nextprev', text)
             },
@@ -726,10 +723,7 @@ class JMaple{
                     case 'test':
                         while(this.btnsInterrogate1.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate1.firstChild)
                         break
-                    default:
-                        infoByConsole()
-                        break;
-                }                
+                }
                 update('yesno', text)
             },
 
@@ -762,9 +756,6 @@ class JMaple{
                     case 'test':
                         while(this.btnsInterrogate1.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate1.firstChild)
                         break
-                    default:
-                        infoByConsole()
-                        break;
                 }                
                 update('acceptdecline', text)
             },
@@ -799,9 +790,6 @@ class JMaple{
                         while(this.btnsInterrogate1.firstChild) this.btnsInterrogate1.removeChild(this.btnsInterrogate1.firstChild)
                         this.btnsInterrogate2.removeChild(this.btnNo)
                         break
-                    default:
-                        infoByConsole()
-                        break;
                 }
                 update('getnumber', text)
             },
@@ -842,9 +830,6 @@ class JMaple{
                         this.btnsInterrogate2.appendChild(this.btnYes)
                         this.btnsInterrogate2.appendChild(this.btnNo)
                         break
-                    default:
-                        infoByConsole()
-                        break
                 }
                 update('test', text)
             },
@@ -865,7 +850,7 @@ class JMaple{
         return command
     }
 
-    set send(mode){
+    nextWindow(){
         if(this.cmSend === 'getnumber' || this.cmSend === 'test'){
             let value = parseInt(this.input.el.value)
             if(value < this.input.min || value > this.input.max && this.input.max !== null || isNaN(value)) {
@@ -883,7 +868,7 @@ class JMaple{
 
             setTimeout( () => {
                 if(this.config.transition === 'ease') this.container.style.transition = '0.3s ease'                
-                this.script.action(mode, this.type, this.selection)
+                this.script.action(this.mode, this.type, this.selection)
                 this.selection = 0 //reset
                 this.container.style.opacity = 1
                 if(!this.cmExecuted && this.dispose) this.end()
@@ -893,28 +878,37 @@ class JMaple{
             this.cmExecuted = false
             return
         }        
-        this.script.action(mode, this.type, this.selection)
+        this.script.action(this.mode, this.type, this.selection)
         this.selection = 0 //reset
         if(!this.cmExecuted && this.dispose) this.end()
         this.cmExecuted = false
     }    
 
-    events(){        
-        //Button
-        const evSend                =   mode=>  { if ( !this.dispose ) this.send = mode; else this.end() }
-        //endchat
-        this.btnEndChat.onclick     =   ()  =>  {
-            if(this.script.hasOwnProperty('action'))
-                this.script.action(-1,this.type, 0)
-            this.end()
+    events(){
+        const sendEvent = mode => {
+            this.mode = mode
+            if(!this.dispose) this.nextWindow()
+            else{
+                if(this.config.dev) console.log(`Mode: ${this.mode}, Type: ${this.type}, Selection : ${this.selection}`)
+                this.end()
+            }
         }
-        this.btnYes.onclick         =   ()  =>  evSend(1)                                                //yes
-        this.btnNo.onclick          =   ()  =>  evSend(0)                                                //no
-        this.btnPrev.onclick        =   ()  =>  evSend(0)                                                //prev
-        this.btnNext.onclick        =   ()  =>  evSend(1)                                                //next
+
+        //Buttons:
+         //endchat
+        this.btnEndChat.onclick     =   ()  =>  {
+            this.mode = -1
+            if(this.script.hasOwnProperty('action'))
+                this.script.action(this.mode,this.type, 0)
+            this.end()
+        }        
+        this.btnYes.onclick         =   ()  =>  sendEvent(1) //yes
+        this.btnNo.onclick          =   ()  =>  sendEvent(0) //no
+        this.btnPrev.onclick        =   ()  =>  sendEvent(0) //prev
+        this.btnNext.onclick        =   ()  =>  sendEvent(1) //next
         
-        //Message
-        let anchorPoint             =           { getted : false, x : 0, y : 0 },                             //Mag Anchor Point
+        //Window
+        let anchorPoint             =           { getted : false, x : 0, y : 0 }, //Mag Anchor Point
             cssTranslate            =           { x : 0, y : 0 },
             x = 0, y = 0,
             stopMove                =   ()  =>  { this.container.onmousemove = null; anchorPoint.getted = false; cssTranslate.x = x; cssTranslate.y = y }

@@ -311,6 +311,7 @@ Existen algunos codes que requieren de un valor entero(id):
 | ---- | ------------ |
 | #m[mapid]# | Shows the name of the map. |
 | #p[npcid]# | Shows the name of the NPC. |
+| #t[npcid]# / #z[npcid]# | Shows the name of the Item. |
 
 Recuerde, esto mostrará siempre y cuando existan en la lista de su respectiva clase.
 

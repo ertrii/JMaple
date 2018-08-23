@@ -17,7 +17,7 @@ class Stat{
         this.attM = (stat.hasOwnProperty('attM')) ? stat.attM : 0
         this.refresh()
     }
-    refresh(){        
+    refresh(){
         while (this.exp >= Exp[this.lv]){
 			this.exp -= Exp[this.lv];
             this.lv++
