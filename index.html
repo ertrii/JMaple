@@ -16,17 +16,42 @@
         const jmaple = new JMaple({
             el : 'element',
             npc : {
-                id : '9010000',
+                id : 9010000,
                 name : 'Maple Administrator',
                 img : 'src/img/npc/9010000.png'
             },
-            script : function() {                
+            map: [
+                {
+                    id : 123,
+                    name : 'My New Map',
+                    link : 'index.html#' //can be any link
+                },
+                {
+                    id : 456,
+                    name : 'Github',
+                    link : 'https://github.com/ertrii/JMaple'
+                }
+            ],
+            script : function() {
+                this.status = 0
                 this.start = function(){
-                    this.cm.sendOk("Thank#b you#n for #dinstall.#L1#as#rhi#l#L2#uy#l")                    
+                    this.cm.sendNext("#bThank you#n for install.")
                 }
                 this.action = function(mode, type, selection){                    
-                    this.cm.sendOk("This library is a version Alpha. Read documentation please: https://github.com/ertrii/JMaple" + selection)
-                    this.cm.dispose()
+                    if(this.status === 0){
+                        this.cm.sendYesNo("This library is a version Alpha. #bDo you want to go read the documentation?")
+                        this.status++
+                        return
+                    }
+                    if(this.status === 1){
+                        if(mode === 1){
+                            this.cm.warp(456)
+                            this.cm.dispose()
+                        }else{
+                            this.cm.sendOk('Well... f3')
+                            this.cm.dispose()
+                        }
+                    }
                 }
             }
         }, character)

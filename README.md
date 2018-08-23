@@ -239,10 +239,12 @@ new JMaple({
     map: [
         {
             id : 123456,
+            name : 'my map',
             link : 'index.html#' //can be any link
         },
         {
             id : 456789,
+            name : 'Github',
             link : 'https://github.com/ertrii/JMaple'
         }
     ],
@@ -302,6 +304,16 @@ new JMaple({
     }
 }).show()
 ```
+
+Existen algunos codes que requieren de un valor entero(id):
+
+| code | Description  |
+| ---- | ------------ |
+| #m[mapid]# | Shows the name of the map. |
+| #p[npcid]# | Shows the name of the NPC. |
+
+Recuerde, esto mostrará siempre y cuando existan en la lista de su respectiva clase.
+
 List
 ----
 Para crear una lista se requieren ciertas etiquetas.

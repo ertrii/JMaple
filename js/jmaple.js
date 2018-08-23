@@ -29,6 +29,7 @@ class JMaple{
                 if(!m.hasOwnProperty('warp')) m.warp = true                
                 let data    = {
                     id : m.id,
+                    name : m.name,
                     link : m.link,
                     action: m.action,
                     warp : m.warp,                    
@@ -69,6 +70,16 @@ class JMaple{
                     el      :       'span'
                 }
             ],
+            identifier      :       [
+                {
+                    cod     :       '#m',
+                    list    :       'Map'
+                },
+                {
+                    cod     :       '#p',
+                    list    :       'Npc'
+                }
+            ],//map, npc
             remove          :       '#n', // Normal text (removes bold)
             list            :       ['#L', '#l'] // open/close list(<li></li>)            
 
@@ -237,11 +248,11 @@ class JMaple{
     structure(dialog){
         //preparing dialog
         let tempText = ''
-        let tempCod = null
+        let tempCod = null//tag code open
         let listDiag = []
 
         //preparing list
-        let openLi = false, tempValueLi = ''
+        let openLi = false, tempValue = ''
         let listLi = [], listDiagForLi = []
 
 
@@ -261,56 +272,91 @@ class JMaple{
         
         function setListLi(){
             let li = {
-                value : tempValueLi,
+                value : tempValue,
                 content : listDiagForLi
             }
             listLi.push(li)
-            tempValueLi = ''
+            tempValue = ''
             tempText = ''
             openLi = false
             listDiagForLi = []
         }
 
+        let i = 0
         const findCode = txt => {
             if(txt === this.codes.remove){
                 setListDiag()
-                tempCod = null                
+                tempCod = null
+                return
             }
-            else{                   
-                for (const color of this.codes.color) {
-                    if(txt === color.cod){
-                        setListDiag()
-                        tempCod = txt
-                        return
-                    }
+
+            for (const color of this.codes.color) {
+                if(txt === color.cod){
+                    setListDiag()
+                    tempCod = txt
+                    return
                 }
-                tempText += txt                 
             }
+
+            const getData = list => {
+                i+=2
+                let data = undefined, maxChar = 10
+                switch (list) {
+                    case 'Map':
+                        data = this.maps.get(parseInt(getValue(maxChar)))
+                        break;
+                    case 'Npc':
+                        data = this.listnpc.get(parseInt(getValue(maxChar)))
+                        break;
+                }
+                if(data === undefined) console.error(`${list} not found or the value is long(max : ${maxChar})`)
+                i-=2
+                return data
+            }
+            
+            for (const identifier of this.codes.identifier) {
+                if(txt === identifier.cod){
+                    let data = getData(identifier.list)
+                    tempText = (data === undefined) ? null : data.name
+                    return
+                }
+            }
+            tempText += txt
         }
 
-        let i = 0
+        function getValue(max){
+            let j = 0, value = ''
+            while(j <= max){
+                if(dialog.substr(i + j, 1) === '#'){                            
+                    value = dialog.substr(i, j)
+                    if(value === '') i += j
+                    else {
+                        j++
+                        i += j
+                    }
+                    break
+                }
+                j++
+            }            
+            setListDiag()
+            return value
+        }
         while (i < dialog.length) {
             let textSplit = dialog.substr(i, 1)
             if(textSplit === '#'){
                 textSplit = dialog.substr(i, 2)                
-
-                if(textSplit === this.codes.list[0] && !openLi){                    
-                    let j = 1
-                    while(j < 3){                        
-                        if(dialog.substr(i + 2 + j, 1) === '#'){                            
-                            tempValueLi = dialog.substr(i + 2, j)
-                            break
-                        }
-                        j++
+                if(textSplit === '##'){
+                    tempText += '#'
+                    i++
+                    continue
+                }
+                if(textSplit === this.codes.list[0] && !openLi){
+                    i+=2//omiting code tag
+                    tempValue = getValue(3)
+                    if(tempValue !== ''){
+                        tempCod = null
+                        openLi = true
                     }
-                    setListDiag()
-                    if(tempValueLi !== ''){
-                        openLi = true                        
-                        i = i + 3 + j                        
-                    }else{
-                        i = i + 2 + j
-                    }                    
-                    tempCod = null
                     continue;
                 }
     
