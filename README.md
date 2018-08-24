@@ -312,6 +312,8 @@ Existen algunos codes que requieren de un valor entero(id):
 | #m[mapid]# | Shows the name of the map. |
 | #p[npcid]# | Shows the name of the NPC. |
 | #t[npcid]# / #z[npcid]# | Shows the name of the Item. |
+| #h # | Shows the name of the Character. Don't forget that space. |
+| #v[itemid]# | Shows the image of the Item. |
 
 Recuerde, esto mostrará siempre y cuando existan en la lista de su respectiva clase.
 
@@ -342,18 +344,13 @@ new JMaple({
 ```
 El número asignado podrá ser el valor para el parámetro __selection__, eso dependerá a que item selecciones en el cuadro de diálogo. 
 
-JCharacter
+Character
 ==========
-JCharacter es una extensión que amplia la lista de comandos(cm). JCharacter solo se penso para el desarrollo de NPC para dicho juego, muchos de ellos solo muestran un mensaje por consola. Tal vez mas adelante se piense darle funcionalidades para la web.
-#### Import
-```html
-<script src="js/jcharacter.js"></script>
-<script src="js/jmaple.js"></script>
-```
+Character es una extensión que amplia la lista de comandos(cm). Character solo se penso para el desarrollo de NPC para dicho juego.
 
 #### Example:
 ```javascript
-const character = new JCharacter('myNameUser', 0)
+const character = new Character('myNameUser', 0)
 new JMaple({
     el:'element',
     npc: {
@@ -406,7 +403,7 @@ Estos son los nuevos comandos que se usarán en el __script__.
     * __quantity(int)__.
 
 ```javascript
-const character = new JCharacter('myNameUser', 0)
+const character = new Character('myNameUser', 0)
 character.job = 110,//fighter
 character.lv = 20,
 character.exp = 500,
@@ -489,7 +486,7 @@ Stat
 Al crear un character se le asigna por defecto un __Stat__, str, dex, int, luk con valor 4, y hp, mp con valor 50. Podemos asignarle unos valores de manera personalizada.
 
 ```javascript
-const character = new JCharacter('myNameUser', 0)
+const character = new Character('myNameUser', 0)
 character.stat = new Stat({
     str : 30,
     dex : 24,
@@ -512,11 +509,14 @@ character.stat = new Stat({
 Item
 ----
 Todo item creado se debe agregar a la lista, para crear uno necesitamos instanciar la clase.
-
+Antes de hacerlo debemos verificar la ruta en donde están alojados las imágenes.
+```javascript
+console.log(Item.path)//'src/img/item/'
+```
 ```javascript
 //creating
-const item1 = new Equip(123, 'un arma', 'claw')
-const item2 = new Use(540, 'potion blue', 'potion')
+const item1 = new Equip(123, 'un arma', '123.png')
+const item2 = new Use(540, 'potion blue', 'potion_blue.png')
 
 Item.addList([item1, item2])//registered
 
@@ -530,8 +530,8 @@ Existen varias clases de item dependiendo de lo que deseas crear:
 
 Estas clases necesitan como parametros:
 * __id(int)__, identificador del item.
-* __name(string)__, nombre del item(jeje).
-* __type(string)__, tipo de item.
+* __name(string)__, nombre del item.
+* __icon(string)__, imagen del item.
 
 ### Properties: 
 Dependiendo de la clase de item que hayamos creado tedremos dichas propiedades, hablaremos primero de los comunes que comparten.
@@ -544,18 +544,18 @@ Ahora asignaremos un Item a un Character por medio de una Conversation Window:
 
 ```javascript
 //adding a item
-Item.add(new Equip(961, 'Eclipse', 'polearm'))
+Item.add(new Equip(961, 'Eclipse', '961.png'))
 ```
 ```javascript
 //adding many items
 Item.addList([
-    new Use(4556, 'Potion Blue', 'potion'),
-    new Etc(156, 'leaf', 'simple')
+    new Use(4556, 'Potion Blue', '4556.png'),
+    new Etc(156, 'leaf', '156.png')
 ])
 ```
 ```javascript
 //creating my character
-const character = new JCharacter('myNameUser', 0)
+const character = new Character('myNameUser', 0)
 //Convesation Window
 new JMaple({
     el:'element',

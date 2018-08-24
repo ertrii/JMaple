@@ -87,7 +87,9 @@
                 height: 100%;
                 width: 100%;
                 @include flex-cl-center(center, flex-start);
-                &--text{padding-bottom: 10px}
+                &--text{
+                    padding-bottom: 10px;
+                }
                 &--title{
                     color: transparent;
                     font-size: 9pt;

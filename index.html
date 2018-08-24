@@ -11,8 +11,8 @@
     <div id="element"></div>    
     <script src="jmaple.js"></script>
     <script>
-        Item.add(new Equip(199, 'My Equip', 'weapom'))
-        const character = new Character('erick', 0)
+        Item.add(new Etc(4000002, "Pig's Ribbon", '4000002.png'))
+        const character = new Character('Erick', 0)
         const jmaple = new JMaple({
             el : 'element',
             npc : {
@@ -35,7 +35,8 @@
             script : function() {
                 this.status = 0
                 this.start = function(){
-                    this.cm.sendNext("#bThank you#n for install.")
+                    this.cm.gainItem(4000002,1)
+                    this.cm.sendNext("#bThank you#n for install. #gTake a #v4000002# ^_^")
                 }
                 this.action = function(mode, type, selection){                    
                     if(this.status === 0){

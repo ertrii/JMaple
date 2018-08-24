@@ -45,4 +45,11 @@
     &__color--green{color: $color--g}
     &__color--black{color: $color--k}
     &__color--red{color: $color--r}
+    &__icon{
+        display: inline-block;
+        padding: 0 5px;
+        img{
+            position: relative;
+        }
+    }
 }

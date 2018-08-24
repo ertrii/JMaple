@@ -29,15 +29,18 @@ class Item{
         this.id = id
         this.name = name
         this.inventory = inventory
-        this.type = null;
+        //this.type = null;
         this.lvRequerid = 1        
-        //this.img = item.img
+        this.icon = 'src/img/item/default.png'
         this.trade = true
         this.cash = false
         this.desc = ''
+        this.slotMax = 1
+        this.description = ''        
     }
     static init(){        
         this.list = new Map()
+        this.path = 'src/img/item/'
     }
     static addList(items){        
         items.forEach(item => {
@@ -58,23 +61,15 @@ class Item{
         let item = this.list.get(iditem)
         return (item === undefined) ? null : item
     }
-    get value(){
-        return {
-            id : this.id,
-            name : this.name,            
-            trade : this.trade,
-            cash : this.cash,
-            desc : this.desc
-        }
-    }
 }
 
 Item.init()
 
 class Equip extends Item{
-    constructor(id, name, type){
+    constructor(id, name, icon){
         super(id, name, 'Equip')
-        super.type          = type        
+        super.icon          = icon
+        //super.type          = type
         this.strRequerid    = 0
         this.dexRequerid    = 0
         this.intRequerid    = 0
@@ -95,8 +90,9 @@ class Equip extends Item{
     }
 }
 class Use extends Item{
-    constructor(id, name, type = 'potion'){
+    constructor(id, name, icon){
         super(id, name, 'Use')
+        super.icon = icon
         this.stat = new Stat({
             str : 0,
             dex : 0,
@@ -105,14 +101,16 @@ class Use extends Item{
             hp  : 0,
             mp  : 0
         })
-        super.type = type
+        //super.type = type
         this.warp = false
+        super.slot = 100        
     }    
 }
 class Setup extends Item{
-    constructor(id, name, type){
+    constructor(id, name, icon){
         super(id, name, 'Setup')
         super.lvRequerid = 0
+        super.icon = icon
         this.sec = 10
         this.stat = new Stat({
             str : 0,
@@ -120,14 +118,15 @@ class Setup extends Item{
             int : 0,
             luk : 0
         })
-        super.type = type
+        //super.type = type
     }
 }
 class Etc extends Item{
-    constructor(id, name, type){
+    constructor(id, name, icon){
         super(id, name, 'Etc')
-        super.type = type
-    }    
+        super.slot = 200
+        super.icon = Item.path + icon        
+    }
 }
 
 class Quest{
@@ -258,11 +257,11 @@ class Character{
         })
     }
 
-    setItem(iditem, quantity = 1){
-        let item = Item.get(iditem)
-        if(item === null) {
-            console.error('This iditem not found in the list Item');
-            return;
+    setItem(itemid, quantity = 1){
+        let item = Item.list.get(itemid)
+        if(item === undefined) {
+            console.error(`This item(${itemid}) is not exists in the list Item`);
+            return false;
         }
         if(this.items.get(item.id) === undefined){
             let preparedItem = {
@@ -271,8 +270,9 @@ class Character{
             }
             this.items.set(item.id, preparedItem);
         }else{
-            this.items.get(iditem).quantity += quantity;
+            this.items.get(itemid).quantity += quantity;
         }
+        return true
     }
 
     get listItem(){
@@ -311,11 +311,7 @@ class Character{
                     return true
             },
             gainItem    :   (itemid, ammount = 1)   =>  {
-                let item = Item.get(itemid)                
-                if(item !== null)
-                    this.setItem(item, ammount)
-                else
-                    console.error(`This item(${itemid}) is not exists in the list Item`)
+                return this.setItem(itemid, ammount)
             },
             changeJob   :   jobid   => {
                 if(!isNaN(ammount))
@@ -446,7 +442,7 @@ class JMaple{
                 {
                     id      :       '__color--green',
                     cod     :       '#g',   //  Green text
-                    el      :       'span'
+                    el      :       'b'
                 },
                 {
                     id      :       '__color--black',
@@ -462,25 +458,29 @@ class JMaple{
             identifier      :       [
                 {
                     cod     :       '#m',
-                    list    :       'Map',
-                    show    :       'name'
+                    list    :       'Map'
                 },
                 {
                     cod     :       '#p',
-                    list    :       'Npc',
-                    show    :       'name'
+                    list    :       'Npc'
                 },
                 {
                     cod     :       '#t',
-                    list    :       'Item',
-                    show    :       'name',
+                    list    :       'Item'
                 },
                 {
                     cod     :       '#z',
-                    list    :       'Item',
-                    show    :       'name'
+                    list    :       'Item'
+                },
+                {
+                    cod     :       '#h',
+                    list    :       'Char'
+                },
+                {
+                    cod     :       '#v',
+                    list    :       'Item_icon'
                 }
-            ],//map, npc
+            ],
             remove          :       '#n', // Normal text (removes bold)
             list            :       ['#L', '#l'] // open/close list(<li></li>)            
 
@@ -658,7 +658,7 @@ class JMaple{
         let listLi = [], listDiagForLi = []
 
 
-        function setListDiag(){
+        function save(){
             if(tempText === '') return
             let label = {                
                 cod : tempCod,
@@ -670,9 +670,10 @@ class JMaple{
                 listDiag.push(label)                
             
             tempText = ''
+            tempCod = null
         }
         
-        function setListLi(){
+        function closeLi(){
             let li = {
                 value : tempValue,
                 content : listDiagForLi
@@ -684,45 +685,67 @@ class JMaple{
             listDiagForLi = []
         }
 
-        let i = 0
+        let i_char = 0
         const findCode = txt => {
             if(txt === this.codes.remove){
-                setListDiag()
-                tempCod = null
+                save()                
                 return
             }
 
             for (const color of this.codes.color) {
                 if(txt === color.cod){
-                    setListDiag()
+                    save()
                     tempCod = txt
                     return
                 }
             }
 
-            const getData = list => {
-                i+=2
-                let data = undefined, maxChar = 10
+            const getData = (list, cod) => {
+                i_char +=2
+                let data = null, maxChar = 10
+                function check(value, property){
+                    let getted = value()
+                    if (getted === undefined) return
+                    if(property === 'name'){ data = getted.name; return}
+                    if(property === 'icon') data = getted.icon
+                }
                 switch (list) {
-                    case 'Map':
-                        data = this.maps.get(parseInt(getValue(maxChar)))
+                    case 'Map':                        
+                        check( () => this.maps.get(parseInt(getValue(maxChar))), 'name')
                         break;
                     case 'Npc':
-                        data = this.listnpc.get(parseInt(getValue(maxChar)))
+                        check( () => this.listnpc.get(parseInt(getValue(maxChar))), 'name')
                         break;
-                    case 'Item':
-                        data = Item.list.get(parseInt(getValue(maxChar)))
+                    case 'Item':                        
+                        check( () => Item.list.get(parseInt(getValue(maxChar))), 'name')
+                        break;
+                    case 'Char':
+                        if (getValue(2) === ' ') data = this.character.nick
+                        else {
+                            i_char++
+                            data = txt
+                        }
+                        break
+                    case 'Item_icon':
+                        let savingTempCod = tempCod
+                        save()//closing tag code
+                        check( () => Item.list.get(parseInt(getValue(maxChar))), 'icon')
+                        tempCod = cod//open tag code
+                        tempText = data
+                        save()//closing tag code
+                        tempCod = savingTempCod
+                        data = ''
                         break;
                 }
                 if(data === undefined) console.error(`${list} not found or the value is long(max : ${maxChar})`)
-                i-=2
+                i_char -=2
                 return data
             }
             
             for (const identifier of this.codes.identifier) {
                 if(txt === identifier.cod){
-                    let data = getData(identifier.list)
-                    tempText = (data === undefined) ? null : data.name
+                    let data = getData(identifier.list, txt)
+                    tempText += data
                     return
                 }
             }
@@ -732,44 +755,45 @@ class JMaple{
         function getValue(max){
             let j = 0, value = ''
             while(j <= max){
-                if(dialog.substr(i + j, 1) === '#'){                            
-                    value = dialog.substr(i, j)
-                    if(value === '') i += j
+                if(dialog.substr(i_char + j, 1) === '#'){                            
+                    value = dialog.substr(i_char, j)
+                    if(value === '') i_char += j
                     else {
                         j++
-                        i += j
+                        i_char += j
                     }
                     break
                 }
                 j++
             }            
-            setListDiag()
+            //save()
             return value
         }
-        while (i < dialog.length) {
-            let textSplit = dialog.substr(i, 1)
+        while (i_char < dialog.length) {
+            let textSplit = dialog.substr(i_char, 1)
             if(textSplit === '#'){
-                textSplit = dialog.substr(i, 2)                
+                textSplit = dialog.substr(i_char, 2)                
                 if(textSplit === '##'){
                     tempText += '#'
-                    i++
+                    i_char ++
                     continue
                 }
                 if(textSplit === this.codes.list[0] && !openLi){
-                    i+=2//omiting code tag
+                    i_char += 2//omiting code tag
                     tempValue = getValue(3)
-                    if(tempValue !== ''){
-                        tempCod = null
+                    
+                    if(tempValue !== ''){                        
+                        save()
                         openLi = true
                     }
+                    else i_char ++                    
                     continue;
                 }
     
                 else if(openLi){
                     if(textSplit === this.codes.list[1]){
-                        setListDiag()
-                        setListLi()
-                        tempCod = null
+                        save()
+                        closeLi()
                     }else{
                         findCode(textSplit)                        
                     }                    
@@ -777,15 +801,15 @@ class JMaple{
                 
                 else findCode(textSplit)
 
-                i+=2
+                i_char +=2
             }
             else{
                 tempText += textSplit
-                i++
+                i_char ++
             } 
                 
         }
-        setListDiag()//ending...        
+        save()//ending...        
         this.write(listDiag, (listLi.length === 0) ? null : listLi)
     }
 
@@ -800,6 +824,13 @@ class JMaple{
                     return elem
                 }
             }
+            let div = document.createElement('div')
+            div.setAttribute('class', this.config.key + '__icon')
+            let img = document.createElement('img')
+            img.setAttribute('src', node.text)
+            div.appendChild(img)
+            //img.setAttribute('title', node.text)
+            return div
         }
 
         //text
@@ -807,41 +838,61 @@ class JMaple{
         p.setAttribute('class', this.config.key + '__body__dialog__info--text')        
 
         while(this.info.firstChild) this.info.removeChild(this.info.firstChild)
-                
+
         dialogs.forEach(dialog =>{
             if(dialog.cod === null){
                 let s = document.createElement('span')
                 s.appendChild(document.createTextNode(dialog.text))
                 p.appendChild(s)
-            }else{                            
+            }
+            else{
                 p.appendChild(getTextStyle(dialog))
             }
         })
         this.info.appendChild(p)
 
         //animating text
+        let savingElem = []
         if(this.config.writing){
             let childText = []
-            for (const child of p.children) {            
-                childText.push(child.innerHTML)
-                child.innerHTML = ''
-            }        
-            
-            const charArray = i => childText[i].split('')
-            let i = 0, j = 0, done = false
-            const writeNow = () =>{
-                let chars = charArray(i)
-                let length = chars.length
-                p.children[i].innerHTML += chars[j]
-                j++
-                if(j > length - 1){
-                    j = 0
-                    i++
+            let positionChild = 0
+            for (const child of p.children) {
+
+                if(child.tagName === 'DIV'){
+                    savingElem.push([positionChild, child.firstChild])
+                    childText.push('')
+                }else{
+                    childText.push(child.innerHTML)
+                    child.innerHTML = ''
                 }
+                positionChild++                
+            }
+            for (const elem of savingElem) {
+                p.children[elem[0]].removeChild(elem[1])
+            }
+            //console.log(savingElem)
+            const charArray = _i => childText[_i].split('')
+            let i = 0, j = 0, done = false
+            //writirng
+            function writeNow(){
                 if(i > p.children.length - 1){
                     i = 0
                     done = true
                     return false
+                }
+                for (const k in savingElem) {
+                    if(i===savingElem[k][0]){
+                        p.children[i].appendChild(savingElem[k][1])
+                        i++
+                        return true
+                   }   
+                }                
+                let chars = charArray(i)
+                p.children[i].innerHTML += chars[j]
+                j++
+                if(j > chars.length - 1){
+                    j = 0
+                    i++
                 }
                 return true
             }

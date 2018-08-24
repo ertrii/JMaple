@@ -74,6 +74,15 @@
   color: red;
 }
 
+.m__icon {
+  display: inline-block;
+  padding: 0 5px;
+}
+
+.m__icon img {
+  position: relative;
+}
+
 .m {
   width: 524px;
   min-height: 200px;
