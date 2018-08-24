@@ -8,12 +8,11 @@
     <title>JMaple</title>    
 </head>
 <body>    
-    <div id="element"></div>
-    <script src="js/jcharacter.js"></script>
-    <script src="js/jmaple.js"></script>
+    <div id="element"></div>    
+    <script src="jmaple.js"></script>
     <script>
         Item.add(new Equip(199, 'My Equip', 'weapom'))
-        const character = new JCharacter('erick', 0)
+        const character = new Character('erick', 0)
         const jmaple = new JMaple({
             el : 'element',
             npc : {
@@ -46,7 +45,7 @@
                     }
                     if(this.status === 1){
                         if(mode === 1){
-                            this.cm.warp(123)                            
+                            this.cm.warp(456)                            
                             this.cm.dispose()
                         }else{
                             this.cm.sendOk('Well... f3')
