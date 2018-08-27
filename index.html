@@ -8,10 +8,12 @@
     <title>JMaple</title>    
 </head>
 <body>    
-    <div id="element"></div>    
+    <div id="element"></div>
+    <script src="script/9010000.js"></script>
     <script src="jmaple.js"></script>
     <script>
         Item.add(new Etc(4000002, "Pig's Ribbon", '4000002.png'))
+        Item.add(new Equip(402, "asfaon", '402.png'))
         const character = new Character('Erick', 0)
         const jmaple = new JMaple({
             el : 'element',
@@ -32,29 +34,7 @@
                     link : 'https://github.com/ertrii/JMaple'
                 }
             ],
-            script : function() {
-                this.status = 0
-                this.start = function(){
-                    this.cm.gainItem(4000002,1)
-                    this.cm.sendNext("#bThank you#n for install. #gTake a #v4000002# ^_^")
-                }
-                this.action = function(mode, type, selection){                    
-                    if(this.status === 0){
-                        this.cm.sendYesNo("This library is a version Alpha. #bDo you want to go read the documentation?")
-                        this.status++
-                        return
-                    }
-                    if(this.status === 1){
-                        if(mode === 1){
-                            this.cm.warp(456)                            
-                            this.cm.dispose()
-                        }else{
-                            this.cm.sendOk('Well... f3')
-                            this.cm.dispose()
-                        }
-                    }
-                }
-            }
+            script : N9010000
         }, character)
         jmaple.config.dev = true
         jmaple.show()

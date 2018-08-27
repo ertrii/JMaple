@@ -118,7 +118,6 @@ class Setup extends Item{
             int : 0,
             luk : 0
         })
-        //super.type = type
     }
 }
 class Etc extends Item{
@@ -422,7 +421,7 @@ class JMaple{
                 this.maps.set(m.id, data)
             })
         //preparing
-        this.codes           =      {
+        this.tagCode           =      {
 
             color           :       [
                 {
@@ -455,32 +454,7 @@ class JMaple{
                     el      :       'span'
                 }
             ],
-            identifier      :       [
-                {
-                    cod     :       '#m',
-                    list    :       'Map'
-                },
-                {
-                    cod     :       '#p',
-                    list    :       'Npc'
-                },
-                {
-                    cod     :       '#t',
-                    list    :       'Item'
-                },
-                {
-                    cod     :       '#z',
-                    list    :       'Item'
-                },
-                {
-                    cod     :       '#h',
-                    list    :       'Char'
-                },
-                {
-                    cod     :       '#v',
-                    list    :       'Item_icon'
-                }
-            ],
+            identifier      :       ['#m', '#p', '#t', '#z', '#h', '#v', '#i', '#c'],
             remove          :       '#n', // Normal text (removes bold)
             list            :       ['#L', '#l'] // open/close list(<li></li>)            
 
@@ -649,107 +623,121 @@ class JMaple{
     
     structure(dialog){
         //preparing dialog
-        let tempText = ''
-        let tempCod = null//tag code open
+        let temp = {
+            cod     : null,
+            text    : '',
+            value   : ''
+        }
         let listDiag = []
 
         //preparing list
-        let openLi = false, tempValue = ''
-        let listLi = [], listDiagForLi = []
+        let openLi = false, valueLi = ''
+        let ul = [], contentLi = []
 
 
         function save(){
-            if(tempText === '') return
-            let label = {                
-                cod : tempCod,
-                text : tempText
+            if(temp.text === '') return
+            let newTemp = {                
+                cod : temp.cod,
+                text : temp.text,
+                value : temp.value
             }
             if(openLi)
-                listDiagForLi.push(label)
-            else
-                listDiag.push(label)                
-            
-            tempText = ''
-            tempCod = null
+                contentLi.push(newTemp)
+            else{
+                listDiag.push(newTemp)
+            }
+            temp.text = ''
+            temp.value = ''
+            temp.cod = null
         }
         
         function closeLi(){
             let li = {
-                value : tempValue,
-                content : listDiagForLi
+                value : valueLi,
+                content : contentLi
             }
-            listLi.push(li)
-            tempValue = ''
-            tempText = ''
+            ul.push(li)
+            valueLi = ''
+            temp.text = ''
             openLi = false
-            listDiagForLi = []
+            contentLi = []
         }
 
         let i_char = 0
         const findCode = txt => {
-            if(txt === this.codes.remove){
+            if(txt === this.tagCode.remove){
                 save()                
                 return
             }
 
-            for (const color of this.codes.color) {
+            for (const color of this.tagCode.color) {
                 if(txt === color.cod){
                     save()
-                    tempCod = txt
+                    temp.cod = txt
                     return
                 }
             }
 
-            const getData = (list, cod) => {
+            const getData = cod => {
                 i_char +=2
-                let data = null, maxChar = 10
+                let data = null
                 function check(value, property){
                     let getted = value()
                     if (getted === undefined) return
                     if(property === 'name'){ data = getted.name; return}
                     if(property === 'icon') data = getted.icon
                 }
-                switch (list) {
-                    case 'Map':                        
-                        check( () => this.maps.get(parseInt(getValue(maxChar))), 'name')
+                switch (cod) {
+                    case '#m':
+                        check( () => this.maps.get(parseInt(getValue(10))), 'name')
                         break;
-                    case 'Npc':
-                        check( () => this.listnpc.get(parseInt(getValue(maxChar))), 'name')
+                    case '#p':
+                        check( () => this.listnpc.get(parseInt(getValue(10))), 'name')
                         break;
-                    case 'Item':                        
-                        check( () => Item.list.get(parseInt(getValue(maxChar))), 'name')
+                    case '#t':
+                    case '#z':
+                        check( () => Item.list.get(parseInt(getValue(10))), 'name')
                         break;
-                    case 'Char':
+                    case '#h':
                         if (getValue(2) === ' ') data = this.character.nick
                         else {
                             i_char++
                             data = txt
                         }
                         break
-                    case 'Item_icon':
-                        let savingTempCod = tempCod
+                    case '#i':
+                    case '#v':
+                        let savingTempCod = temp.cod
                         save()//closing tag code
-                        check( () => Item.list.get(parseInt(getValue(maxChar))), 'icon')
-                        tempCod = cod//open tag code
-                        tempText = data
+                        let _item = Item.list.get(parseInt(getValue(10)))
+                        if(_item === undefined) break
+                        temp.cod = cod//open tag code
+                        temp.text = _item.name
+                        temp.value = _item.icon
                         save()//closing tag code
-                        tempCod = savingTempCod
+                        temp.cod = savingTempCod
                         data = ''
                         break;
+                    case '#c':
+                        let item = this.character.items.get(parseInt(getValue(10)))
+                        if(item === undefined) data = 0
+                        else data = item.quantity
+                        break
                 }
-                if(data === undefined) console.error(`${list} not found or the value is long(max : ${maxChar})`)
+                if(data === null) console.error(`Not found or the value is long`)
                 i_char -=2
                 return data
             }
             
-            for (const identifier of this.codes.identifier) {
-                if(txt === identifier.cod){
-                    let data = getData(identifier.list, txt)
-                    tempText += data
+            for (const identifier of this.tagCode.identifier) {
+                if(txt === identifier){
+                    let data = getData(identifier)
+                    temp.text += data
                     return
                 }
             }
-            tempText += txt
+            temp.text += txt
         }
 
         function getValue(max){
@@ -765,8 +753,7 @@ class JMaple{
                     break
                 }
                 j++
-            }            
-            //save()
+            }
             return value
         }
         while (i_char < dialog.length) {
@@ -774,15 +761,15 @@ class JMaple{
             if(textSplit === '#'){
                 textSplit = dialog.substr(i_char, 2)                
                 if(textSplit === '##'){
-                    tempText += '#'
+                    temp.text += '#'
                     i_char ++
                     continue
                 }
-                if(textSplit === this.codes.list[0] && !openLi){
+                if(textSplit === this.tagCode.list[0] && !openLi){
                     i_char += 2//omiting code tag
-                    tempValue = getValue(3)
+                    valueLi = getValue(3)
                     
-                    if(tempValue !== ''){                        
+                    if(valueLi !== ''){                        
                         save()
                         openLi = true
                     }
@@ -791,32 +778,29 @@ class JMaple{
                 }
     
                 else if(openLi){
-                    if(textSplit === this.codes.list[1]){
+                    if(textSplit === this.tagCode.list[1]){
                         save()
                         closeLi()
                     }else{
                         findCode(textSplit)                        
                     }                    
                 }
-                
                 else findCode(textSplit)
-
                 i_char +=2
             }
             else{
-                tempText += textSplit
+                temp.text += textSplit
                 i_char ++
             } 
                 
         }
         save()//ending...        
-        this.write(listDiag, (listLi.length === 0) ? null : listLi)
+        this.write(listDiag, (ul.length === 0) ? null : ul)
     }
 
     write(dialogs, list = null){
-
         const getTextStyle = node => {
-            for (const color of this.codes.color) {
+            for (const color of this.tagCode.color) {
                 if (node.cod === color.cod) {
                     let elem = document.createElement(color.el)
                     elem.setAttribute('class', this.config.key + color.id)
@@ -827,7 +811,8 @@ class JMaple{
             let div = document.createElement('div')
             div.setAttribute('class', this.config.key + '__icon')
             let img = document.createElement('img')
-            img.setAttribute('src', node.text)
+            img.setAttribute('src', node.value)
+            img.setAttribute('title', node.text)
             div.appendChild(img)
             //img.setAttribute('title', node.text)
             return div
@@ -1378,18 +1363,17 @@ class JMaple{
         this.container.style.display = 'flex'        
         this.container.style.zIndex = `${this.config.zIndex}`;
         this.container.appendChild(this.html)
-
-        if(this.script.hasOwnProperty('start')){
+        this.script.start()
+        /*try{
             this.script.start()
-        }else{
+        }catch(e){
             if(this.config.dev) console.info('the start function was not found, executing action function...')
-            
-            if(this.script.hasOwnProperty('action'))
+            try{
                 this.script.action(1, this.type, this.selection)
-            else{
-                if(this.config.dev) console.warning('action function was not found')
+            }catch(er){
+                if(this.config.dev) console.error('action function was not found')
             }
-        }        
+        }*/
         this.events()
         if(!this.cmExecuted && this.dispose) this.end()
     }

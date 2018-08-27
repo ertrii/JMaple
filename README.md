@@ -16,7 +16,7 @@ npm install jmaple
 
 #### jmaple.js
 ```html
-<script src="js/jmaple.js"></script>
+<script src="jmaple.js"></script>
 ```
 ```javascript
 new JMaple({
@@ -313,7 +313,8 @@ Existen algunos codes que requieren de un valor entero(id):
 | #p[npcid]# | Shows the name of the NPC. |
 | #t[npcid]# / #z[npcid]# | Shows the name of the Item. |
 | #h # | Shows the name of the Character. Don't forget that space. |
-| #v[itemid]# | Shows the image of the Item. |
+| #v[itemid]# / #i[itemid]# | Shows the image of the Item. |
+| #c[itemid]# | Shows how many [itemid] the player has in their inventory. |
 
 Recuerde, esto mostrará siempre y cuando existan en la lista de su respectiva clase.
 
