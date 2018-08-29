@@ -6,7 +6,7 @@ class N9010000 {
     }
    start(){
         this.cm.gainItem(4000002,1)
-        this.cm.sendNext("#bThank you#n for install. #gTake a #i4000002# ^_^")
+        this.cm.sendNext("Thank you#n for install. #gTake a #i4000002# ^_^ ")
     }
     action(mode, type, selection){                    
         if(this.status === 0){

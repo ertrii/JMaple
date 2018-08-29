@@ -454,7 +454,7 @@ class JMaple{
                     el      :       'span'
                 }
             ],
-            identifier      :       ['#m', '#p', '#t', '#z', '#h', '#v', '#i', '#c'],
+            identifier      :       ['#m', '#p', '#t', '#z', '#h', '#v', '#i', '#c', '#w'],
             remove          :       '#n', // Normal text (removes bold)
             list            :       ['#L', '#l'] // open/close list(<li></li>)            
 
@@ -621,19 +621,18 @@ class JMaple{
         this.cmExecuted = false        
     }
     
-    structure(dialog){
-        //preparing dialog
-        let temp = {
-            cod     : null,
-            text    : '',
-            value   : ''
+    structure(msg){
+        //preparing message
+        let temp = { cod : null, text : '', value   : '' }
+        let paragraphs = [], parag = []
+        function addParagraphs(){
+            let newParag = [...parag]
+            paragraphs.push(newParag)
+            parag = []
         }
-        let listDiag = []
-
         //preparing list
         let openLi = false, valueLi = ''
         let ul = [], contentLi = []
-
 
         function save(){
             if(temp.text === '') return
@@ -642,14 +641,16 @@ class JMaple{
                 text : temp.text,
                 value : temp.value
             }
-            if(openLi)
-                contentLi.push(newTemp)
-            else{
-                listDiag.push(newTemp)
-            }
+
             temp.text = ''
             temp.value = ''
             temp.cod = null
+
+            if(openLi)
+                contentLi.push(newTemp)
+            else{
+                parag.push(newTemp)
+            }            
         }
         
         function closeLi(){
@@ -724,6 +725,13 @@ class JMaple{
                         if(item === undefined) data = 0
                         else data = item.quantity
                         break
+                    case '#w':
+                        let savingTempCod2 = temp.cod
+                        save()
+                        addParagraphs()
+                        temp.cod = savingTempCod2
+                        data = ''
+                        break
                 }
                 if(data === null) console.error(`Not found or the value is long`)
                 i_char -=2
@@ -743,8 +751,8 @@ class JMaple{
         function getValue(max){
             let j = 0, value = ''
             while(j <= max){
-                if(dialog.substr(i_char + j, 1) === '#'){                            
-                    value = dialog.substr(i_char, j)
+                if(msg.substr(i_char + j, 1) === '#'){                            
+                    value = msg.substr(i_char, j)
                     if(value === '') i_char += j
                     else {
                         j++
@@ -756,10 +764,10 @@ class JMaple{
             }
             return value
         }
-        while (i_char < dialog.length) {
-            let textSplit = dialog.substr(i_char, 1)
+        while (i_char < msg.length) {
+            let textSplit = msg.substr(i_char, 1)
             if(textSplit === '#'){
-                textSplit = dialog.substr(i_char, 2)                
+                textSplit = msg.substr(i_char, 2)                
                 if(textSplit === '##'){
                     temp.text += '#'
                     i_char ++
@@ -769,8 +777,9 @@ class JMaple{
                     i_char += 2//omiting code tag
                     valueLi = getValue(3)
                     
-                    if(valueLi !== ''){                        
+                    if(valueLi !== ''){
                         save()
+                        temp.cod = null//it's just in case
                         openLi = true
                     }
                     else i_char ++                    
@@ -794,11 +803,13 @@ class JMaple{
             } 
                 
         }
-        save()//ending...        
-        this.write(listDiag, (ul.length === 0) ? null : ul)
+        //console.log("\n" )
+        save()//ending...
+        addParagraphs()
+        this.write(paragraphs, (ul.length === 0) ? null : ul)
     }
 
-    write(dialogs, list = null){
+    write(paragraphs, list = null){
         const getTextStyle = node => {
             for (const color of this.tagCode.color) {
                 if (node.cod === color.cod) {
@@ -814,84 +825,135 @@ class JMaple{
             img.setAttribute('src', node.value)
             img.setAttribute('title', node.text)
             div.appendChild(img)
-            //img.setAttribute('title', node.text)
             return div
         }
 
         //text
-        let p = document.createElement('p')
-        p.setAttribute('class', this.config.key + '__body__dialog__info--text')        
-
         while(this.info.firstChild) this.info.removeChild(this.info.firstChild)
-
-        dialogs.forEach(dialog =>{
-            if(dialog.cod === null){
-                let s = document.createElement('span')
-                s.appendChild(document.createTextNode(dialog.text))
-                p.appendChild(s)
-            }
-            else{
-                p.appendChild(getTextStyle(dialog))
-            }
+        paragraphs.forEach(parag => {
+            let p = document.createElement('p')
+            p.setAttribute('class', this.config.key + '__body__dialog__info--text')
+                
+            parag.forEach(dialog =>{
+                if(dialog.cod === null){
+                    let s = document.createElement('span')
+                    s.appendChild(document.createTextNode(dialog.text))
+                    p.appendChild(s)
+                }
+                else{
+                    p.appendChild(getTextStyle(dialog))
+                }
+            })
+            this.info.appendChild(p)
         })
-        this.info.appendChild(p)
 
         //animating text
-        let savingElem = []
         if(this.config.writing){
-            let childText = []
-            let positionChild = 0
-            for (const child of p.children) {
 
-                if(child.tagName === 'DIV'){
-                    savingElem.push([positionChild, child.firstChild])
-                    childText.push('')
-                }else{
-                    childText.push(child.innerHTML)
-                    child.innerHTML = ''
+            //removing text
+            let tempElem = [], savingText = [], savingElements = []
+            let numParag = 0
+            for(let indexParag = 0; indexParag < paragraphs.length; indexParag++ ){
+                removeText(this.info.children[indexParag])
+            }            
+            function removeText(parag){
+                let positionChild = 0, foundDiv = false
+
+                for (const elem of parag.children) {
+
+                    if(elem.tagName === 'DIV'){
+                        tempElem.push([positionChild, elem.firstChild])
+                        savingText.push('')
+                        foundDiv = true
+                    }
+
+                    else{
+                        savingText.push(elem.innerHTML)
+                        elem.innerHTML = ''
+                    }
+
+                    positionChild++
                 }
-                positionChild++                
+
+                if(foundDiv) {
+                    savingElements.push({
+                        index : numParag,
+                        el : [...tempElem]
+                    })
+                    tempElem = []
+                }
+                numParag++
             }
-            for (const elem of savingElem) {
-                p.children[elem[0]].removeChild(elem[1])
+
+            for (const elementsOfParag of savingElements) {
+                for (const elem of elementsOfParag.el) {
+                    this.info.children[elementsOfParag.index].children[elem[0]].removeChild(elem[1])
+                }
             }
-            //console.log(savingElem)
-            const charArray = _i => childText[_i].split('')
-            let i = 0, j = 0, done = false
-            //writirng
-            function writeNow(){
-                if(i > p.children.length - 1){
+
+            //re-writirng
+            let i = 0, j = 0, k = 0, countParag = 0
+            const charArray = _i => savingText[_i].split('')            
+
+            function writeNow(el){
+                if(i > el.children.length - 1){
                     i = 0
-                    done = true
+                    j = 0
                     return false
                 }
-                for (const k in savingElem) {
-                    if(i===savingElem[k][0]){
-                        p.children[i].appendChild(savingElem[k][1])
-                        i++
-                        return true
-                   }   
-                }                
-                let chars = charArray(i)
-                p.children[i].innerHTML += chars[j]
+                //this is crazy ._.
+                if(savingElements.length > 0){
+                    for(let e = 0; e < savingElements.length; e++){
+                        if(countParag === savingElements[e].index){
+                            for(const elementsOfParag of savingElements[e].el){
+                                if(i === elementsOfParag[0]){
+                                    el.children[i].appendChild(elementsOfParag[1])
+                                    i++
+                                    k++
+                                    return true
+                                }
+                            }
+                        }
+                    }
+                }
+                let chars = charArray(k)
+                el.children[i].innerHTML += chars[j]
                 j++
                 if(j > chars.length - 1){
                     j = 0
                     i++
+                    k++
                 }
                 return true
             }
-
-            const interval = setInterval( () => {                
-                if(!writeNow()){                    
+            
+            let done = false
+            const interval = setInterval( () => {
+                if(countParag >= paragraphs.length){
+                    done = true
+                    k = 0
                     clearInterval(interval)
+                }else{
+                    if(!writeNow(this.info.children[countParag])){
+                        countParag++
+                    }
                 }
-            }, 35)
+                
+            }, 350)
+
             this.dialog.onclick = () => {
                 if(done) return
                 clearInterval(interval)
                 while(true) {
-                    if(!writeNow()) break
+                    if(countParag >= paragraphs.length){
+                        done = true
+                        k = 0
+                        break
+                    }else{
+                        if(!writeNow(this.info.children[countParag]))
+                            countParag++
+                    }
+                    
                 }
             }
         }

@@ -327,6 +327,8 @@ Para crear una lista se requieren ciertas etiquetas.
 | #L[int]# | Open Item   |
 | #l       | Close Item  |
 
+Todos forman parte de un párrafo, si desea crear uno nuevo use la etiqueta ```#w```. In Maplestory is ```\n```.
+
 ```javascript
 new JMaple({
     el:'element',
