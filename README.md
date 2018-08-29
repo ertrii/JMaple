@@ -603,3 +603,39 @@ O si solo queremos reducir la cantidad pues le asignaremos otro parametro que se
 character.removeItem(4556, 2)//idItem. 
 ```
 Atento, si la cantidad es mayor o igual a la cantidad que contiene el Character de dicho item entonces se le removera definitivamente.
+
+
+Quest
+=======
+Antes de iniciar un quest es necesario crear para que esto se registre. Todo nuevo quest requieren como parametro, id, name, min(minutos). Los minutos pueden ser nulos pues su función es simplemente dar una fecha de vencimiento desde que se inicie la Quest.
+
+```javascript
+Quest.create(1234, 'My firts Quest', 10)
+```
+
+```javascript
+//creating my character
+const character = new Character('myNameUser', 0)
+//Convesation Window
+new JMaple({
+    el:'element',
+    script : function(){
+        this.start = () => {
+            this.cm.startQuest(1234)//starting quest
+            this.cm.sendOk('Start Quest...')
+            //look at the top the cm for quest
+        }
+    }
+
+}, character).show()
+```
+
+Quest tiene una función llamada ```timer()``` en la cual le devolvera el tiempo concurrido en cada segundos; en caso de que un quest creado no tenga un tiempo de caducidad entonces la función le devolverá ```0```.
+
+
+```javascript
+Quest.timer(1234, function(seg){
+    console.log(seg)//...,56, 55, 54, 53,...
+})
+```
+Recuerde, una quest con vencimiento debe ser cumplida antes de que el tiempo termine sino tendrá que volver a inicar la quest.

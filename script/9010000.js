@@ -5,8 +5,8 @@ class N9010000 {
         this.status =   0
     }
    start(){
-        this.cm.gainItem(4000002,1)
-        this.cm.sendNext("Thank you#n for install. #gTake a #i4000002# ^_^ ")
+        this.cm.gainItem(4000002,1)        
+        this.cm.sendNext("#bThank you#n for install. #gTake a #i4000002# ^_^#n#w I'm progressing...")
     }
     action(mode, type, selection){                    
         if(this.status === 0){
@@ -16,12 +16,11 @@ class N9010000 {
         }
         if(this.status === 1){
             if(mode === 1){
-                this.cm.warp(456)                            
-                this.cm.dispose()
+                this.cm.warp(456)
             }else{
                 this.cm.sendOk('Well... f3')
-                this.cm.dispose()
             }
         }
+        this.cm.dispose()
     }
 }

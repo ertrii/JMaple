@@ -150,8 +150,13 @@ class Quest{
                     let date = new Date(timer.start)
                     date.setMinutes(date.getMinutes() + timer.time)
                     timer.leftoverTime = parseInt((date - timer.start) / 1000)
-                    let timeStart = setInterval( () =>{
+                    const timeStart = setInterval ( () =>{
                         if(quest.completed){
+                            clearInterval(timeStart)
+                            return
+                        }
+                        if(!quest.active && !quest.completed){
+                            timer.leftoverTime = null
                             clearInterval(timeStart)
                             return
                         }
@@ -214,17 +219,28 @@ class Quest{
     static forfeit(idquest){
         let quest = this.list.get(idquest)
         if(quest === undefined || !quest.active || quest.completed) return false
-
-        this.list.get(idquest).active = false
-        this.list.get(idquest).timer.start = null
-        this.list.get(idquest).timer.finished = null
+        quest.active = false
+        quest.timer.start = null
+        quest.timer.finished = null
         this.active.delete(idquest)
         return true
     }
-    static timer(idquest){
+    static timer(idquest, callback){
         let quest = this.list.get(idquest)
-        if(quest === undefined || !quest.active || quest.completed || !quest.timer.leftoverTime) return 0
-        else return this.list.get(idquest).timer.leftoverTime
+        if(quest === undefined || !quest.active || quest.completed || quest.timer.leftoverTime === null){
+            callback(0)
+            return
+        }
+
+        const interval = setInterval(()=>{
+            let time = this.list.get(idquest).timer.leftoverTime
+            if(time <= 0 || quest.completed){
+                clearInterval(interval)
+                callback(0)
+            }else
+                callback(time)
+        }, 1000)
+                
     }
 }
 
@@ -939,7 +955,7 @@ class JMaple{
                     }
                 }
                 
-            }, 350)
+            }, 35)
 
             this.dialog.onclick = () => {
                 if(done) return
