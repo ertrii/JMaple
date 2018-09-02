@@ -1,7 +1,8 @@
 JMaple(Alpha)
 =======================
 
-Una librería para crear ventanas de conversación al estilo maplestory usando el diseño clásico o actual entre otros. Programa tu npc usando una sintaxis cercana al script de los npc del juego.
+A library to create conversation windows in the maplestory style using the classic or current design among others.
+
 ![Alt Demo](http://img.fenixzone.net/i/2W6b9CG.png)
 # Starting
 ```
@@ -20,7 +21,7 @@ npm install jmaple
 ```
 ```javascript
 new JMaple({
-    el:'element',
+    el:'element', //#id
     script : function(){
         this.start = function(){
             this.cm.sendOk('This is my first conversation')
@@ -522,8 +523,15 @@ const item1 = new Equip(123, 'un arma', '123.png')
 const item2 = new Use(540, 'potion blue', 'potion_blue.png')
 
 Item.addList([item1, item2])//registered
-
 ```
+
+Otra manera mas simple y de mejor lectura es:
+```javascript
+//creating and adding..
+Item.equip.create(123, 'un arma', '123.png')
+Item.use.create(540, 'potion blue', 'potion_blue.png')
+```
+
 ### Class:
 Existen varias clases de item dependiendo de lo que deseas crear:
 * __Equip__, armas, accesorios, capas, etc.

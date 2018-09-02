@@ -41,6 +41,23 @@ class Item{
     static init(){        
         this.list = new Map()
         this.path = 'src/img/item/'
+
+        this.equip = {
+            create : (id, name, icon) => this.create(id, name, icon, Equip),
+            list : this.list
+        }
+        this.use = {
+            create : (id, name, icon) => this.create(id, name, icon, Use),
+            list : this.list
+        }
+        this.setup = {
+            create : (id, name, icon) => this.create(id, name, icon, Setup),
+            list : this.list
+        }
+        this.etc = {
+            create : (id, name, icon) => this.create(id, name, icon, Etc),
+            list : this.list
+        }
     }
     static addList(items){        
         items.forEach(item => {
@@ -60,6 +77,10 @@ class Item{
     static get(iditem){        
         let item = this.list.get(iditem)
         return (item === undefined) ? null : item
+    }
+
+    static create(id, name, icon, item){
+        return Item.add(new item(id, name, icon))
     }
 }
 
