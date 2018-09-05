@@ -184,6 +184,10 @@
   align-items: flex-start;
 }
 
+.m__body__dialog__info--text {
+  line-height: 20px;
+}
+
 .m__body__dialog__info--text, .m__body__dialog__info--alternatives {
   font-size: 9pt;
   font-family: roboto-light, sans-serif;

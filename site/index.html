@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="css/m--flat.css">
+    <link rel="stylesheet" href="css/m--flat.min.css">
     <title>JMaple</title>    
 </head>
 <body>    
     <div id="element"></div>
-    <script src="script/9010000.js"></script>
-    <script src="jmaple.js"></script>
+    <script src="js/script/9010000.js"></script>
+    <script src="js/jmaple.js"></script>
     <script>        
         Item.etc.create(4000002, "Pig's Ribbon", '4000002.png')
-        Item.equip.create(402, "asfaon", '402.png')
         const character = new Character('Erick', 0)
         const jmaple = new JMaple({
             el : 'element',

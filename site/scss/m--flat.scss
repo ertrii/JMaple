@@ -73,11 +73,13 @@
                 height: 100%;
                 width: 100%;
                 @include flex-cl-center(center, flex-start);
+                &--text{
+                    line-height: 20px;
+                }
                 &--text, &--alternatives{
                     font-size: 9pt;
                     font-family: roboto-light, sans-serif;
                 }
-                //&--text{padding-bottom: 10px}
                 &--title{
                     color: transparent;
                     font-size: 9pt;

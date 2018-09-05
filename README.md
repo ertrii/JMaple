@@ -3,8 +3,22 @@ JMaple(Alpha)
 
 A library to create conversation windows in the maplestory style using the classic or current design among others.
 
-![Alt Demo](http://img.fenixzone.net/i/2W6b9CG.png)
-# Starting
+![Image Demo](http://img.fenixzone.net/i/2W6b9CG.png)
+
+## Table of contents
+- [Starting](#Starting)
+- [NPC](#NPC)
+- [Commands](#Commands)
+- [Text Color](#Text-Color)
+- [List](#List)
+- [Character](#Character)
+- [Stat](#Stat)
+- [Item](#Item)
+- [Quest](#Quest)
+
+
+Starting
+=============
 ```
 # npm
 npm install jmaple
@@ -12,7 +26,7 @@ npm install jmaple
 
 #### Style
 ```html
-<link rel="stylesheet" href="css/m--flat.css">
+<link rel="stylesheet" href="m--flat.css">
 ```
 
 #### jmaple.js
@@ -64,7 +78,9 @@ jmaple.config.dev = true
 jmaple.show()
 ```
 
-## NPC
+NPC
+===============
+
 Los npc representan un personaje:
 * __id(int)__, identificador.
 * __name(string)__.
@@ -124,7 +140,9 @@ new JMaple({
     }
 }).show()
 ```
-## Commands
+Commands
+===========
+
 Los commands(cm) son funciones que se ejecutarán dentro de las funciones principales, ```start()``` y ```action()```. Hablaremos primero de los comandos para tipos de ventana de conversación:
 ### Commands: Conversation Window:
 | cm | Description |
@@ -512,57 +530,37 @@ character.stat = new Stat({
 
 Item
 ----
-Todo item creado se debe agregar a la lista, para crear uno necesitamos instanciar la clase.
-Antes de hacerlo debemos verificar la ruta en donde están alojados las imágenes.
+Para crear un Item debemos conoces los tipos que existen. Antes de eso verficaremos el directorio donde se ubicará la imagen de tu item.
+
 ```javascript
 console.log(Item.path)//'src/img/item/'
 ```
-```javascript
-//creating
-const item1 = new Equip(123, 'un arma', '123.png')
-const item2 = new Use(540, 'potion blue', 'potion_blue.png')
 
-Item.addList([item1, item2])//registered
-```
-
-Otra manera mas simple y de mejor lectura es:
 ```javascript
 //creating and adding..
 Item.equip.create(123, 'un arma', '123.png')
 Item.use.create(540, 'potion blue', 'potion_blue.png')
 ```
 
-### Class:
+### Type Items:
 Existen varias clases de item dependiendo de lo que deseas crear:
-* __Equip__, armas, accesorios, capas, etc.
-* __Use__, elementos que su uso altera o mejora al Character.
-* __Setup__, chair, elementos que no quepan en las demas clases.
-* __Etc__, son elementos simples.
+* __equip__, armas, accesorios, capas, etc.
+* __use__, elementos que su uso altera o mejora al Character.
+* __setup__, chair, elementos que no quepan en las demas clases.
+* __etc__, son elementos simples.
 
 Estas clases necesitan como parametros:
 * __id(int)__, identificador del item.
 * __name(string)__, nombre del item.
-* __icon(string)__, imagen del item.
-
-### Properties: 
-Dependiendo de la clase de item que hayamos creado tedremos dichas propiedades, hablaremos primero de los comunes que comparten.
-* __trade(bool=true)__, si es tradeable(trueque).
-* __cash(int=0)__.
-* __desc(string)__, descripción del item.
-* __lvRequerid(int)__, level requerido.
+* __icon(string)__, ruta de la imagen del item.
 
 Ahora asignaremos un Item a un Character por medio de una Conversation Window:
 
 ```javascript
-//adding a item
-Item.add(new Equip(961, 'Eclipse', '961.png'))
-```
-```javascript
-//adding many items
-Item.addList([
-    new Use(4556, 'Potion Blue', '4556.png'),
-    new Etc(156, 'leaf', '156.png')
-])
+//adding items
+Item.equip.create(961, 'Eclipse', '961.png')
+Item.use.create(4556, 'Potion Blue', '4556.png')
+Item.etc.create(156, 'leaf', '156.png')
 ```
 ```javascript
 //creating my character

@@ -1,6 +1,6 @@
 {
   "name": "jmaple",
-  "version": "0.7.3",
+  "version": "0.8.0",
   "description": "its a library to show a conversation window on your website",
   "main": "index.html",
   "repository": "https://github.com/ertrii/JMaple",
@@ -13,7 +13,8 @@
     "css",
     "conversation window",
     "maplestory",
-    "npc"
+    "npc",
+    "javascript"
   ],
   "bugs": "https://github.com/ertrii/JMaple/issues",
   "author": "ertrii",
