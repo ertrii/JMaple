@@ -6,15 +6,15 @@ A library to create conversation windows in the maplestory style using the class
 ![Image Demo](http://img.fenixzone.net/i/2W6b9CG.png)
 
 ## Table of contents
-- [Starting](#Starting)
-- [NPC](#NPC)
-- [Commands](#Commands)
-- [Text Color](#Text-Color)
-- [List](#List)
-- [Character](#Character)
-- [Stat](#Stat)
-- [Item](#Item)
-- [Quest](#Quest)
+- [Starting](#starting)
+- [NPC](#npc)
+- [Commands](#commands)
+- [Text Color](#text-color)
+- [List](#list)
+- [Character](#character)
+- [Stat](#stat)
+- [Item](#item)
+- [Quest](#quest)
 
 
 Starting
@@ -26,12 +26,12 @@ npm install jmaple
 
 #### Style
 ```html
-<link rel="stylesheet" href="m--flat.css">
+<link rel="stylesheet" href="m--flat.min.css">
 ```
 
 #### jmaple.js
 ```html
-<script src="jmaple.js"></script>
+<script src="jmaple.min.js"></script>
 ```
 ```javascript
 new JMaple({
@@ -527,10 +527,11 @@ character.stat = new Stat({
 * __def(int)__, defense.
 * __att(int)__, attack.
 * __attM(int)__, attack magic.
+* __fame(int)__, fame.
 
 Item
 ----
-Para crear un Item debemos conoces los tipos que existen. Antes de eso verficaremos el directorio donde se ubicará la imagen de tu item.
+Para crear un Item debemos conocer los tipos que existen. Antes de eso verficaremos el directorio donde se ubicará la imagen de tu item.
 
 ```javascript
 console.log(Item.path)//'src/img/item/'

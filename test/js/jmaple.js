@@ -16,6 +16,7 @@
             this.def = (stat.hasOwnProperty('def')) ? stat.def : 0
             this.att = (stat.hasOwnProperty('att')) ? stat.att : 0
             this.attM = (stat.hasOwnProperty('attM')) ? stat.attM : 0
+            this.fame = 0
             this.refresh()
         }
         refresh(){
@@ -391,7 +392,11 @@
                         isGM    :   ()  => this.gm,
                         getGender : ()  => this.gender,
                         getitemQuantity : itemid => {
-                            return 0//thinking...
+                            let item = this.items.get(itemid)
+                            if(item === undefined)
+                                return 0
+                            else
+                                return item.quantity
                         }
                     }
                 },
@@ -1469,8 +1474,7 @@
             if(!this.cmExecuted && this.dispose) this.end()
         }
     }
-
-    root.Stat = Stat
+    
     root.Item = Item
     root.Quest = Quest
     root.Character = Character

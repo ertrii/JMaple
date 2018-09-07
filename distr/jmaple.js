@@ -391,7 +391,11 @@
                         isGM    :   ()  => this.gm,
                         getGender : ()  => this.gender,
                         getitemQuantity : itemid => {
-                            return 0//thinking...
+                            let item = this.items.get(itemid)
+                            if(item === undefined)
+                                return 0
+                            else
+                                return item.quantity
                         }
                     }
                 },
