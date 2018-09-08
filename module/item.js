@@ -53,3 +53,5 @@ class Item{
 }
 
 Item.init()
+
+module.exports = Item

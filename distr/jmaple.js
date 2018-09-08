@@ -16,6 +16,7 @@
             this.def = (stat.hasOwnProperty('def')) ? stat.def : 0
             this.att = (stat.hasOwnProperty('att')) ? stat.att : 0
             this.attM = (stat.hasOwnProperty('attM')) ? stat.attM : 0
+            this.fame = 0
             this.refresh()
         }
         refresh(){
@@ -263,9 +264,9 @@
     Quest.init()
 
     class Character{
-        constructor(nick, gender){
-            this.nick   =   nick
-            this.gender =   gender //male(0), female(1)
+        constructor(){
+            this.nick   =   'User'
+            this.gender =   0 //male(0), female(1)
             this.job    =   0
             this.gm     =   false
             this.mesos  =   0
@@ -411,13 +412,8 @@
         }
     }
 
-    /*
-    =====================================================================
-    ============================ JMaple =================================
-    =====================================================================
-    */
     class JMaple{
-        constructor(data, Character = false){
+        constructor(data){
             this.config         =       {
                 displace        :       true,
                 writing         :       true,
@@ -516,7 +512,7 @@
 
             this.input.el.setAttribute('class', this.config.key + '__input')
             //extensions
-            this.character      =       (!Character) ? false : Character
+            this.character      =       new Character()
         }
 
         registered(list){
@@ -1473,7 +1469,7 @@
             if(!this.cmExecuted && this.dispose) this.end()
         }
     }
-
+    
     root.Stat = Stat
     root.Item = Item
     root.Quest = Quest

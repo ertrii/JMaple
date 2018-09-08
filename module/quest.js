@@ -115,3 +115,5 @@ class Quest{
 }
 
 Quest.init()
+
+module.exports = Quest;

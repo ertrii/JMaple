@@ -1,7 +1,11 @@
+const Stat = require('./stat')
+const Quest = require('./quest')
+const Item = require('./item')
+
 class Character{
-    constructor(nick, gender){
-        this.nick   =   nick
-        this.gender =   gender //male(0), female(1)
+    constructor(){
+        this.nick   =   'user'
+        this.gender =   0 //male(0), female(1)
         this.job    =   0
         this.gm     =   false
         this.mesos  =   0
@@ -146,3 +150,5 @@ class Character{
         return command
     }
 }
+
+module.exports = Character

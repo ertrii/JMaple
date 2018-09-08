@@ -23,3 +23,5 @@ class Stat{
         }
     }
 }
+
+module.exports = Stat

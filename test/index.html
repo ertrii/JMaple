@@ -13,7 +13,6 @@
     <script src="js/jmaple.js"></script>
     <script>        
         Item.etc.create(4000002, "Pig's Ribbon", '4000002.png')
-        const character = new Character('Erick', 0)
         const jmaple = new JMaple({
             el : 'element',
             npc : {
@@ -34,7 +33,8 @@
                 }
             ],
             script : N9010000
-        }, character)
+        })
+        jmaple.character.nick = 'Erick'
         jmaple.show()
         
     </script>

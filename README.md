@@ -372,8 +372,7 @@ Character es una extensión que amplia la lista de comandos(cm). Character solo 
 
 #### Example:
 ```javascript
-const character = new Character('myNameUser', 0)
-new JMaple({
+const jmaple = JMaple({
     el:'element',
     npc: {
         id: 9010000,
@@ -384,11 +383,12 @@ new JMaple({
         //code
     }
 
-}, character).show()//added character to jmaple.
+})
+jmaple.character.nick = 'Erick'
+jmaple.show()//added character to jmaple.
 ```
-JCharacter requiere de dos parametros, __name__, que sería el nombre de tu pj y __gender__, que es el género, que ```0``` sería male(hombre) y ```1```, sería female(mujer).
 
-Estos son los nuevos comandos que se usarán en el __script__.
+Estos son los comandos que le pertenece y se usarán en el __script__.
 
 ### Commands: Character
 | cm | Description |
@@ -425,11 +425,11 @@ Estos son los nuevos comandos que se usarán en el __script__.
     * __quantity(int)__.
 
 ```javascript
-const character = new Character('myNameUser', 0)
-character.job = 110,//fighter
-character.lv = 20,
-character.exp = 500,
-character.mesos = 95065012354//^^
+//...
+jmaple.character.job = 110,//fighter
+jmaple.character.lv = 20,
+jmaple.character.exp = 500,
+jmaple.character.mesos = 95065012354//^^
 ```
 ### List Job: Beginner
 | Job | id | level(old version) | level(current version) |
@@ -505,11 +505,11 @@ character.mesos = 95065012354//^^
 
 Stat
 ----
-Al crear un character se le asigna por defecto un __Stat__, str, dex, int, luk con valor 4, y hp, mp con valor 50. Podemos asignarle unos valores de manera personalizada.
+Character se le asigna por defecto un __Stat__. Podemos asignarle unos valores de manera personalizada.
 
 ```javascript
-const character = new Character('myNameUser', 0)
-character.stat = new Stat({
+//...
+jmaple.character.stat = new Stat({
     str : 30,
     dex : 24,
     hp  : 1235
@@ -564,8 +564,6 @@ Item.use.create(4556, 'Potion Blue', '4556.png')
 Item.etc.create(156, 'leaf', '156.png')
 ```
 ```javascript
-//creating my character
-const character = new Character('myNameUser', 0)
 //Convesation Window
 new JMaple({
     el:'element',
@@ -585,7 +583,7 @@ new JMaple({
         }
     }
 
-}, character).show()
+}).show()
 ```
 En caso de que el item no exista en la lista le retornará por consola un error.
 
@@ -593,8 +591,8 @@ Si desea agregar un item al character que no sea por el medio ya visto, use la f
 
 ```javascript
 //we will add the item of the List already created in the previous example.
-character.setItem(961, 5)//idItem, quantity
-character.setItems([
+jmaple.character.setItem(961, 5)//idItem, quantity
+jmaple.character.setItems([
     {id : 4556, quantity: 5},
     {id : 156, quantity: 2}
 ])
@@ -603,11 +601,11 @@ En caso de que el character ya tenga agregado aquel item entonces simplemente se
 
 Si deseamos eliminar el item del Character usaremos la function ```removeItem()```.
 ```javascript
-character.removeItem(961)//idItem. 
+jmaple.character.removeItem(961)//idItem. 
 ```
 O si solo queremos reducir la cantidad pues le asignaremos otro parametro que sería la cantidad.
 ```javascript
-character.removeItem(4556, 2)//idItem. 
+jmaple.character.removeItem(4556, 2)//idItem. 
 ```
 Atento, si la cantidad es mayor o igual a la cantidad que contiene el Character de dicho item entonces se le removera definitivamente.
 
@@ -621,8 +619,6 @@ Quest.create(1234, 'My firts Quest', 10)
 ```
 
 ```javascript
-//creating my character
-const character = new Character('myNameUser', 0)
 //Convesation Window
 new JMaple({
     el:'element',
@@ -634,7 +630,7 @@ new JMaple({
         }
     }
 
-}, character).show()
+}).show()
 ```
 
 Quest tiene una función llamada ```timer()``` en la cual le devolvera el tiempo concurrido en cada segundos; en caso de que un quest creado no tenga un tiempo de caducidad entonces la función le devolverá ```0```.

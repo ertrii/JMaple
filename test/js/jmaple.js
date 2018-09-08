@@ -264,9 +264,9 @@
     Quest.init()
 
     class Character{
-        constructor(nick, gender){
-            this.nick   =   nick
-            this.gender =   gender //male(0), female(1)
+        constructor(){
+            this.nick   =   'User'
+            this.gender =   0 //male(0), female(1)
             this.job    =   0
             this.gm     =   false
             this.mesos  =   0
@@ -412,13 +412,8 @@
         }
     }
 
-    /*
-    =====================================================================
-    ============================ JMaple =================================
-    =====================================================================
-    */
     class JMaple{
-        constructor(data, Character = false){
+        constructor(data){
             this.config         =       {
                 displace        :       true,
                 writing         :       true,
@@ -517,7 +512,7 @@
 
             this.input.el.setAttribute('class', this.config.key + '__input')
             //extensions
-            this.character      =       (!Character) ? false : Character
+            this.character      =       new Character()
         }
 
         registered(list){
@@ -1475,6 +1470,7 @@
         }
     }
     
+    root.Stat = Stat
     root.Item = Item
     root.Quest = Quest
     root.Character = Character
