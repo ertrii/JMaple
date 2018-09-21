@@ -7,9 +7,6 @@
 /*
 ==========Modern=========
 */
-/*
-========== Future =========
-*/
 @import url("https://fonts.googleapis.com/css?family=Encode+Sans:300|Open+Sans:300,700|Roboto:300");
 *, *::after, *::before {
   box-sizing: border-box;
@@ -184,6 +181,7 @@
 .m__body__dialog__info--text, .m__body__dialog__info--alternatives {
   font-size: 9pt;
   font-family: Roboto, sans-serif;
+  margin-bottom: 5px;
 }
 
 .m__body__dialog__info--title {
@@ -197,7 +195,7 @@
   list-style: none;
   color: #3839CC;
   cursor: pointer;
-  padding: 10px 0 7px 10px;
+  padding: 5px 0 7px 10px;
 }
 
 .m__body__dialog__info li {
@@ -224,16 +222,16 @@
   content: url("../src/svg/heart-mouse-hover.svg");
 }
 
-.m__body__dialog__btn-interrogate {
+.m__body__dialog__btns {
   width: 100%;
   text-align: right;
 }
 
-.m__body__dialog__btn-interrogate button {
+.m__body__dialog__btns button {
   background-image: linear-gradient(#61b1ea, #2289dd 15%, #61b1ea 120%);
 }
 
-.m__body__dialog__btn-interrogate button:nth-child(2) {
+.m__body__dialog__btns button:nth-child(2) {
   margin-left: 5px;
 }
 
@@ -253,6 +251,10 @@
   background-image: linear-gradient(#d7df68, #a0bc15 10%, #d7df68 120%);
 }
 
-.m__footer__btn-interrogate button {
+.m__footer__btns button {
   background-image: linear-gradient(#ff9a57, #db7514 12%, #ff9a57);
+}
+
+.m__footer__btns button:nth-child(2) {
+  margin-left: 5px;
 }

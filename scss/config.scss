@@ -31,8 +31,8 @@ $f-bg--body                         :   white;
 $f-bg--footer                       :   transparent;
 
 $f-btn--exit                        :   $f-bg--head;
-$f-btn--interrogative-1             :   $f-bg--head;
-$f-btn--interrogative-2             :   transparent;
+$f-btn--footer                      :   $f-bg--head;
+$f-btn--body                        :   transparent;
 
 $f-nameNpc                          :   $f-bg--head;
 $f-dialog                           :   #616161;
@@ -50,9 +50,9 @@ $c-bg-dialog                        :   #F6F4F5;
 $c-dialog                           :   black;
 
 //buttons
-$c-btn--exit                  :   linear-gradient(hsl(64,65,64),hsl(70,80,41) 10%,hsl(64,65,64) 120%);
-$c-btn--interrogative-1       :   linear-gradient(hsl(24,100,67),hsl(29,83,47) 12%,hsl(24,100,67));
-$c-btn--interrogative-2       :   linear-gradient(hsl(205,77,65),hsl(207,73,50) 15%,hsl(205,77,65) 120%);
+$c-btn--exit                        :   linear-gradient(hsl(64,65,64),hsl(70,80,41) 10%,hsl(64,65,64) 120%);
+$c-btn--body                        :   linear-gradient(hsl(205,77,65),hsl(207,73,50) 15%,hsl(205,77,65) 120%);
+$c-btn--footer                      :   linear-gradient(hsl(24,100,67),hsl(29,83,47) 12%,hsl(24,100,67));
 
 
 /*
@@ -63,27 +63,14 @@ $m-bg-color--primary                :   rgba(#098FD5, 0.6);
 $m-bg-color--texture                :   #EEEEEE;
 $m-bg-color--name                   :   linear-gradient(#949494, #626262);
 
-$m-btn-color--exit                  :   linear-gradient(hsl(71,90,50) 10%,hsl(69,79,44) 100%);
-$m-btn-color--interrogative1--yes   :   linear-gradient(hsl(51,87,54) 10%,hsl(43,98,51));
-$m-btn-color--interrogative1--no    :   linear-gradient(hsl(341,92,62) 10%,hsl(341,88,46));
-$m-btn-color--interrogative2        :   $m-btn-color--exit;
-
+$m-btn--exit                        :   linear-gradient(hsl(71,90,50) 10%,hsl(69,79,44) 100%);
+$m-btn--footer--yes                 :   linear-gradient(hsl(51,87,54) 10%,hsl(43,98,51));
+$m-btn--footer--no                  :   linear-gradient(hsl(341,92,62) 10%,hsl(341,88,46));
+$m-btn--body                        :   $m-btn--exit;
 
 //border
 $m-border--dark                     :   #626262;
 
-/*
-========== Future =========
-*/
-//color text
-$fu-dialog: #616161;
-$fu-name-npc: $fu-dialog;
-//color bg
-$fu-main: #0097A7;
-$fu-npc: #FBFBFB;
-$fu-body : white;
-//color button
-$fu-light : white;
 @mixin fu-btn--end-chat() {
     color: $fu-light;
     background-color: $fu-main;    

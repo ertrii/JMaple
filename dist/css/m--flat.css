@@ -208,12 +208,12 @@
   content: url("../src/svg/heart-mouse-hover.svg");
 }
 
-.m__body__dialog__btn-interrogate {
+.m__body__dialog__btns {
   width: 100%;
   text-align: right;
 }
 
-.m__body__dialog__btn-interrogate button {
+.m__body__dialog__btns button {
   background-color: transparent;
   color: black;
   text-decoration: underline;
@@ -240,16 +240,16 @@
   box-shadow: 1px 1px 0px -1px #777;
 }
 
-.m__footer__btn-interrogate button {
+.m__footer__btns button {
   background-color: #ffa000;
   box-shadow: 1px 1px 5px -1px #777;
   transition: .1s all;
 }
 
-.m__footer__btn-interrogate button:nth-child(2) {
+.m__footer__btns button:nth-child(2) {
   margin-left: 3px;
 }
 
-.m__footer__btn-interrogate button:active {
+.m__footer__btns button:active {
   box-shadow: 1px 1px 0px -1px #777;
 }

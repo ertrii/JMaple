@@ -97,6 +97,7 @@
                 &--text, &--alternatives{
                     font-size: 9pt;
                     font-family: Roboto, sans-serif;
+                    margin-bottom: 5px;
                 }
                 
                 &--title{
@@ -109,7 +110,7 @@
                     list-style: none;
                     color: $text-color--bold;
                     cursor: pointer;
-                    padding: 10px 0 7px 10px;
+                    padding: 5px 0 7px 10px;
                     }
                     li{margin-bottom: 4px;}
                     li::before{
@@ -127,10 +128,10 @@
                         &::before{content: url('../src/svg/heart-mouse-hover.svg');}
                     }
             }            
-            &__btn-interrogate{
+            &__btns{
                 width: 100%;                
                 text-align: right;
-                button{background-image: $c-btn--interrogative-2}
+                button{background-image: $c-btn--body}
                 button:nth-child(2){
                     margin-left: 5px;
                 }
@@ -150,6 +151,9 @@
             padding: 2px 20px 1px;
             background-image: $c-btn--exit;
         }
-        &__btn-interrogate button{background-image: $c-btn--interrogative-1}
+        &__btns button{background-image: $c-btn--footer}
+        &__btns button:nth-child(2){
+            margin-left: 5px;
+        }
     }    
 }

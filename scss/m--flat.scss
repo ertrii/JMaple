@@ -107,11 +107,11 @@
                         &::before{content: url('../src/svg/heart-mouse-hover.svg');}
                 }
             }
-            &__btn-interrogate{
+            &__btns{
                 width: 100%;                
                 text-align: right;
                 button{
-                    background-color: $f-btn--interrogative-2;
+                    background-color: $f-btn--body;
                     color: $text-color--dark;
                     text-decoration: underline;
                     font-family: "Open Sans";
@@ -135,8 +135,8 @@
                 box-shadow: 1px 1px 0px -1px #777;
             }
         }
-        &__btn-interrogate button{
-            background-color: $f-btn--interrogative-1;
+        &__btns button{
+            background-color: $f-btn--footer;
             box-shadow: 1px 1px 5px -1px #777;
             transition: .1s all;
             &:nth-child(2){
