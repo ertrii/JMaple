@@ -1449,8 +1449,8 @@
             this.container.style.display = 'flex'        
             this.container.style.zIndex = `${this.config.zIndex}`;
             this.container.appendChild(this.html)
-            this.script.start()
-            /*try{
+            //this.script.start()
+            try{
                 this.script.start()
             }catch(e){
                 if(this.config.dev) console.info('the start function was not found, executing action function...')
@@ -1459,7 +1459,7 @@
                 }catch(er){
                     if(this.config.dev) console.error('action function was not found')
                 }
-            }*/
+            }
             this.events()
             if(!this.cmExecuted && this.dispose) this.end()
         }

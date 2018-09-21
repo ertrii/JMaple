@@ -26,12 +26,12 @@ npm install jmaple
 
 #### Style
 ```html
-<link rel="stylesheet" href="m--flat.min.css">
+<link rel="stylesheet" href="node_modules/jmaple/dist/css/m--flat.css">
 ```
 
 #### jmaple.js
 ```html
-<script src="jmaple.min.js"></script>
+<script src="node_modules/jmaple/dist/js/jmaple.js"></script>
 ```
 ```javascript
 new JMaple({

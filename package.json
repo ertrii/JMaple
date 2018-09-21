@@ -2,11 +2,15 @@
   "name": "jmaple",
   "version": "0.9.0",
   "description": "its a library to show a conversation window on your website",
-  "main": "index.html",
-  "repository": "https://github.com/ertrii/JMaple",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "main": "index.js",
+  "repository": {
+    "type" : "git",
+    "url": "https://github.com/ertrii/JMaple"
   },
+  "files": [
+    "dist",
+    "scss"
+  ],
   "keywords": [
     "material",
     "library",
@@ -15,13 +19,18 @@
     "maplestory",
     "npc",
     "javascript"
-  ],
+  ],  
   "bugs": "https://github.com/ertrii/JMaple/issues",
-  "author": "ertrii",
+  "author": "Erick(ertrii) <ertriilive@gmail.com> (https://github.com/ertrii)",
   "license": "Mozilla Public License 2.0",
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^5.0.0",
     "gulp-sass": "^4.0.1"
-  }
+  },
+  "npmFileMap" : [
+    {
+      "basePath": "/dist/"
+    }
+  ]
 }
