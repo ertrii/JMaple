@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="dist/css/m--classic.min.css">
+    <title>JMaple</title>    
+</head>
+<body>    
+    <div id="element"></div>
+    <script src="dist/js/jmaple.js"></script>
+    <script>        
+        Item.path = ''
+        Item.etc.create(4000002, "Pig's Ribbon", 'dist/src/img/4000002.png')
+        const jmaple = new JMaple({
+            el : 'element',
+            npc : {
+                id : 9010000,
+                name : 'Maple Administrator',
+                img : 'dist/src/img/9010000.png'
+            },
+            map: [
+                {
+                    id : 123,
+                    name : 'My New Map',
+                    link : 'index.html#' //can be any link
+                },
+                {
+                    id : 456,
+                    name : 'Github',
+                    link : 'https://github.com/ertrii/JMaple'
+                }
+            ],
+            script : function() {
+                this.status =   0
+
+                this.start = () => {
+                    this.cm.gainItem(4000002,1)
+                    this.cm.sendNext("#bThank you#n for install. #gTake a #i4000002# ^_^#n#w I'm progressing...#L1#hola#l")
+                }
+                this.action  = (mode, type, selection) => {
+                    if(this.status === 0){
+                        this.cm.sendYesNo("This library is a version Alpha. #bDo you want to go read the documentation?")
+                        this.status++
+                        return
+                    }
+                    if(this.status === 1){
+                        if(mode === 1){
+                            this.cm.warp(456)
+                        }else{
+                            this.cm.sendOk('Well... f3')
+                        }
+                    }
+                    this.cm.dispose()
+                }
+            }
+        })
+        jmaple.character.nick = 'Erick'
+        jmaple.show()
+        
+    </script>
+</body>
+</html>

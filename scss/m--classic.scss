@@ -10,7 +10,7 @@
                 1px 1px 10px 2px #999;
     //buttons
     &__body__dialog button, &__footer button{
-        font-family: encode-sans-light, sans-serif;
+        font-family: "Encode Sans", sans-serif;
         font-size: 6pt;
         padding: 2px 10px 1px;
         border: none;
@@ -79,10 +79,10 @@
                             0px 0px 0px 2px $c-name-npc;
                 text-align: center;
                 font-size: 8pt;
-                font-family: roboto-light, sans-serif;
+                font-family: Roboto, sans-serif;
                 transform: translate(0px, 1px);
             }                        
-        }        
+        }
         &__dialog{
             width: 100%;
             background-color: $c-bg-dialog;
@@ -96,8 +96,9 @@
                 @include flex-cl-center(center, flex-start);
                 &--text, &--alternatives{
                     font-size: 9pt;
-                    font-family: roboto-light, sans-serif;
-                }                
+                    font-family: Roboto, sans-serif;
+                }
+                
                 &--title{
                     padding-top: 10px;
                     color: transparent;

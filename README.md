@@ -47,7 +47,6 @@ new JMaple({
 
 ### There are many styles of conversation window
 * m--classic.css
-* m--modern.css
 * m--flat.css
 * m--future.css
 ## Config
@@ -385,7 +384,7 @@ const jmaple = JMaple({
 
 })
 jmaple.character.nick = 'Erick'
-jmaple.show()//added character to jmaple.
+jmaple.show()
 ```
 
 Estos son los comandos que le pertenece y se usarán en el __script__.
@@ -637,8 +636,8 @@ Quest tiene una función llamada ```timer()``` en la cual le devolvera el tiempo
 
 
 ```javascript
-Quest.timer(1234, function(seg){
-    console.log(seg)//...,56, 55, 54, 53,...
+Quest.timer(1234, function(sec){
+    console.log(sec)//...,56, 55, 54, 53,...
 })
 ```
 Recuerde, una quest con vencimiento debe ser cumplida antes de que el tiempo termine sino tendrá que volver a inicar la quest.

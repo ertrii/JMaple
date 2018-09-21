@@ -43,7 +43,7 @@ $f-dialog                           :   #616161;
 //bg
 $c-head                             :   linear-gradient(hsl(213,28,90),hsl(211,28,70) 10%,hsl(213,28,77));
 $c-footer                           :   $c-head;
-$c-body                             :   url(../src/img/texture/texture0.png);
+$c-body                             :   url(../src/img/texture0.png);
 $c-name-npc                         :   #223356;
 $c-bg-dialog                        :   #F6F4F5;
 //text
@@ -97,25 +97,5 @@ $fu-light : white;
     background-color: $fu-main;
 }
 
-/*
-===========
-*/
-
-
 //Fonts
-@font-face{
-    font-family: roboto-light;
-    src: url(../src/font/Roboto-Light.ttf);
-}
-@font-face{
-    font-family: encode-sans-light;
-    src: url(../src/font/EncodeSans-Light.ttf);
-}
-@font-face{
-    font-family: open-sans-light;
-    src: url(../src/font/OpenSans-Light.ttf);
-}
-@font-face{
-    font-family: open-sans-bold;
-    src: url(../src/font/OpenSans-Bold.ttf);
-}
+@import url('https://fonts.googleapis.com/css?family=Encode+Sans:300|Open+Sans:300,700|Roboto:300');

@@ -6,7 +6,7 @@
     box-shadow: 1px 2px 10px 0 #D6D6D6;    
     //buttons
     &__body__dialog button, &__footer button{
-        font-family: encode-sans-light, sans-serif;
+        font-family: "Encode Sans", sans-serif;
         font-size: 7pt;
         padding: 2px 10px 3px;
         border: none;
@@ -60,7 +60,7 @@
                 color: $f-nameNpc;
                 font-size: 9pt;
                 padding-top: 5px;
-                font-family: roboto-light, sans-serif;                
+                font-family: Roboto, sans-serif;                
             }
                         
         }
@@ -78,7 +78,7 @@
                 }
                 &--text, &--alternatives{
                     font-size: 9pt;
-                    font-family: roboto-light, sans-serif;
+                    font-family: Roboto, sans-serif;
                 }
                 &--title{
                     color: transparent;
@@ -107,7 +107,6 @@
                         &::before{content: url('../src/svg/heart-mouse-hover.svg');}
                 }
             }
-            
             &__btn-interrogate{
                 width: 100%;                
                 text-align: right;
@@ -115,7 +114,8 @@
                     background-color: $f-btn--interrogative-2;
                     color: $text-color--dark;
                     text-decoration: underline;
-                    font-family: open-sans-bold;
+                    font-family: "Open Sans";
+                    font-weight: 700;
                 }
             }
         }
