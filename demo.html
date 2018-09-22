@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="dist/css/m--modern.css">
+    <link rel="stylesheet" href="dist/css/m--flat.css">
     <title>JMaple</title>    
 </head>
 <body>    
     <div id="element"></div>
     <script src="dist/js/jmaple.js"></script>
     <script>
-        Item.path = ''
-        Item.etc.create(4000002, "Pig's Ribbon", 'dist/src/img/4000002.png')
-        const jmaple = new JMaple({
+        const jmaple = new JMaple()
+        jmaple.Item.etc.create(4000002, "Pig's Ribbon", '4000002.png')
+        new jmaple.Talk({
             el : 'element',
             npc : {
                 id : 9010000,
@@ -31,12 +31,13 @@
                     link : 'https://github.com/ertrii/JMaple'
                 }
             ],
+            character : new jmaple.Character('Erick'),
             script : function() {
                 this.status =   0
 
                 this.start = () => {
                     this.cm.gainItem(4000002,1)
-                    this.cm.sendNext("#bThank you#n for install. #gTake a #i4000002# ^_^#n#w I'm progressing...#L1#hola#l")
+                    this.cm.sendNext("#bThank you#n for install. #gTake a #i4000002# ^_^#n#w I'm progressing...")
                 }
                 this.action  = (mode, type, selection) => {
                     if(this.status === 0){
@@ -54,9 +55,7 @@
                     this.cm.dispose()
                 }
             }
-        })
-        jmaple.character.nick = 'Erick'
-        jmaple.show()
+        }).start()
         
     </script>
 </body>

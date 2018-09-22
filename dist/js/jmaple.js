@@ -33,7 +33,7 @@
             this.inventory = inventory
             //this.type = null;
             this.lvRequerid = 1        
-            this.icon = 'src/img/item/default.png'
+            this.icon = 'dist/src/img/default.png'
             this.trade = true
             this.cash = false
             this.desc = ''
@@ -42,7 +42,7 @@
         }
         static init(){        
             this.list = new Map()
-            this.path = 'src/img/item/'
+            this.path = 'dist/src/img/'
             
             const create = (id, name, icon, item) => Item.add(new item(id, name, icon))
             
@@ -264,8 +264,8 @@
     Quest.init()
 
     class Character{
-        constructor(){
-            this.nick   =   'User'
+        constructor(nick){
+            this.nick   =   nick
             this.gender =   0 //male(0), female(1)
             this.job    =   0
             this.gm     =   false
@@ -412,7 +412,7 @@
         }
     }
 
-    class JMaple{
+    class Talk{
         constructor(data){
             this.config         =       {
                 displace        :       true,
@@ -512,7 +512,7 @@
 
             this.input.el.setAttribute('class', this.config.key + '__input')
             //extensions
-            this.character      =       new Character()
+            this.character      =       (data.hasOwnProperty('character')) ? data.character : false
         }
 
         registered(list){
@@ -1443,7 +1443,7 @@
             
         }
 
-        show(){
+        start(){
             this.prepareScript()        
             this.container.classList.add('jmaple')
             this.container.style.display = 'flex'        
@@ -1464,11 +1464,18 @@
             if(!this.cmExecuted && this.dispose) this.end()
         }
     }
+
+    class JMaple{
+        constructor(){
+            this.Item = Item
+            this.Quest = Quest
+            this.Character = Character
+            this.Stat = Stat
+            this.Talk = Talk
+        }
+    }
     
-    root.Stat = Stat
-    root.Item = Item
-    root.Quest = Quest
-    root.Character = Character
     root.JMaple = JMaple
+    
 
 })(typeof window !== "undefined" ? window : global)

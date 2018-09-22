@@ -34,7 +34,8 @@ npm install jmaple
 <script src="node_modules/jmaple/dist/js/jmaple.js"></script>
 ```
 ```javascript
-new JMaple({
+const jmaple = new JMaple()
+new jmaple.Task({
     el:'element', //#id
     script : function(){
         this.start = function(){
@@ -42,8 +43,9 @@ new JMaple({
             this.cm.dispose()
         }
     }
-}).show()
+}).start()
 ```
+Task será donde se estructurará y mostrará la ventana de conversación.
 
 ### There are many styles of conversation window
 * m--classic.css
@@ -62,7 +64,8 @@ Existen algunas propiedades de configuración que usted puede editar a su gusto,
 * __zIndex(int=100)__, posicionamiento ```z``` del contenedor principal.
 
 ```javascript
-const jmaple = new JMaple({
+const jmaple = new JMaple()
+const task = new jmaple.Task({
     el:'element',
     script : function(){
         this.start = function(){
@@ -71,10 +74,10 @@ const jmaple = new JMaple({
         }
     }
 })
-jmaple.config.displace = false
-jmaple.config.transition = 'gross'
-jmaple.config.dev = true
-jmaple.show()
+task.config.displace = false
+task.config.transition = 'gross'
+task.config.dev = true
+task.start()
 ```
 
 NPC
@@ -86,7 +89,8 @@ Los npc representan un personaje:
 * __img(string)__, ruta de la imagen.
 
 ```javascript
-new JMaple({
+const jmaple = new JMaple()
+new jmaple.Task({
     el:'element',
     npc: {
         id: 9010000,
@@ -99,7 +103,7 @@ new JMaple({
             this.cm.dispose()
         }
     }
-}).show()
+}).start()
 ```
 
 ## Conversation
@@ -121,7 +125,8 @@ Los script NPC están programado dentro de dos funciones principales:
     ```
 #### Example:
 ```javascript
-new JMaple({
+const jmaple = new JMaple()
+new jmaple.Task({
     el:'element',
     npc: {
         id: 9010000,
@@ -137,7 +142,7 @@ new JMaple({
             this.cm.dispose()
         }
     }
-}).show()
+}).start()
 ```
 Commands
 ===========
@@ -158,7 +163,8 @@ Los commands(cm) son funciones que se ejecutarán dentro de las funciones princi
 ###### Credits: Description by Shawn in Ragezone Forum, [here](http://forum.ragezone.com/f428/add-learning-npcs-start-finish-643364/)
 
 ```javascript
-new JMaple({
+const jmaple = new JMaple()
+new jmaple.Task({
     el:'element',
     npc: {
         id: 9010000,
@@ -174,7 +180,7 @@ new JMaple({
             this.cm.dispose()
         }
     }
-}).show()
+}).start()
 ```
 Dependiendo del tipo Ventana de Conversación, los parametros __type__ y __mode__ de ```action()``` devolveran un valor.
 * __sendOk or sendNext__
@@ -246,7 +252,8 @@ La función ```warp()``` requiere de dos valores:
 Antes de usar ```warp``` debemos registrar el mapa(map) en la lista.
 
 ```javascript
-new JMaple({
+const jmaple = new JMaple()
+new jmaple.Task({
     el:'element',
     npc: {
         id: 9010000,
@@ -277,7 +284,7 @@ new JMaple({
             this.cm.dispose()
         }
     }
-}).show()
+}).start()
 ```
 Son dos propiedades requeridos y dos propiedades opcionales:
 * __id(int)__, identificador del map.
@@ -307,7 +314,8 @@ Para dar color a los textos existen estas etiquetas:
 | #n   | Normal text (removes bold) |
 
 ```javascript
-new JMaple({
+const jmaple = new JMaple()
+new jmaple.Task({
     el:'element',
     npc: {
         id: 9010000,
@@ -320,7 +328,7 @@ new JMaple({
             this.cm.dispose()
         }
     }
-}).show()
+}).start()
 ```
 
 Existen algunos codes que requieren de un valor entero(id):
@@ -348,7 +356,8 @@ Para crear una lista se requieren ciertas etiquetas.
 Todos forman parte de un párrafo, si desea crear uno nuevo use la etiqueta ```#w```. In Maplestory is ```\n```.
 
 ```javascript
-new JMaple({
+const jmaple = new JMaple()
+new jmaple.Task({
     el:'element',
     npc: {
         id: 9010000,
@@ -361,7 +370,7 @@ new JMaple({
             this.cm.dispose()
         }
     }
-}).show()
+}).start()
 ```
 El número asignado podrá ser el valor para el parámetro __selection__, eso dependerá a que item selecciones en el cuadro de diálogo. 
 
@@ -371,20 +380,22 @@ Character es una extensión que amplia la lista de comandos(cm). Character solo 
 
 #### Example:
 ```javascript
-const jmaple = JMaple({
+const jmaple = new JMaple()
+const character = new jmaple.character('Erick')//nick
+new jmaple.Task({
     el:'element',
     npc: {
         id: 9010000,
         name: 'Maple Administrator',
         img: 'src/img/npc/9010000.png'
     },
+    character : character,//adding...
     script : function(){
         //code
     }
 
-})
-jmaple.character.nick = 'Erick'
-jmaple.show()
+}).start()
+
 ```
 
 Estos son los comandos que le pertenece y se usarán en el __script__.
@@ -425,10 +436,11 @@ Estos son los comandos que le pertenece y se usarán en el __script__.
 
 ```javascript
 //...
-jmaple.character.job = 110,//fighter
-jmaple.character.lv = 20,
-jmaple.character.exp = 500,
-jmaple.character.mesos = 95065012354//^^
+character.job = 110,//fighter
+character.lv = 20,
+character.exp = 500,
+character.mesos = 95065012354//^^
+//...
 ```
 ### List Job: Beginner
 | Job | id | level(old version) | level(current version) |
@@ -508,11 +520,12 @@ Character se le asigna por defecto un __Stat__. Podemos asignarle unos valores d
 
 ```javascript
 //...
-jmaple.character.stat = new Stat({
+character.stat = new jmaple.Stat({
     str : 30,
     dex : 24,
     hp  : 1235
 })
+//...
 ```
 ### Properties: 
 * __str(int)__.
@@ -533,13 +546,13 @@ Item
 Para crear un Item debemos conocer los tipos que existen. Antes de eso verficaremos el directorio donde se ubicará la imagen de tu item.
 
 ```javascript
-console.log(Item.path)//'src/img/item/'
+console.log(jmaple.Item.path)//'src/img/item/'
 ```
 
 ```javascript
 //creating and adding..
-Item.equip.create(123, 'un arma', '123.png')
-Item.use.create(540, 'potion blue', 'potion_blue.png')
+jmaple.Item.equip.create(123, 'un arma', '123.png')
+jmaple.Item.use.create(540, 'potion blue', 'potion_blue.png')
 ```
 
 ### Type Items:
@@ -558,19 +571,23 @@ Ahora asignaremos un Item a un Character por medio de una Conversation Window:
 
 ```javascript
 //adding items
-Item.equip.create(961, 'Eclipse', '961.png')
-Item.use.create(4556, 'Potion Blue', '4556.png')
-Item.etc.create(156, 'leaf', '156.png')
+jmaple.Item.equip.create(961, 'Eclipse', '961.png')
+jmaple.Item.use.create(4556, 'Potion Blue', '4556.png')
+jmaple.Item.etc.create(156, 'leaf', '156.png')
 ```
 ```javascript
+const jmaple = new JMaple()
+//creating char
+const character = new jmaple.Character('Erick')
 //Convesation Window
-new JMaple({
+const task = new jmaple.Task({
     el:'element',
     npc: {
         id: 9010000,
         name: 'Maple Administrator',
         img: 'src/img/npc/9010000.png'
     },
+    character : character,
     script : function(){
         this.start = () => {
             this.cm.gainItem(4556, 2)//idItem, quantity
@@ -582,16 +599,18 @@ new JMaple({
         }
     }
 
-}).show()
+}).start()
+
 ```
+
 En caso de que el item no exista en la lista le retornará por consola un error.
 
 Si desea agregar un item al character que no sea por el medio ya visto, use la funcion ```setItem()``` o ```setItems()```.
 
 ```javascript
 //we will add the item of the List already created in the previous example.
-jmaple.character.setItem(961, 5)//idItem, quantity
-jmaple.character.setItems([
+character.setItem(961, 5)//idItem, quantity
+character.setItems([
     {id : 4556, quantity: 5},
     {id : 156, quantity: 2}
 ])
@@ -600,11 +619,11 @@ En caso de que el character ya tenga agregado aquel item entonces simplemente se
 
 Si deseamos eliminar el item del Character usaremos la function ```removeItem()```.
 ```javascript
-jmaple.character.removeItem(961)//idItem. 
+character.removeItem(961)//idItem. 
 ```
 O si solo queremos reducir la cantidad pues le asignaremos otro parametro que sería la cantidad.
 ```javascript
-jmaple.character.removeItem(4556, 2)//idItem. 
+character.removeItem(4556, 2)//idItem. 
 ```
 Atento, si la cantidad es mayor o igual a la cantidad que contiene el Character de dicho item entonces se le removera definitivamente.
 
@@ -614,13 +633,15 @@ Quest
 Antes de iniciar un quest es necesario crear para que esto se registre. Todo nuevo quest requieren como parametro, id, name, min(minutos). Los minutos pueden ser nulos pues su función es simplemente dar una fecha de vencimiento desde que se inicie la Quest.
 
 ```javascript
-Quest.create(1234, 'My firts Quest', 10)
+const jmaple = new JMaple()
+jmaple.Quest.create(1234, 'My firts Quest', 10)
 ```
 
 ```javascript
 //Convesation Window
-new JMaple({
+new jmaple.Task({
     el:'element',
+    character : new jmaple.Character('Erick'),//requerid
     script : function(){
         this.start = () => {
             this.cm.startQuest(1234)//starting quest
@@ -629,14 +650,14 @@ new JMaple({
         }
     }
 
-}).show()
+}).start()
 ```
 
 Quest tiene una función llamada ```timer()``` en la cual le devolvera el tiempo concurrido en cada segundos; en caso de que un quest creado no tenga un tiempo de caducidad entonces la función le devolverá ```0```.
 
 
 ```javascript
-Quest.timer(1234, function(sec){
+jmaple.Quest.timer(1234, function(sec){
     console.log(sec)//...,56, 55, 54, 53,...
 })
 ```

@@ -3,8 +3,8 @@ const Quest = require('./quest')
 const Item = require('./item')
 
 class Character{
-    constructor(){
-        this.nick   =   'user'
+    constructor(nick){
+        this.nick   =   nick
         this.gender =   0 //male(0), female(1)
         this.job    =   0
         this.gm     =   false

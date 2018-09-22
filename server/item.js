@@ -5,7 +5,7 @@ class Item{
         this.inventory = inventory
         //this.type = null;
         this.lvRequerid = 1        
-        this.icon = 'src/img/item/default.png'
+        this.icon = 'dist/src/img/default.png'
         this.trade = true
         this.cash = false
         this.desc = ''
@@ -14,7 +14,7 @@ class Item{
     }
     static init(){        
         this.list = new Map()
-        this.path = 'src/img/item/'
+        this.path = 'dist/src/img/'
         
         const create = (id, name, icon, item) => Item.add(new item(id, name, icon))
         
