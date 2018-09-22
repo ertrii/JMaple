@@ -253,6 +253,18 @@ Antes de usar ```warp``` debemos registrar el mapa(map) en la lista.
 
 ```javascript
 const jmaple = new JMaple()
+//register
+jmaple.Maps.create({
+    id : 123456,
+    name : 'my map',
+    link : 'index.html#' //can be any link
+})
+jmaple.Maps.create({
+    id : 456789,
+    name : 'Github',
+    link : 'https://github.com/ertrii/JMaple'
+})
+
 new jmaple.Task({
     el:'element',
     npc: {
@@ -260,19 +272,6 @@ new jmaple.Task({
         name: 'Maple Administrator',
         img: 'src/img/npc/9010000.png'
     },
-    //register
-    map: [
-        {
-            id : 123456,
-            name : 'my map',
-            link : 'index.html#' //can be any link
-        },
-        {
-            id : 456789,
-            name : 'Github',
-            link : 'https://github.com/ertrii/JMaple'
-        }
-    ],
     //close register
     script : function(){
         this.start = function(){

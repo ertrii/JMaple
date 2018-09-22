@@ -412,6 +412,28 @@
         }
     }
 
+    class Maps {
+        static init(){
+            this.list = new Map()
+        }
+        static create(m){
+            if(!m.hasOwnProperty('action')) m.action = null
+            if(!m.hasOwnProperty('warp')) m.warp = true
+            let data = {
+                id : m.id,
+                name : m.name,
+                link : m.link,
+                action: m.action,
+                warp : m.warp,
+            }
+            this.list.set(m.id, data)
+        }
+        static get(id){
+            return this.list.get(parseInt(id))
+        }
+    }
+    Maps.init()   
+
     class Talk{
         constructor(data){
             this.config         =       {
@@ -431,24 +453,10 @@
             }
             //Map
             this.listnpc        =       new Map()
-            this.maps           =       new Map()        
             //getting
             this.container      =       document.getElementById(data.el)
             this.npc            =       data.hasOwnProperty('npc') ? data.npc : false
             if(this.npc) this.setnpc(this.npc)
-            if(data.hasOwnProperty('map'))
-            data.map.forEach(m => {                
-                    if(!m.hasOwnProperty('action')) m.action = null
-                    if(!m.hasOwnProperty('warp')) m.warp = true                
-                    let data    = {
-                        id : m.id,
-                        name : m.name,
-                        link : m.link,
-                        action: m.action,
-                        warp : m.warp,                    
-                    }
-                    this.maps.set(m.id, data)
-                })
             //preparing
             this.tagCode           =      {
 
@@ -522,7 +530,7 @@
                     this.listnpc.forEach((value, key) => keys.push(key))
                     break
                 case 'map':
-                    this.maps.forEach((value, key) => keys.push(key))
+                    Maps.list.forEach((value, key) => keys.push(key))
                     break
                 case 'item':
                     if(this.character)
@@ -715,7 +723,7 @@
                     }
                     switch (cod) {
                         case '#m':
-                            check( () => this.maps.get(parseInt(getValue(10))), 'name')
+                            check( () => Maps.get(parseInt(getValue(10))), 'name')
                             break;
                         case '#p':
                             check( () => this.listnpc.get(parseInt(getValue(10))), 'name')
@@ -1346,7 +1354,11 @@
                 },
 
                 warp            :   (mapid, portal = 0) => {                
-                    let data = this.maps.get(mapid)
+                    let data = Maps.get(mapid)
+                    if(data === undefined) {
+                        console.warn(`map not found`)
+                        return
+                    }
                     if(data.action !== null) data.action()
                     if(data.warp) window.location.href = data.link
                     if(this.config.dev) console.log(`warp(${data.id}): ${data.link}`)
@@ -1467,10 +1479,11 @@
 
     class JMaple{
         constructor(){
+            this.Stat = Stat
             this.Item = Item
             this.Quest = Quest
             this.Character = Character
-            this.Stat = Stat
+            this.Maps = Maps
             this.Talk = Talk
         }
     }
