@@ -90,13 +90,14 @@ Los npc representan un personaje:
 
 ```javascript
 const jmaple = new JMaple()
+jmaple.NPC.create({
+    id: 9010000,
+    name: 'Maple Administrator',
+    img: 'src/img/npc/9010000.png'
+})
 new jmaple.Task({
     el:'element',
-    npc: {
-        id: 9010000,
-        name: 'Maple Administrator',
-        img: 'src/img/npc/9010000.png'
-    },
+    npc: 9010000,//adding by id.
     script : function(){
         this.start = function(){
             this.cm.sendOk('This is my first conversation')
@@ -126,13 +127,14 @@ Los script NPC están programado dentro de dos funciones principales:
 #### Example:
 ```javascript
 const jmaple = new JMaple()
+jmaple.NPC.create({
+    id: 9010000,
+    name: 'Maple Administrator',
+    img: 'src/img/npc/9010000.png'
+})
 new jmaple.Task({
     el:'element',
-    npc: {
-        id: 9010000,
-        name: 'Maple Administrator',
-        img: 'src/img/npc/9010000.png'
-    },
+    npc: 9010000,
     script : function(){
         this.start = function(){
             this.cm.sendOk('This is the first conversation')
@@ -164,13 +166,14 @@ Los commands(cm) son funciones que se ejecutarán dentro de las funciones princi
 
 ```javascript
 const jmaple = new JMaple()
+jmaple.NPC.create({
+    id: 9010000,
+    name: 'Maple Administrator',
+    img: 'src/img/npc/9010000.png'
+})
 new jmaple.Task({
     el:'element',
-    npc: {
-        id: 9010000,
-        name: 'Maple Administrator',
-        img: 'src/img/npc/9010000.png'
-    },
+    npc: 9010000,
     script : function(){
         this.start = function(){
             this.cm.sendNext('This is a conversation window with an Next button')
@@ -266,21 +269,20 @@ jmaple.Maps.create({
     name : 'Github',
     link : 'https://github.com/ertrii/JMaple'
 })
-
+jmaple.NPC.create({
+    id: 9010000,
+    name: 'Maple Administrator',
+    img: 'src/img/npc/9010000.png'
+})
 new jmaple.Task({
     el:'element',
-    npc: {
-        id: 9010000,
-        name: 'Maple Administrator',
-        img: 'src/img/npc/9010000.png'
-    },
-
+    npc: 9010000,
     script : function(){
         this.start = function(){
             this.cm.sendOk('This is a test.')
         }
         this.action = function(){
-            this.cm.warp(456789)//the id of the registered map
+            this.cm.warp(456789, 12)//id map, id portal. Remember portal is optional
             this.cm.sendOk('warp...')
             this.cm.dispose()
         }
@@ -316,13 +318,14 @@ Para dar color a los textos existen estas etiquetas:
 
 ```javascript
 const jmaple = new JMaple()
+jmaple.NPC.create({
+    id: 9010000,
+    name: 'Maple Administrator',
+    img: 'src/img/npc/9010000.png'
+})
 new jmaple.Task({
     el:'element',
-    npc: {
-        id: 9010000,
-        name: 'Maple Administrator',
-        img: 'src/img/npc/9010000.png'
-    },
+    npc: 9010000,
     script : function(){
         this.start = function(){
             this.cm.sendOk('This is #rRed Text# and this is #ePurple#')
@@ -358,13 +361,14 @@ Todos forman parte de un párrafo, si desea crear uno nuevo use la etiqueta ```#
 
 ```javascript
 const jmaple = new JMaple()
+jmaple.NPC.create({
+    id: 9010000,
+    name: 'Maple Administrator',
+    img: 'src/img/npc/9010000.png'
+})
 new jmaple.Task({
-    el:'element',
-    npc: {
-        id: 9010000,
-        name: 'Maple Administrator',
-        img: 'src/img/npc/9010000.png'
-    },
+    el : 'element',
+    npc : 9010000,
     script : function(){
         this.start = function(){
             this.cm.sendOk('This is a List: #L1#item 1#l#L2#item2#l#L3#item3#l')
@@ -385,11 +389,6 @@ const jmaple = new JMaple()
 const character = new jmaple.character('Erick')//nick
 new jmaple.Task({
     el:'element',
-    npc: {
-        id: 9010000,
-        name: 'Maple Administrator',
-        img: 'src/img/npc/9010000.png'
-    },
     character : character,//adding...
     script : function(){
         //code
@@ -583,11 +582,6 @@ const character = new jmaple.Character('Erick')
 //Convesation Window
 const task = new jmaple.Task({
     el:'element',
-    npc: {
-        id: 9010000,
-        name: 'Maple Administrator',
-        img: 'src/img/npc/9010000.png'
-    },
     character : character,
     script : function(){
         this.start = () => {

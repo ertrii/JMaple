@@ -18,13 +18,14 @@
             link : 'https://github.com/ertrii'
         })
         jmaple.Portal.create(12, '21.5;0')
+        jmaple.NPC.create({
+            id : 9010000,
+            name : 'Maple Administrator',
+            img : 'dist/src/img/9010000.png'
+        })
         const talk = new jmaple.Talk({
             el : 'element',
-            npc : {
-                id : 9010000,
-                name : 'Maple Administrator',
-                img : 'dist/src/img/9010000.png'
-            },
+            npc : 9010000,
             character : new jmaple.Character('Erick'),
             script : function() {
                 this.status =   0

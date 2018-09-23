@@ -76,7 +76,7 @@
         }
         static get(iditem){        
             let item = this.list.get(iditem)
-            return (item === undefined) ? null : item
+            return (item === undefined) ? false : item
         }
     }
 
@@ -290,8 +290,8 @@
         }
 
         setItem(itemid, quantity = 1){
-            let item = Item.list.get(itemid)
-            if(item === undefined) {
+            let item = Item.get(itemid)
+            if(!item) {
                 console.error(`This item(${itemid}) is not exists in the list Item`);
                 return false;
             }
@@ -429,7 +429,8 @@
             this.list.set(m.id, data)
         }
         static get(id){
-            return this.list.get(parseInt(id))
+            let map = this.list.get(parseInt(id))
+            return (map === undefined) ? false : map
         }
     }
     Maps.init()
@@ -456,10 +457,35 @@
                 console.error(`The coord Portal(id: ${id}) is not number`)
         }
         static get(id){
-            return this.list.get(id)
+            let portal = this.list.get(parseInt(id))
+            return (portal === undefined) ? false : portal
         }
     }
     Portal.init()
+
+    class NPC{
+        static init(){
+            this.list = new Map()
+        }
+        static create(obj){
+            if(obj.hasOwnProperty('id') && obj.hasOwnProperty('name') && obj.hasOwnProperty('img')){
+                let npc = {
+                    id : obj.id,
+                    name : obj.name,
+                    img : obj.img
+                }
+                this.list.set(obj.id, npc)
+                return true
+            }else{
+                return false
+            }
+        }
+        static get(id){
+            let npc = this.list.get(parseInt(id))
+            return (npc === undefined) ? false : npc
+        }
+    }
+    NPC.init()
 
     class Talk{
         constructor(data){
@@ -478,12 +504,9 @@
                     apply       :       true
                 }
             }
-            //Map
-            this.listnpc        =       new Map()
             //getting
             this.container      =       document.getElementById(data.el)
-            this.npc            =       data.hasOwnProperty('npc') ? data.npc : false
-            if(this.npc) this.setnpc(this.npc)
+            this.npc            =       data.hasOwnProperty('npc') ? NPC.get(data.npc) : false
             //preparing
             this.tagCode        =       {
 
@@ -549,57 +572,6 @@
             //extensions
             this.character      =       (data.hasOwnProperty('character')) ? data.character : false
         }
-
-        registered(list){
-            let keys = []
-            switch(list){
-                case 'npc':
-                    this.listnpc.forEach((value, key) => keys.push(key))
-                    break
-                case 'map':
-                    Maps.list.forEach((value, key) => keys.push(key))
-                    break
-                case 'item':
-                    if(this.character)
-                        keys = this.character.listItem
-                    else
-                        console.error('Extension character is requerid.');
-                    break
-                default:
-                    console.error('null, just type this["npc", "map", "item"]')
-                    break
-            }
-            if(keys.length <= 0)
-                return null
-            else
-                return keys
-        }
-
-        setnpc(npc){
-            const isnpc = obj => {            
-                let prop = ['id', 'name', 'img']
-                for (let key of prop) {                
-                    if (!obj.hasOwnProperty(key)) {
-                        console.error('An npc requires as properties: {id, name, img}')
-                        return false
-                    }
-                }
-                return true
-            }
-            
-            if(Array.isArray(npc))
-                for (let _npc of npc) {
-                    if(!isnpc(_npc)) return
-                    if(this.listnpc.get(_npc.id) === undefined)
-                        this.listnpc.set(_npc.id, _npc)
-                }      
-            else{
-                if(!isnpc(npc)) return
-                if(this.listnpc.get(npc.id) === undefined)
-                    this.listnpc.set(npc.id, npc)
-            }            
-        }
-
         /*===Creating Element===*/
         get html(){
             //parent
@@ -744,7 +716,7 @@
                     let data = null
                     function check(value, property){
                         let getted = value()
-                        if (getted === undefined) return
+                        if (!getted) return
                         if(property === 'name'){ data = getted.name; return}
                         if(property === 'icon') data = getted.icon
                     }
@@ -753,11 +725,11 @@
                             check( () => Maps.get(parseInt(getValue(10))), 'name')
                             break;
                         case '#p':
-                            check( () => this.listnpc.get(parseInt(getValue(10))), 'name')
+                            check( () => NPC.get(parseInt(getValue(10))), 'name')
                             break;
                         case '#t':
                         case '#z':
-                            check( () => Item.list.get(parseInt(getValue(10))), 'name')
+                            check( () => Item.get(parseInt(getValue(10))), 'name')
                             break;
                         case '#h':
                             if (getValue(2) === ' ') data = this.character.nick
@@ -770,8 +742,8 @@
                         case '#v':
                             let savingTempCod = temp.cod
                             save()//closing tag code
-                            let _item = Item.list.get(parseInt(getValue(10)))
-                            if(_item === undefined) break
+                            let _item = Item.get(parseInt(getValue(10)))
+                            if(!_item) break
                             temp.cod = cod//open tag code
                             temp.text = _item.name
                             temp.value = _item.icon
@@ -1382,12 +1354,12 @@
 
                 warp            :   (mapid, portalid = 0) => {
                     let data = Maps.get(mapid)
-                    if(data === undefined) {
+                    if(!data) {
                         console.warn(`map{mapid} not found`)
                         return
                     }
                     if(portalid > 0){                        
-                        if(Portal.get(portalid) === undefined){
+                        if(!Portal.get(portalid)){
                             console.error(`portal(${portalid}) not found`)
                         }else{
                             let coord = Portal.get(portalid).coord
@@ -1529,6 +1501,7 @@
             this.Item = Item
             this.Quest = Quest
             this.Character = Character
+            this.NPC = NPC
             this.Maps = Maps
             this.Portal = Portal
             this.Talk = Talk
