@@ -17,7 +17,7 @@
             name : 'New Map',
             link : 'https://github.com/ertrii'
         })
-        
+        jmaple.Portal.create(12, '21.5;0')
         const talk = new jmaple.Talk({
             el : 'element',
             npc : {
@@ -41,7 +41,7 @@
                     }
                     if(this.status === 1){
                         if(mode === 1){
-                            this.cm.warp(11)
+                            this.cm.warp(15)
                         }else{
                             this.cm.sendOk('Well... f3')
                         }

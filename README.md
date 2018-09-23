@@ -247,13 +247,15 @@ El parametro __selection__ devolverá un valor ```0``` por defecto. Solo puede d
 Con la función ```dispose()``` es recomendable ser ejecutada al final de cualquier comando al finalizar una conversación.
 La función ```warp()``` requiere de dos valores:
 * __idMap__, es un valor numerico(int) que identifica un map.
-* __portal__, es un valor numerico(int) que identifica un portal, esto es opcional, por defecto será ```0```.
+* __portal__, es un valor numerico(int) que identifica un portal, una posición de la ventana de conversación, esto es opcional.
 
-Antes de usar ```warp``` debemos registrar el mapa(map) en la lista.
+Antes de usar ```warp``` debemos crear el mapa(map) en la lista. Si deseamos podemos crear portales. Los portales requerirán de dos parametros, ```id``` , identificador y  ```coord``` , coordenadas. Las cordenadas X y Y serán string separados por un punto y coma. Los valores se los tomará como porcentajes.
 
 ```javascript
 const jmaple = new JMaple()
-//register
+//creating portal
+jmaple.Portal.create(12, '21.5;26')//id, coord
+//creating map
 jmaple.Maps.create({
     id : 123456,
     name : 'my map',
@@ -272,7 +274,7 @@ new jmaple.Task({
         name: 'Maple Administrator',
         img: 'src/img/npc/9010000.png'
     },
-    //close register
+
     script : function(){
         this.start = function(){
             this.cm.sendOk('This is a test.')

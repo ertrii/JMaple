@@ -432,7 +432,34 @@
             return this.list.get(parseInt(id))
         }
     }
-    Maps.init()   
+    Maps.init()
+
+    class Portal {
+        static init(){
+            this.list = new Map()
+
+        }
+        static create(id, coord){
+            let c = coord.split(';')
+            let portal = {
+                id : id,
+                coord : {
+                    x : parseFloat(c[0]),
+                    y : parseFloat(c[1])
+                },
+                
+                coordString : coord
+            }
+            if(!isNaN(portal.coord.x) && !isNaN(portal.coord.y))
+                this.list.set(id, portal)
+            else
+                console.error(`The coord Portal(id: ${id}) is not number`)
+        }
+        static get(id){
+            return this.list.get(id)
+        }
+    }
+    Portal.init()
 
     class Talk{
         constructor(data){
@@ -458,7 +485,7 @@
             this.npc            =       data.hasOwnProperty('npc') ? data.npc : false
             if(this.npc) this.setnpc(this.npc)
             //preparing
-            this.tagCode           =      {
+            this.tagCode        =       {
 
                 color           :       [
                     {
@@ -1353,11 +1380,25 @@
                     update('test', text)
                 },
 
-                warp            :   (mapid, portal = 0) => {                
+                warp            :   (mapid, portalid = 0) => {
                     let data = Maps.get(mapid)
                     if(data === undefined) {
-                        console.warn(`map not found`)
+                        console.warn(`map{mapid} not found`)
                         return
+                    }
+                    if(portalid > 0){                        
+                        if(Portal.get(portalid) === undefined){
+                            console.error(`portal(${portalid}) not found`)
+                        }else{
+                            let coord = Portal.get(portalid).coord
+                            const containerX = this.container.clientWidth
+                            const containerY = this.container.clientHeight
+                            let x = -(containerX / 2 - this.container.firstChild.clientWidth / 2)
+                            let y = -(containerY / 2 - this.container.firstChild.clientHeight / 2)
+                            this.cssTranslate.x = x + (coord.x * containerX) / 100
+                            this.cssTranslate.y = y + (coord.y * containerY) / 100
+                            this.container.firstChild.style.transform = `translate(${this.cssTranslate.x}px, ${this.cssTranslate.y}px)`
+                        }
                     }
                     if(data.action !== null) data.action()
                     if(data.warp) window.location.href = data.link
@@ -1431,10 +1472,15 @@
             this.btnNext.onclick        =   ()  =>  sendEvent(1) //next
             
             //Window
-            let anchorPoint             =           { getted : false, x : 0, y : 0 }, //Mag Anchor Point
-                cssTranslate            =           { x : 0, y : 0 },
-                x = 0, y = 0,
-                stopMove                =   ()  =>  { this.container.onmousemove = null; anchorPoint.getted = false; cssTranslate.x = x; cssTranslate.y = y }
+            let anchorPoint             =           { getted : false, x : 0, y : 0 } //Mag Anchor Point
+            this.cssTranslate            =          { x : 0, y : 0 }
+            let x = 0, y = 0
+            let stopMove                =   ()  =>  {
+                this.container.onmousemove = null;
+                anchorPoint.getted = false;
+                this.cssTranslate.x = x;
+                this.cssTranslate.y = y
+            }
             this.head.onmouseup         =   ()  =>  stopMove()
             this.container.onmouseup    =   ()  =>  stopMove()        
             
@@ -1446,8 +1492,8 @@
                     anchorPoint.y       =   ev.clientY
                     anchorPoint.getted  =   true                
                 }            
-                x = cssTranslate.x + ev.clientX - anchorPoint.x
-                y = cssTranslate.y + ev.clientY - anchorPoint.y            
+                x = this.cssTranslate.x + ev.clientX - anchorPoint.x
+                y = this.cssTranslate.y + ev.clientY - anchorPoint.y            
                 
                 this.container.firstChild.style.transform = `translate(${x}px, ${y}px)`
 
@@ -1484,6 +1530,7 @@
             this.Quest = Quest
             this.Character = Character
             this.Maps = Maps
+            this.Portal = Portal
             this.Talk = Talk
         }
     }
