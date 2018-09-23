@@ -1,6 +1,9 @@
 'use strict';
 (function(root){
-
+    const config = {
+        globalPath : 'dist/src/img/',
+        dev : false
+    }
     const Exp = [1, 15, 34, 57, 92, 135, 372, 560, 840, 1242, 1144, 1573, 2144, 2800, 3640, 4700, 5893, 7360, 9144, 11120, 13477, 16268, 19320, 22880, 27008, 31477, 36600, 42444, 48720, 55813, 63800, 86784, 98208, 110932, 124432, 139372, 155865, 173280, 192400, 213345];
     class Stat{
         constructor(stat = {}){
@@ -42,24 +45,29 @@
         }
         static init(){        
             this.list = new Map()
-            this.path = 'dist/src/img/'
+            this.path = config.globalPath
             
-            const create = (id, name, icon, item) => Item.add(new item(id, name, icon))
+            const create = (id, name, icon, item) => {
+                if(icon === null)
+                    Item.add(new item(id, name, `${id}.png`))
+                else
+                    Item.add(new item(id, name, icon))
+            }
             
             this.equip = {
-                create : (id, name, icon) => create(id, name, icon, Equip),
+                create : (id, name, icon = null) => create(id, name, icon, Equip),
                 list : this.list
             }
             this.use = {
-                create : (id, name, icon) => create(id, name, icon, Use),
+                create : (id, name, icon = null) => create(id, name, icon, Use),
                 list : this.list
             }
             this.setup = {
-                create : (id, name, icon) => create(id, name, icon, Setup),
+                create : (id, name, icon = null) => create(id, name, icon, Setup),
                 list : this.list
             }
             this.etc = {
-                create : (id, name, icon) => create(id, name, icon, Etc),
+                create : (id, name, icon = null) => create(id, name, icon, Etc),
                 list : this.list
             }
         }
@@ -438,7 +446,6 @@
     class Portal {
         static init(){
             this.list = new Map()
-
         }
         static create(id, coord){
             let c = coord.split(';')
@@ -466,19 +473,16 @@
     class NPC{
         static init(){
             this.list = new Map()
+            this.path = config.globalPath
         }
-        static create(obj){
-            if(obj.hasOwnProperty('id') && obj.hasOwnProperty('name') && obj.hasOwnProperty('img')){
-                let npc = {
-                    id : obj.id,
-                    name : obj.name,
-                    img : obj.img
-                }
-                this.list.set(obj.id, npc)
-                return true
-            }else{
-                return false
+        static create(id, name, img = null){
+            let npc = {
+                id : id,
+                name : name,
+                img : (img === null) ? `${this.path}${id}.png` : img
             }
+            this.list.set(id, npc)
+            return true
         }
         static get(id){
             let npc = this.list.get(parseInt(id))
@@ -489,11 +493,10 @@
 
     class Talk{
         constructor(data){
-            this.config         =       {
+            this.preference         =       {
                 displace        :       true,
                 writing         :       true,
                 transition      :       'ease', // ease, gross, step <- later check, reason: writing
-                dev             :       false,
                 key             :       'm',
                 zIndex          :       100,
                 color           :       {
@@ -568,7 +571,7 @@
                 }
             }
 
-            this.input.el.setAttribute('class', this.config.key + '__input')
+            this.input.el.setAttribute('class', this.preference.key + '__input')
             //extensions
             this.character      =       (data.hasOwnProperty('character')) ? data.character : false
         }
@@ -576,36 +579,36 @@
         get html(){
             //parent
             let parentElement = document.createElement('div')
-            parentElement.setAttribute('class', this.config.key)
+            parentElement.setAttribute('class', this.preference.key)
 
             //head
             this.head = document.createElement('div')
-            this.head.setAttribute('class', this.config.key + '__head')
+            this.head.setAttribute('class', this.preference.key + '__head')
 
             //body
             let body = document.createElement('div')
-            body.setAttribute('class', this.config.key + '__body')
+            body.setAttribute('class', this.preference.key + '__body')
                 let npc = document.createElement('div')
-                npc.setAttribute('class', this.config.key + '__body__npc')
+                npc.setAttribute('class', this.preference.key + '__body__npc')
                     let npcImg = document.createElement('div')
-                    npcImg.setAttribute('class', this.config.key + '__body__npc__img')
+                    npcImg.setAttribute('class', this.preference.key + '__body__npc__img')
                         let imgElem = document.createElement('img')
                         if(this.npc) imgElem.setAttribute('src', this.npc.img)
                     npcImg.appendChild(imgElem);
                 npc.appendChild(npcImg);
                     let pNameElem = document.createElement('p')
-                    pNameElem.setAttribute('class', this.config.key + '__body__npc__name')
+                    pNameElem.setAttribute('class', this.preference.key + '__body__npc__name')
                     if(this.npc) pNameElem.appendChild(document.createTextNode(this.npc.name))
                 npc.appendChild(pNameElem)
             if(this.npc)
             body.appendChild(npc)
                 this.dialog = document.createElement('div')
-                this.dialog.setAttribute('class', this.config.key + '__body__dialog')
+                this.dialog.setAttribute('class', this.preference.key + '__body__dialog')
                     this.info = document.createElement('div')
-                    this.info.setAttribute('class', this.config.key + '__body__dialog__info')
+                    this.info.setAttribute('class', this.preference.key + '__body__dialog__info')
                 this.dialog.appendChild(this.info)
                     this.btnsInterrogate1 = document.createElement('div')
-                    this.btnsInterrogate1.setAttribute('class', this.config.key + '__body__dialog__btns')
+                    this.btnsInterrogate1.setAttribute('class', this.preference.key + '__body__dialog__btns')
                         this.btnPrev = document.createElement('button')
                         this.btnPrev.appendChild(document.createTextNode('PREV'))
                     if(this.cmSend === 'test' || this.cmSend === 'nextprev')
@@ -619,15 +622,15 @@
             
             //footer
             let footer = document.createElement('div')
-            footer.setAttribute('class', this.config.key + '__footer')
+            footer.setAttribute('class', this.preference.key + '__footer')
                 let exit = document.createElement('div')
-                exit.setAttribute('class', this.config.key + '__footer__btn-exit')
+                exit.setAttribute('class', this.preference.key + '__footer__btn-exit')
                     this.btnEndChat = document.createElement('button')
                     this.btnEndChat.appendChild(document.createTextNode('END CHAT'))
                 exit.appendChild(this.btnEndChat)
             footer.appendChild(exit)
                 this.btnsInterrogate2 = document.createElement('div')
-                this.btnsInterrogate2.setAttribute('class', this.config.key + '__footer__btns')
+                this.btnsInterrogate2.setAttribute('class', this.preference.key + '__footer__btns')
                     this.btnYes = document.createElement('button')
                     this.btnYes.appendChild(document.createTextNode((this.cmSend === 'ok') ? 'OK' : (this.cmSend === 'acceptdecline') ? 'Accept' : 'YES'))//ok === yes === Accept
                 if(this.cmSend === 'test' || this.cmSend === 'yesno' || this.cmSend === 'ok' || this.cmSend === 'acceptdecline')
@@ -845,13 +848,13 @@
                 for (const color of this.tagCode.color) {
                     if (node.cod === color.cod) {
                         let elem = document.createElement(color.el)
-                        elem.setAttribute('class', this.config.key + color.id)
+                        elem.setAttribute('class', this.preference.key + color.id)
                         elem.appendChild(document.createTextNode(node.text))                    
                         return elem
                     }
                 }
                 let div = document.createElement('div')
-                div.setAttribute('class', this.config.key + '__icon')
+                div.setAttribute('class', this.preference.key + '__icon')
                 let img = document.createElement('img')
                 img.setAttribute('src', node.value)
                 img.setAttribute('title', node.text)
@@ -863,7 +866,7 @@
             while(this.info.firstChild) this.info.removeChild(this.info.firstChild)
             paragraphs.forEach(parag => {
                 let p = document.createElement('p')
-                p.setAttribute('class', this.config.key + '__body__dialog__info--text')
+                p.setAttribute('class', this.preference.key + '__body__dialog__info--text')
                     
                 parag.forEach(dialog =>{
                     if(dialog.cod === null){
@@ -879,7 +882,7 @@
             })
 
             //animating text
-            if(this.config.writing){
+            if(this.preference.writing){
 
                 //removing text
                 let tempElem = [], savingText = [], savingElements = []
@@ -992,7 +995,7 @@
             //list
             if(list !== null) {
                 let ul = document.createElement('ul')
-                ul.setAttribute('class', this.config.key + '__body__dialog__info--alternatives')            
+                ul.setAttribute('class', this.preference.key + '__body__dialog__info--alternatives')            
                 list.forEach( node => {
                     let li = document.createElement('li')
                     for (const content of node.content) {                    
@@ -1056,7 +1059,7 @@
                         break
                 }
 
-                if(this.config.dev) console.log(`Mode: ${this.mode}, Type: ${typeSend}(${this.type}), Selection : ${this.selection}`);
+                if(config.dev) console.log(`Mode: ${this.mode}, Type: ${typeSend}(${this.type}), Selection : ${this.selection}`);
                 
             }
             let command = {
@@ -1374,7 +1377,7 @@
                     }
                     if(data.action !== null) data.action()
                     if(data.warp) window.location.href = data.link
-                    if(this.config.dev) console.log(`warp(${data.id}): ${data.link}`)
+                    if(config.dev) console.log(`warp(${data.id}): ${data.link}`)
                 },
 
                 dispose         :   () => this.dispose = true
@@ -1390,7 +1393,7 @@
             if(this.cmSend === 'getnumber' || this.cmSend === 'test'){
                 let value = parseInt(this.input.el.value)
                 if(value < this.input.min || value > this.input.max && this.input.max !== null || isNaN(value)) {
-                    this.input.el.style.color = this.config.color.danger
+                    this.input.el.style.color = this.preference.color.danger
                     setTimeout(()=>{
                         this.input.el.style.color = 'initial'
                     }, 500)
@@ -1399,18 +1402,18 @@
                 this.selection = value
                 this.input.restart()
             }
-            if(this.config.transition !== 'step'){ 
+            if(this.preference.transition !== 'step'){ 
                 this.container.style.opacity = 0
 
                 setTimeout( () => {
-                    if(this.config.transition === 'ease') this.container.style.transition = '0.3s ease'                
+                    if(this.preference.transition === 'ease') this.container.style.transition = '0.3s ease'                
                     this.script.action(this.mode, this.type, this.selection)
                     this.selection = 0 //reset
                     this.container.style.opacity = 1
                     if(!this.cmExecuted && this.dispose) this.end()
                 }, 150)
 
-                if(this.config.transition === 'ease') this.container.style.transition = '0s'            
+                if(this.preference.transition === 'ease') this.container.style.transition = '0s'            
                 this.cmExecuted = false
                 return
             }        
@@ -1425,7 +1428,7 @@
                 this.mode = mode
                 if(!this.dispose) this.nextWindow()
                 else{
-                    if(this.config.dev) console.log(`Mode: ${this.mode}, Type: ${this.type}, Selection : ${this.selection}`)
+                    if(config.dev) console.log(`Mode: ${this.mode}, Type: ${this.type}, Selection : ${this.selection}`)
                     this.end()
                 }
             }
@@ -1456,7 +1459,7 @@
             this.head.onmouseup         =   ()  =>  stopMove()
             this.container.onmouseup    =   ()  =>  stopMove()        
             
-            if(this.config.displace)
+            if(this.preference.displace)
             this.head.onmousedown       =   ()  =>  this.container.onmousemove  =   ev  => {            
                 
                 if(!anchorPoint.getted) {                
@@ -1477,17 +1480,17 @@
             this.prepareScript()        
             this.container.classList.add('jmaple')
             this.container.style.display = 'flex'        
-            this.container.style.zIndex = `${this.config.zIndex}`;
+            this.container.style.zIndex = `${this.preference.zIndex}`;
             this.container.appendChild(this.html)
             //this.script.start()
             try{
                 this.script.start()
             }catch(e){
-                if(this.config.dev) console.info('the start function was not found, executing action function...')
+                if(config.dev) console.info('the start function was not found, executing action function...')
                 try{
                     this.script.action(1, this.type, this.selection)
                 }catch(er){
-                    if(this.config.dev) console.error('action function was not found')
+                    if(config.dev) console.error('action function was not found')
                 }
             }
             this.events()
@@ -1497,6 +1500,7 @@
 
     class JMaple{
         constructor(){
+            this.config = config
             this.Stat = Stat
             this.Item = Item
             this.Quest = Quest

@@ -11,18 +11,15 @@
     <script src="dist/js/jmaple.js"></script>
     <script>
         const jmaple = new JMaple()
-        jmaple.Item.etc.create(4000002, "Pig's Ribbon", '4000002.png')
+        jmaple.config.dev = true
+        jmaple.Item.etc.create(4000002, "Pig's Ribbon")
         jmaple.Maps.create({
             id : 15,
             name : 'New Map',
             link : 'https://github.com/ertrii'
         })
         jmaple.Portal.create(12, '21.5;0')
-        jmaple.NPC.create({
-            id : 9010000,
-            name : 'Maple Administrator',
-            img : 'dist/src/img/9010000.png'
-        })
+        jmaple.NPC.create(9010000,'Maple Administrator')
         const talk = new jmaple.Talk({
             el : 'element',
             npc : 9010000,

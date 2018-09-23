@@ -33,8 +33,13 @@ npm install jmaple
 ```html
 <script src="node_modules/jmaple/dist/js/jmaple.js"></script>
 ```
+## Config
+* __globalPath__;string, ruta donde se ubican las imagenes. Default ```'dist/src/img/'```
+* __dev__; bool, modo desarrollador. Default ```false```
+
 ```javascript
 const jmaple = new JMaple()
+jmaple.config.dev = true
 new jmaple.Task({
     el:'element', //#id
     script : function(){
@@ -51,15 +56,14 @@ Task será donde se estructurará y mostrará la ventana de conversación.
 * m--classic.css
 * m--flat.css
 * m--future.css
-## Config
-Existen algunas propiedades de configuración que usted puede editar a su gusto, yo en mi caso lo dejaré por defecto:
+## Preference
+Existen algunas propiedades que usted puede editar a su gusto, yo en mi caso lo dejaré por defecto:
 * __displace(bool=true)__, desplazamiento de la ventana.
 * __writing(bool=true)__, animación de escritura.
 * __transition(string)__, tipo de transición de una ventana a otra:
     * __ease__, una transición suave.
     * __gross__, una transición de golpe.
     * __step__, no hay transición.
-* __dev(bool=false)__, muestra por consola datos necesarios para el desarrollo.
 * __key(string='m')__, clase de la ventana de conversación, un identificador en los css styles. En caso de ser cambiado usted tendría que editar el css con ese nombre que le ha asignado.
 * __zIndex(int=100)__, posicionamiento ```z``` del contenedor principal.
 
@@ -74,9 +78,8 @@ const task = new jmaple.Task({
         }
     }
 })
-task.config.displace = false
-task.config.transition = 'gross'
-task.config.dev = true
+task.preference.displace = false
+task.preference.transition = 'gross'
 task.start()
 ```
 
@@ -86,15 +89,12 @@ NPC
 Los npc representan un personaje:
 * __id(int)__, identificador.
 * __name(string)__.
-* __img(string)__, ruta de la imagen.
+* __img(string)__, nombre de la imagen. Este puede ser omitido y tomará por defecto la ruta ```NPC.path``` y el id como nombre con formato png. ```NPC.path``` toma el valor de ```config.globalPath```.
 
 ```javascript
 const jmaple = new JMaple()
-jmaple.NPC.create({
-    id: 9010000,
-    name: 'Maple Administrator',
-    img: 'src/img/npc/9010000.png'
-})
+console.log(jmaple.NPC.path)//'dist/src/img/'
+jmaple.NPC.create(9010000,'Maple Administrator')
 new jmaple.Task({
     el:'element',
     npc: 9010000,//adding by id.
@@ -543,16 +543,18 @@ character.stat = new jmaple.Stat({
 
 Item
 ----
-Para crear un Item debemos conocer los tipos que existen. Antes de eso verficaremos el directorio donde se ubicará la imagen de tu item.
+Para crear un Item debemos conocer los tipos que existen. Antes de eso verficaremos el directorio donde se ubicará la imagen de tu item. 
 
 ```javascript
 console.log(jmaple.Item.path)//'src/img/item/'
 ```
 
+```Item.path``` toma por defecto el valor de ```config.globalPath```
+
 ```javascript
 //creating and adding..
-jmaple.Item.equip.create(123, 'un arma', '123.png')
-jmaple.Item.use.create(540, 'potion blue', 'potion_blue.png')
+jmaple.Item.equip.create(123, 'un arma', 'un_arma.png')
+jmaple.Item.use.create(540, 'potion blue')
 ```
 
 ### Type Items:
@@ -565,15 +567,15 @@ Existen varias clases de item dependiendo de lo que deseas crear:
 Estas clases necesitan como parametros:
 * __id(int)__, identificador del item.
 * __name(string)__, nombre del item.
-* __icon(string)__, ruta de la imagen del item.
+* __icon(string)__, nombre de la imagen del item. Este puede ser omitida si tu imagen lleva como nombre igual al id con formato .png.
 
 Ahora asignaremos un Item a un Character por medio de una Conversation Window:
 
 ```javascript
 //adding items
-jmaple.Item.equip.create(961, 'Eclipse', '961.png')
-jmaple.Item.use.create(4556, 'Potion Blue', '4556.png')
-jmaple.Item.etc.create(156, 'leaf', '156.png')
+jmaple.Item.equip.create(961, 'Eclipse')
+jmaple.Item.use.create(4556, 'Potion Blue', 'My_image_with_other_name.png')
+jmaple.Item.etc.create(156, 'leaf')
 ```
 ```javascript
 const jmaple = new JMaple()
