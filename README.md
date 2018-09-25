@@ -354,8 +354,8 @@ Para crear una lista se requieren ciertas etiquetas.
 
 | code     | Description |
 | -------- | ----------- |
-| #L[int]# | Open Item   |
-| #l       | Close Item  |
+| #L[int]# | Open Item. You can close with this for the next item. |
+| #l       | Close Item. |
 
 Todos forman parte de un párrafo, si desea crear uno nuevo use la etiqueta ```#w```. In Maplestory is ```\n```.
 

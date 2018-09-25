@@ -82,7 +82,11 @@ class Character{
                     return true
             },
             gainItem    :   (itemid, ammount = 1)   =>  {
-                return this.setItem(itemid, ammount)
+                if(ammount < 0){
+                    return this.removeItem(itemid, -(ammount))
+                }else{
+                    return this.setItem(itemid, ammount)
+                }
             },
             changeJob   :   jobid   => {
                 if(!isNaN(ammount))

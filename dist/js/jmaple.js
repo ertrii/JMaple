@@ -351,7 +351,11 @@
                         return true
                 },
                 gainItem    :   (itemid, ammount = 1)   =>  {
-                    return this.setItem(itemid, ammount)
+                    if(ammount < 0){
+                        return this.removeItem(itemid, -(ammount))
+                    }else{
+                        return this.setItem(itemid, ammount)
+                    }
                 },
                 changeJob   :   jobid   => {
                     if(!isNaN(ammount))
@@ -807,12 +811,13 @@
                         i_char ++
                         continue
                     }
-                    if(textSplit === this.tagCode.list[0] && !openLi){
+                    if(textSplit === '#L'){
                         i_char += 2//omiting code tag
                         valueLi = getValue(3)
                         
                         if(valueLi !== ''){
                             save()
+                            if(openLi) closeLi()
                             temp.cod = null//it's just in case
                             openLi = true
                         }
@@ -821,7 +826,7 @@
                     }
         
                     else if(openLi){
-                        if(textSplit === this.tagCode.list[1]){
+                        if(textSplit === '#l'){
                             save()
                             closeLi()
                         }else{
@@ -839,6 +844,7 @@
             }
             //console.log("\n" )
             save()//ending...
+            if(openLi) closeLi()
             addParagraphs()
             this.write(paragraphs, (ul.length === 0) ? null : ul)
         }
