@@ -127,11 +127,7 @@ Los script NPC están programado dentro de dos funciones principales:
 #### Example:
 ```javascript
 const jmaple = new JMaple()
-jmaple.NPC.create({
-    id: 9010000,
-    name: 'Maple Administrator',
-    img: 'src/img/npc/9010000.png'
-})
+jmaple.NPC.create(9010000, 'Maple Administrator')
 new jmaple.Task({
     el:'element',
     npc: 9010000,
@@ -166,11 +162,7 @@ Los commands(cm) son funciones que se ejecutarán dentro de las funciones princi
 
 ```javascript
 const jmaple = new JMaple()
-jmaple.NPC.create({
-    id: 9010000,
-    name: 'Maple Administrator',
-    img: 'src/img/npc/9010000.png'
-})
+jmaple.NPC.create(9010000, 'Maple Administrator')
 new jmaple.Task({
     el:'element',
     npc: 9010000,
@@ -269,11 +261,7 @@ jmaple.Maps.create({
     name : 'Github',
     link : 'https://github.com/ertrii/JMaple'
 })
-jmaple.NPC.create({
-    id: 9010000,
-    name: 'Maple Administrator',
-    img: 'src/img/npc/9010000.png'
-})
+jmaple.NPC.create( 9010000, 'Maple Administrator', 'src/img/npc/9010000.png')
 new jmaple.Task({
     el:'element',
     npc: 9010000,
@@ -318,11 +306,7 @@ Para dar color a los textos existen estas etiquetas:
 
 ```javascript
 const jmaple = new JMaple()
-jmaple.NPC.create({
-    id: 9010000,
-    name: 'Maple Administrator',
-    img: 'src/img/npc/9010000.png'
-})
+jmaple.NPC.create(9010000, 'Maple Administrator')
 new jmaple.Task({
     el:'element',
     npc: 9010000,
@@ -361,11 +345,7 @@ Todos forman parte de un párrafo, si desea crear uno nuevo use la etiqueta ```#
 
 ```javascript
 const jmaple = new JMaple()
-jmaple.NPC.create({
-    id: 9010000,
-    name: 'Maple Administrator',
-    img: 'src/img/npc/9010000.png'
-})
+jmaple.NPC.create( 9010000, 'Maple Administrator')
 new jmaple.Task({
     el : 'element',
     npc : 9010000,
