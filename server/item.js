@@ -15,7 +15,7 @@ class Item{
     }
     static init(){        
         this.list = new Map()
-        this.path = config.globalPath
+        this.path = 'dist/src/img/'
         
         const create = (id, name, icon, item) => {
             if(icon === null)

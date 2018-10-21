@@ -1,6 +1,5 @@
 'use strict'
-const config = {
-    globalPath : 'dist/src/img/',
+const config = {    
     dev : false
 }
 module.exports = config

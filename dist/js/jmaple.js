@@ -1,7 +1,7 @@
 'use strict';
 (function(root){
     const config = {
-        globalPath : 'dist/src/img/',
+        //globalPath : 'dist/src/img/',
         dev : false
     }
     const Exp = [1, 15, 34, 57, 92, 135, 372, 560, 840, 1242, 1144, 1573, 2144, 2800, 3640, 4700, 5893, 7360, 9144, 11120, 13477, 16268, 19320, 22880, 27008, 31477, 36600, 42444, 48720, 55813, 63800, 86784, 98208, 110932, 124432, 139372, 155865, 173280, 192400, 213345];
@@ -45,7 +45,7 @@
         }
         static init(){        
             this.list = new Map()
-            this.path = config.globalPath
+            this.path = 'dist/src/img/'
             
             const create = (id, name, icon, item) => {
                 if(icon === null)
@@ -477,7 +477,7 @@
     class NPC{
         static init(){
             this.list = new Map()
-            this.path = config.globalPath
+            this.path = 'dist/src/img/'
         }
         static create(id, name, img = null){
             let npc = {

@@ -2,7 +2,7 @@ const config = require('./config')
 class NPC{
     static init(){
         this.list = new Map()
-        this.path = config.globalPath
+        this.path = 'dist/src/img/'
     }
     static create(id, name, img = null){
         let npc = {
