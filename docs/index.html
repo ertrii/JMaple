@@ -19,17 +19,17 @@
     <meta name="twitter:image" content="https://ertrii.github.io/JMaple/dist/src/img/9010000.png">
     <meta name="twitter:card" content="JMaple">
 
-    <link rel="stylesheet" href="dist/css/m--modern.css">
+    <link rel="stylesheet" href="css/m--modern.css">
     <title>JMaple</title>
 </head>
 <body>    
     <div id="element"></div>
-    <script src="dist/js/jmaple.js"></script>
+    <script src="js/jmaple.js"></script>
     <script>
         const jmaple = new JMaple()
         jmaple.config.dev = true
-        jmaple.Item.path = 'dist/src/img/'
-        jmaple.NPC.path = 'dist/src/img/'
+        jmaple.Item.path = 'src/img/'
+        jmaple.NPC.path = 'src/img/'
         jmaple.Item.etc.create(4000002, "Pig's Ribbon")
         jmaple.Maps.create({
             id : 15,
