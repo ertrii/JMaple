@@ -812,12 +812,12 @@
                         continue
                     }
                     if(textSplit === '#L'){
+                        save()
+                        if(openLi) closeLi()
                         i_char += 2//omiting code tag
                         valueLi = getValue(3)
                         
-                        if(valueLi !== ''){
-                            save()
-                            if(openLi) closeLi()
+                        if(valueLi !== ''){                                          
                             temp.cod = null//it's just in case
                             openLi = true
                         }
@@ -842,7 +842,6 @@
                 } 
                     
             }
-            //console.log("\n" )
             save()//ending...
             if(openLi) closeLi()
             addParagraphs()
@@ -867,7 +866,6 @@
                 div.appendChild(img)
                 return div
             }
-
             //text
             while(this.info.firstChild) this.info.removeChild(this.info.firstChild)
             paragraphs.forEach(parag => {
@@ -1011,7 +1009,7 @@
                             li.appendChild(getTextStyle(content))
                         }
                     }
-                    li.onclick = () => {
+                    li.onclick = () => {                        
                         if ( !this.dispose ) {
                             let value = parseInt(node.value)
                             this.selection = (isNaN(value)) ? node.value : value

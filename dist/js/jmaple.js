@@ -812,12 +812,12 @@
                         continue
                     }
                     if(textSplit === '#L'){
+                        save()
+                        if(openLi) closeLi()
                         i_char += 2//omiting code tag
                         valueLi = getValue(3)
                         
-                        if(valueLi !== ''){
-                            save()
-                            if(openLi) closeLi()
+                        if(valueLi !== ''){                            
                             temp.cod = null//it's just in case
                             openLi = true
                         }
