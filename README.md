@@ -1,5 +1,6 @@
 JMaple(Alpha)
 =======================
+version: 0.11.0
 
 A library to create conversation windows in the maplestory style using the classic or current design among others.
 
@@ -34,21 +35,12 @@ npm install jmaple
 <script src="node_modules/jmaple/dist/js/jmaple.js"></script>
 ```
 ## Config
-* __globalPath__;string, ruta donde se ubican las imagenes. Default ```'dist/src/img/'```
 * __dev__; bool, modo desarrollador. Default ```false```
 
 ```javascript
 const jmaple = new JMaple()
 jmaple.config.dev = true
-new jmaple.Task({
-    el:'element', //#id
-    script : function(){
-        this.start = function(){
-            this.cm.sendOk('This is my first conversation')
-            this.cm.dispose()
-        }
-    }
-}).start()
+new jmaple.Task('element').start()//will show you a welcome window
 ```
 Task será donde se estructurará y mostrará la ventana de conversación.
 
@@ -69,15 +61,13 @@ Existen algunas propiedades que usted puede editar a su gusto, yo en mi caso lo 
 
 ```javascript
 const jmaple = new JMaple()
-const task = new jmaple.Task({
-    el:'element',
-    script : function(){
-        this.start = function(){
-            this.cm.sendOk('This is my first conversation')
-            this.cm.dispose()
-        }
+const task = new jmaple.Task('element')
+task.script = function(){
+    this.start = function(){
+        this.cm.sendOk('This is my first conversation')
+        this.cm.dispose()
     }
-})
+}
 task.preference.displace = false
 task.preference.transition = 'gross'
 task.start()
@@ -89,22 +79,23 @@ NPC
 Los npc representan un personaje:
 * __id(int)__, identificador.
 * __name(string)__.
-* __img(string)__, nombre de la imagen. Este puede ser omitido y tomará por defecto la ruta ```NPC.path``` y el id como nombre con formato png. ```NPC.path``` toma el valor de ```config.globalPath```.
+* __img(string)__, nombre de la imagen. Este puede ser omitido y tomará por defecto la ruta ```NPC.path``` y el id como nombre con formato png.
 
 ```javascript
 const jmaple = new JMaple()
 console.log(jmaple.NPC.path)//'dist/src/img/'
 jmaple.NPC.create(9010000,'Maple Administrator')
-new jmaple.Task({
-    el:'element',
-    npc: 9010000,//adding by id.
-    script : function(){
-        this.start = function(){
-            this.cm.sendOk('This is my first conversation')
-            this.cm.dispose()
-        }
+const task = new jmaple.Task(
+    'element',
+    9010000,//adding NPC id.
+)
+task.script = function(){
+    this.start = function(){
+        this.cm.sendOk('This is my first conversation')
+        this.cm.dispose()
     }
-}).start()
+}
+task.start()
 ```
 
 ## Conversation
@@ -128,19 +119,17 @@ Los script NPC están programado dentro de dos funciones principales:
 ```javascript
 const jmaple = new JMaple()
 jmaple.NPC.create(9010000, 'Maple Administrator')
-new jmaple.Task({
-    el:'element',
-    npc: 9010000,
-    script : function(){
-        this.start = function(){
-            this.cm.sendOk('This is the first conversation')
-        }
-        this.action = function(mode, type, selection){
-            this.cm.sendOk('This is the second conversation')
-            this.cm.dispose()
-        }
+const task = new jmaple.Task('element', 9010000)
+task.script = function(){
+    this.start = function(){
+        this.cm.sendOk('This is the first conversation')
     }
-}).start()
+    this.action = function(mode, type, selection){
+        this.cm.sendOk('This is the second conversation')
+        this.cm.dispose()
+    }
+}
+task.start()
 ```
 Commands
 ===========
@@ -163,19 +152,17 @@ Los commands(cm) son funciones que se ejecutarán dentro de las funciones princi
 ```javascript
 const jmaple = new JMaple()
 jmaple.NPC.create(9010000, 'Maple Administrator')
-new jmaple.Task({
-    el:'element',
-    npc: 9010000,
-    script : function(){
-        this.start = function(){
-            this.cm.sendNext('This is a conversation window with an Next button')
-        }
-        this.action = function(){
-            this.cm.sendYesNo('This is a conversation window with an Yes and No button')
-            this.cm.dispose()
-        }
+const task = new jmaple.Task('element', 9010000)
+task.script : function(){
+    this.start = function(){
+        this.cm.sendNext('This is a conversation window with an Next button')
     }
-}).start()
+    this.action = function(){
+        this.cm.sendYesNo('This is a conversation window with an Yes and No button')
+        this.cm.dispose()
+    }
+}
+task.start()
 ```
 Dependiendo del tipo Ventana de Conversación, los parametros __type__ y __mode__ de ```action()``` devolveran un valor.
 * __sendOk or sendNext__
@@ -262,20 +249,18 @@ jmaple.Maps.create({
     link : 'https://github.com/ertrii/JMaple'
 })
 jmaple.NPC.create( 9010000, 'Maple Administrator', 'src/img/npc/9010000.png')
-new jmaple.Task({
-    el:'element',
-    npc: 9010000,
-    script : function(){
-        this.start = function(){
-            this.cm.sendOk('This is a test.')
-        }
-        this.action = function(){
-            this.cm.warp(456789, 12)//id map, id portal. Remember portal is optional
-            this.cm.sendOk('warp...')
-            this.cm.dispose()
-        }
+const task = new jmaple.Task('element', 9010000)
+task.script = function(){
+    this.start = function(){
+        this.cm.sendOk('This is a test.')
     }
-}).start()
+    this.action = function(){
+        this.cm.warp(456789, 12)//id map, id portal. Remember portal is optional
+        this.cm.sendOk('warp...')
+        this.cm.dispose()
+    }
+}
+task.start()
 ```
 Son dos propiedades requeridos y dos propiedades opcionales:
 * __id(int)__, identificador del map.
@@ -307,16 +292,14 @@ Para dar color a los textos existen estas etiquetas:
 ```javascript
 const jmaple = new JMaple()
 jmaple.NPC.create(9010000, 'Maple Administrator')
-new jmaple.Task({
-    el:'element',
-    npc: 9010000,
-    script : function(){
-        this.start = function(){
-            this.cm.sendOk('This is #rRed Text# and this is #ePurple#')
-            this.cm.dispose()
-        }
+const task = new jmaple.Task('element', 9010000)
+task.script = function(){
+    this.start = function(){
+        this.cm.sendOk('This is #rRed Text# and this is #ePurple#')
+        this.cm.dispose()
     }
-}).start()
+}
+task.start()
 ```
 
 Existen algunos codes que requieren de un valor entero(id):
@@ -346,16 +329,14 @@ Todos forman parte de un párrafo, si desea crear uno nuevo use la etiqueta ```#
 ```javascript
 const jmaple = new JMaple()
 jmaple.NPC.create( 9010000, 'Maple Administrator')
-new jmaple.Task({
-    el : 'element',
-    npc : 9010000,
-    script : function(){
-        this.start = function(){
-            this.cm.sendOk('This is a List: #L1#item 1#l#L2#item2#l#L3#item3#l')
-            this.cm.dispose()
-        }
+const task = new jmaple.Task('element', 9010000)
+task.script : function(){
+    this.start = function(){
+        this.cm.sendOk('This is a List: #L1#item 1#l#L2#item2#l#L3#item3#l')
+        this.cm.dispose()
     }
-}).start()
+}
+task.start()
 ```
 El número asignado podrá ser el valor para el parámetro __selection__, eso dependerá a que item selecciones en el cuadro de diálogo. 
 
@@ -366,15 +347,14 @@ Character es una extensión que amplia la lista de comandos(cm). Character solo 
 #### Example:
 ```javascript
 const jmaple = new JMaple()
+jmaple.NPC.create( 9010000, 'Maple Administrator')
 const character = new jmaple.character('Erick')//nick
-new jmaple.Task({
-    el:'element',
-    character : character,//adding...
-    script : function(){
-        //code
-    }
+new jmaple.Task(
+    'element',
+    9010000,//npc
+    character,//adding...    
 
-}).start()
+).start()
 
 ```
 
@@ -422,77 +402,6 @@ character.exp = 500,
 character.mesos = 95065012354//^^
 //...
 ```
-### List Job: Beginner
-| Job | id | level(old version) | level(current version) |
-| --- | -- | ------------------ | ---------------------- |
-| Beginner | 0 | 1 | 1 |
-
-### List Job: Warrior
-| Job | id | level(old version) | level(current version) |
-| --- | -- | ------------------ | ---------------------- |
-| Warrior | 100 | 10 | 10 |
-| Fighter | 110 | 30 | 30 |
-| Cruzader | 111 | 70 | 60 |
-| Hero | 112 | 120 | 100 |
-| Page | 120 | 30 | 30 |
-| White Knight | 121 | 70 | 60 |
-| Paladin | 122 | 120 | 100 |
-| Spearman | 130 | 30 | 30 |
-| Dragon Knight | 131 | 70 | 60 |
-| Dark Knight | 132 | 120 | 100 |
-| Dawn Warrior(1/2/3/4) | 1000/1010/1021/1022 | 10/30/70/120 | 10/30/60/100 |
-| Aran(1/2/3/4) | 2100/2110/2111/2112 | 10/30/70/120 | 10/30/60/100 |
-
-### List Job: Magician
-| Job | id | level(old version) | level(current version) |
-| --- | -- | ------------------ | ---------------------- |
-| Magician | 200 | 8 | 10 |
-| FP Wizard | 210 | 30 | 30 |
-| FP Mage | 211 | 70 | 60 |
-| FP Archmage | 212 | 120 | 100 |
-| IL Wizard | 220 | 30 | 30 |
-| IL Mage | 221 | 70 | 60 |
-| IL Archmage | 222 | 120 | 100 |
-| Cleric | 230 | 30 | 30 |
-| Priest | 231 | 70 | 100 |
-| Bishop | 232 | 120 | 100 |
-| Blaze Wizard(1/2/3/4) | 1100/1110/1121/1122 | 10/30/70/120 | 10/30/60/100 |
-
-### List Job: Bownman
-| Job | id | level(old version) | level(current version) |
-| --- | -- | ------------------ | ---------------------- |
-| Bownman | 300 | 10 | 10 |
-| Hunter | 310 | 30 | 30 |
-| Ranger | 311 | 70 | 60 |
-| Bow Master | 312 | 120 | 100 |
-| Cross Master | 320 | 30 | 30 |
-| Sniper | 321 | 70 | 60 |
-| Crossbow Master | 322 | 120 | 100 |
-| Wind Archer(1/2/3/4) | 1200/1210/1221/1222 | 10/30/70/120 | 10/30/60/100 |
-
-### List Job: Tief
-| Job | id | level(old version) | level(current version) |
-| --- | -- | ------------------ | ---------------------- |
-| Tief | 400 | 10 | 10 |
-| Assassin | 410 | 30 | 30 |
-| Hermit | 411 | 70 | 60 |
-| Night Lord | 412 | 120 | 100 |
-| Bandit | 420 | 30 | 30 |
-| Chief Bandit | 421 | 70 | 60 |
-| Shadower | 422 | 120 | 100 |
-| Night Walker(1/2/3/4) | 1300/1310/1321/1322 | 10/30/70/120 | 10/30/60/100 |
-
-### List Job: Pirate
-| Job | id | level(old version) | level(current version) |
-| --- | -- | ------------------ | ---------------------- |
-| Pirate | 500 | 10 | 10 |
-| Brawler | 510 | 30 | 30 |
-| Marauder | 511 | 70 | 60 |
-| Buccaneer | 512 | 120 | 100 |
-| Gunslinger | 520 | 30 | 30 |
-| Outlaw | 521 | 70 | 60 |
-| Corsair | 522 | 120 | 100 |
-| Thunder Breaker(1/2/3/4) | 1400/1410/1421/1422 | 10/30/70/120 | 10/30/60/100 |
 
 Stat
 ----
@@ -529,8 +438,6 @@ Para crear un Item debemos conocer los tipos que existen. Antes de eso verficare
 console.log(jmaple.Item.path)//'src/img/item/'
 ```
 
-```Item.path``` toma por defecto el valor de ```config.globalPath```
-
 ```javascript
 //creating and adding..
 jmaple.Item.equip.create(123, 'un arma', 'un_arma.png')
@@ -559,24 +466,23 @@ jmaple.Item.etc.create(156, 'leaf')
 ```
 ```javascript
 const jmaple = new JMaple()
+//creating npc
+jmaple.NPC.create( 9010000, 'Maple Administrator')
 //creating char
 const character = new jmaple.Character('Erick')
 //Convesation Window
-const task = new jmaple.Task({
-    el:'element',
-    character : character,
-    script : function(){
-        this.start = () => {
-            this.cm.gainItem(4556, 2)//idItem, quantity
-            this.cm.sendOk('Take two items...')
-        }
-        this.action = () => {
-            this.cm.sendOk('Ready! ^_^')
-            this.cm.dispose()
-        }
+const task = new jmaple.Task('element',9010000, character)
+task.script : function(){
+    this.start = () => {
+        this.cm.gainItem(4556, 2)//idItem, quantity
+        this.cm.sendOk('Take two items...')
     }
-
-}).start()
+    this.action = () => {
+        this.cm.sendOk('Ready! ^_^')
+        this.cm.dispose()
+    }
+}
+task.start()
 
 ```
 
@@ -616,18 +522,19 @@ jmaple.Quest.create(1234, 'My firts Quest', 10)
 
 ```javascript
 //Convesation Window
-new jmaple.Task({
-    el:'element',
-    character : new jmaple.Character('Erick'),//requerid
-    script : function(){
-        this.start = () => {
-            this.cm.startQuest(1234)//starting quest
-            this.cm.sendOk('Start Quest...')
-            //look at the top the cm for quest
-        }
+new jmaple.Task(
+    'element',
+    null, //if you do not need a NPC
+    new jmaple.Character('Erick'),//requerid    
+)
+task.script : function(){
+    this.start = () => {
+        this.cm.startQuest(1234)//starting quest
+        this.cm.sendOk('Start Quest...')
+        //look at the top the cm for quest
     }
-
-}).start()
+}
+task.start()
 ```
 
 Quest tiene una función llamada ```timer()``` en la cual le devolvera el tiempo concurrido en cada segundos; en caso de que un quest creado no tenga un tiempo de caducidad entonces la función le devolverá ```0```.

@@ -1,6 +1,6 @@
 {
   "name": "jmaple",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "description": "its a library to show a conversation window on your website",
   "main": "index.js",
   "repository": {

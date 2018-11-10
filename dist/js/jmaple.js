@@ -496,7 +496,7 @@
     NPC.init()
 
     class Talk{
-        constructor(data){
+        constructor(el, npc, char){
             this.preference         =       {
                 displace        :       true,
                 writing         :       true,
@@ -512,8 +512,8 @@
                 }
             }
             //getting
-            this.container      =       document.getElementById(data.el)
-            this.npc            =       data.hasOwnProperty('npc') ? NPC.get(data.npc) : false
+            this.container      =       document.getElementById(el)
+            this.npc            =       (npc) ? NPC.get(npc) : false
             //preparing
             this.tagCode        =       {
 
@@ -553,8 +553,16 @@
                 list            :       ['#L', '#l'] // open/close list(<li></li>)            
 
             }
+            const script = function (){
+                this.start = () =>{
+                    this.cm.sendOk("#bWelcome#n, #gThanks#n for using this #blibrary#n.#wStart creating your own conversation. If you need help, read the documentation f2.")
+                    this.cm.dispose()
+                }
+            }
+            this.script         =       null
             this.prepareScript  =       ()  =>  {
-                this.script     =       new data.script();
+                if(this.script === null) this.script = new script()//default
+                else this.script = new this.script()
                 this.script.cm  =       this.cm()
             }
             this.container.style.display = 'none'
@@ -577,7 +585,7 @@
 
             this.input.el.setAttribute('class', this.preference.key + '__input')
             //extensions
-            this.character      =       (data.hasOwnProperty('character')) ? data.character : false
+            this.character      =       (char) ? char : false
         }
         /*===Creating Element===*/
         get html(){
@@ -817,7 +825,7 @@
                         i_char += 2//omiting code tag
                         valueLi = getValue(3)
                         
-                        if(valueLi !== ''){                            
+                        if(valueLi !== ''){                                          
                             temp.cod = null//it's just in case
                             openLi = true
                         }
@@ -842,7 +850,6 @@
                 } 
                     
             }
-            //console.log("\n" )
             save()//ending...
             if(openLi) closeLi()
             addParagraphs()
@@ -867,7 +874,6 @@
                 div.appendChild(img)
                 return div
             }
-
             //text
             while(this.info.firstChild) this.info.removeChild(this.info.firstChild)
             paragraphs.forEach(parag => {
@@ -1011,7 +1017,7 @@
                             li.appendChild(getTextStyle(content))
                         }
                     }
-                    li.onclick = () => {
+                    li.onclick = () => {                        
                         if ( !this.dispose ) {
                             let value = parseInt(node.value)
                             this.selection = (isNaN(value)) ? node.value : value
