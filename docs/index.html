@@ -19,7 +19,8 @@
     <meta name="twitter:image" content="https://ertrii.github.io/JMaple/dist/src/img/9010000.png">
     <meta name="twitter:card" content="JMaple">
 
-    <link rel="stylesheet" href="css/m--modern.css">
+    <link rel="stylesheet" href="css/modern.css">
+    <!--<link rel="stylesheet" href="../dist/css/m--classic.css">-->
     <title>JMaple</title>
 </head>
 <body>    
@@ -34,8 +35,8 @@
         jmaple.Item.etc.create(4000002, "Pig's Ribbon")
         jmaple.Maps.create({
             id : 15,
-            name : 'New Map',
-            link : 'https://github.com/ertrii'
+            name : 'NPM Package',
+            link : 'https://www.npmjs.com/package/jmaple'
         })
         jmaple.Portal.create(12, '21.5;0')
         jmaple.NPC.create(9010000,'Maple Administrator')
@@ -45,7 +46,7 @@
 
                 this.start = () => {
                     this.cm.gainItem(4000002,1)
-                    this.cm.sendNext("#bThank you#n for install. #gTake a #i4000002# ^_^#n#w I'm progressing...")
+                    this.cm.sendNext("#bThank you#n for install. #gTake a #i4000002# ^_^#n#w I'm progressing...#L1#hola")
                 }
                 this.action  = (mode, type, selection) => {
                     if(this.status === 0){

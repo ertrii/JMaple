@@ -27,7 +27,7 @@ npm install jmaple
 
 #### Style
 ```html
-<link rel="stylesheet" href="node_modules/jmaple/dist/css/m--flat.css">
+<link rel="stylesheet" href="node_modules/jmaple/dist/css/flat.css">
 ```
 
 #### jmaple.js
@@ -45,9 +45,9 @@ new jmaple.Task('element').start()//will show you a welcome window
 Task será donde se estructurará y mostrará la ventana de conversación.
 
 ### There are many styles of conversation window
-* m--classic.css
-* m--flat.css
-* m--future.css
+* classic.css
+* flat.css
+* modern.css
 ## Preference
 Existen algunas propiedades que usted puede editar a su gusto, yo en mi caso lo dejaré por defecto:
 * __displace(bool=true)__, desplazamiento de la ventana.

@@ -93,18 +93,20 @@
                     }
                     li{margin-bottom: 4px;}
                     li::before{
-                        content: url('../src/svg/heart-mouse-leave.svg');
+                        content: '❤';
                         width: 7px;
                         height: 7px;
-                        position: absolute;                    
+                        font-size: 5pt;
+                        color: #aaa;
+                        position: absolute;
                         transform: rotate(-90deg);
                         text-decoration: none;
-                        margin-top: 2px;
-                        margin-left: -14px;
+                        margin-top: 3px;
+                        margin-left: -10px;
                     }                
                     li:hover{
                         text-decoration: underline;
-                        &::before{content: url('../src/svg/heart-mouse-hover.svg');}
+                        &::before{color: #E52828;}
                 }
             }
             &__btns{

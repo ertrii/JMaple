@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*
  ==========Flat=========
 */
@@ -6,9 +7,6 @@
 */
 /*
 ==========Modern=========
-*/
-/*
-========== Future =========
 */
 @import url("https://fonts.googleapis.com/css?family=Encode+Sans:300|Open+Sans:300,700|Roboto:300");
 *, *::after, *::before {
@@ -64,37 +62,38 @@
 .m {
   width: 524px;
   min-height: 200px;
-  box-shadow: 1px 2px 10px 0 #D6D6D6;
+  background-color: rgba(9, 143, 213, 0.6);
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px rgba(98, 98, 98, 0.5), 0 0 0 2px rgba(255, 255, 255, 0.5), 0 0 0 3px rgba(98, 98, 98, 0.5), 1px 2px 10px black;
 }
 
 .m__body__dialog button, .m__footer button {
   font-family: "Encode Sans", sans-serif;
-  font-size: 7pt;
-  padding: 2px 10px 3px;
+  font-size: 6pt;
+  padding: 2px 20px 1px;
+  text-shadow: 0 0 1px black, 0 0 1px black;
   border: none;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   color: white;
   outline: none;
+  border-radius: 3px;
+}
+
+.m__body__dialog button:active, .m__footer button:active {
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3), inset 0px 0px 4px -1px black;
 }
 
 .m__input {
-  border: 1px solid #ddd;
-  padding: 2px 3px;
-  width: 100%;
   outline: none;
-  font-size: 9pt;
-  transition: .2s;
-  background-color: transparent;
-}
-
-.m__input:focus {
-  border: 1px solid #ffa000;
+  width: 100%;
 }
 
 .m__head {
-  background-color: #ffa000;
+  border-radius: 7px 7px 0 0;
+  box-shadow: inset 0 1px 0 white, inset 0px 8px 8px rgba(255, 255, 255, 0.5);
   width: 100%;
-  height: 21px;
+  height: 13px;
   cursor: move;
 }
 
@@ -103,22 +102,24 @@
 }
 
 .m__body {
-  padding: 0 25px;
+  padding: 3px 3px 5px;
   display: flex;
   justify-content: space-between;
-  min-height: 150px;
+  background-color: #EEEEEE;
+  width: 500px;
+  min-height: 165px;
   margin-left: auto;
   margin-right: auto;
-  background-color: white;
+  box-shadow: inset 0 0 0 1px #626262;
+  border-radius: 4px;
 }
 
 .m__body__npc {
-  min-width: 115px;
+  min-width: 140px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-right: 5px;
 }
 
 .m__body__npc__img {
@@ -135,18 +136,23 @@
 }
 
 .m__body__npc__name {
+  width: 80%;
   padding: 1px;
+  background-image: linear-gradient(#949494, #626262);
+  color: white;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px white, 0 0 0 2px #626262;
   text-align: center;
-  color: #ffa000;
-  font-size: 9pt;
-  padding-top: 5px;
+  font-size: 8pt;
   font-family: Roboto, sans-serif;
 }
 
 .m__body__dialog {
   width: 100%;
-  padding: 20px 0 0 15px;
-  color: #616161;
+  background-color: white;
+  padding: 15px 17px 7px;
+  border-radius: 5px;
+  box-shadow: inset 0px 0px 3px #626262;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -154,6 +160,8 @@
 }
 
 .m__body__dialog__info {
+  font-size: 9pt;
+  font-family: "Open Sans", sans-serif;
   height: 100%;
   width: 100%;
   display: flex;
@@ -163,12 +171,7 @@
 }
 
 .m__body__dialog__info--text {
-  line-height: 20px;
-}
-
-.m__body__dialog__info--text, .m__body__dialog__info--alternatives {
-  font-size: 9pt;
-  font-family: Roboto, sans-serif;
+  padding-bottom: 5px;
 }
 
 .m__body__dialog__info--title {
@@ -178,10 +181,12 @@
 }
 
 .m__body__dialog__info--alternatives {
+  line-height: 1.4em;
+  padding-bottom: 10px;
   list-style: none;
   color: #3839CC;
   cursor: pointer;
-  padding: 15px 0 10px 10px;
+  padding-left: 20px;
 }
 
 .m__body__dialog__info li {
@@ -189,14 +194,16 @@
 }
 
 .m__body__dialog__info li::before {
-  content: url("../src/svg/heart-mouse-leave.svg");
+  content: '❤';
   width: 7px;
+  font-size: 5pt;
   height: 7px;
+  color: #aaa;
   position: absolute;
   -webkit-transform: rotate(-90deg);
           transform: rotate(-90deg);
   text-decoration: none;
-  margin-top: 2px;
+  margin-top: 4px;
   margin-left: -14px;
 }
 
@@ -205,7 +212,7 @@
 }
 
 .m__body__dialog__info li:hover::before {
-  content: url("../src/svg/heart-mouse-hover.svg");
+  color: #E52828;
 }
 
 .m__body__dialog__btns {
@@ -214,42 +221,33 @@
 }
 
 .m__body__dialog__btns button {
-  background-color: transparent;
-  color: black;
-  text-decoration: underline;
-  font-family: "Open Sans";
-  font-weight: 700;
+  background-image: linear-gradient(#c8f20d 10%, #aec918 100%);
+  padding: 2px 10px 1px;
+}
+
+.m__body__dialog__btns button:nth-child(2) {
+  margin-left: 9px;
 }
 
 .m__footer {
-  padding: 0 10px 10px;
+  height: 100%;
+  padding: 1px 10px 4px;
   display: flex;
-  background-color: transparent;
   justify-content: space-between;
+  border-radius: 0 0 10px 10px;
 }
 
 .m__footer__btn-exit button {
-  padding-left: 20px;
-  padding-right: 20px;
-  background-color: #ffa000;
-  box-shadow: 1px 1px 5px -1px #777;
-  transition: .1s all;
+  background-image: linear-gradient(#c8f20d 10%, #aec918 100%);
+  margin-left: 2px;
 }
 
-.m__footer__btn-exit button:active {
-  box-shadow: 1px 1px 0px -1px #777;
-}
-
-.m__footer__btns button {
-  background-color: #ffa000;
-  box-shadow: 1px 1px 5px -1px #777;
-  transition: .1s all;
+.m__footer__btns button:nth-child(1) {
+  background-image: linear-gradient(#f0d124 10%, #fdb708);
 }
 
 .m__footer__btns button:nth-child(2) {
-  margin-left: 3px;
-}
-
-.m__footer__btns button:active {
-  box-shadow: 1px 1px 0px -1px #777;
+  background-image: linear-gradient(#f7457d 10%, #dd0e4f);
+  margin-right: 2px;
+  margin-left: 9px;
 }

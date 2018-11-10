@@ -5,7 +5,7 @@ const gulp = require('gulp'),
 let style = 'modern';
 let min = true;
 gulp.task('sass', () => 
-    gulp.src(`./scss/m--${style}.scss`)
+    gulp.src(`./scss/${style}.scss`)
         .pipe(sass({
                 outputStyle: (!min) ? 'expanded' : 'compressed',//compact, compressed/ expanded
                 sourceComments: false
@@ -17,5 +17,5 @@ gulp.task('sass', () =>
 );
 
 gulp.task('default', () => {
-        gulp.watch(`./scss/m--${style}.scss`, ['sass']);
+        gulp.watch(`./scss/${style}.scss`, ['sass']);
 })

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*
  ==========Flat=========
 */
@@ -203,15 +204,17 @@
 }
 
 .m__body__dialog__info li::before {
-  content: url("../src/svg/heart-mouse-leave.svg");
+  content: '❤';
   width: 7px;
   height: 7px;
+  font-size: 5pt;
+  color: #aaa;
   position: absolute;
   -webkit-transform: rotate(-90deg);
           transform: rotate(-90deg);
   text-decoration: none;
-  margin-top: 2px;
-  margin-left: -14px;
+  margin-top: 3px;
+  margin-left: -12px;
 }
 
 .m__body__dialog__info li:hover {
@@ -219,7 +222,7 @@
 }
 
 .m__body__dialog__info li:hover::before {
-  content: url("../src/svg/heart-mouse-hover.svg");
+  color: #E52828;
 }
 
 .m__body__dialog__btns {
