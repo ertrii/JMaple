@@ -283,9 +283,9 @@
             this.ap     =   0
             
             this.stat = new Stat()
-            this.items  =   new Map()        
+            this.items  =   new Map()
+            this.status = false         
         }
-
         setItems(items){
             if(!Array.isArray(items)) {
                 console.error('Is not a Array Items')
@@ -422,6 +422,7 @@
             }
             return command
         }
+        
     }
 
     class Maps {
@@ -1494,14 +1495,14 @@
             this.container.style.display = 'flex'        
             this.container.style.zIndex = `${this.preference.zIndex}`;
             this.container.appendChild(this.html)
-            //this.script.start()
-            try{
+            
+            if(this.script.hasOwnProperty('start')){
                 this.script.start()
-            }catch(e){
+            }else{
                 if(config.dev) console.info('the start function was not found, executing action function...')
                 try{
                     this.script.action(1, this.type, this.selection)
-                }catch(er){
+                }catch(e){
                     if(config.dev) console.error('action function was not found')
                 }
             }
