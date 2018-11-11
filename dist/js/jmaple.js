@@ -560,10 +560,10 @@
                     this.cm.dispose()
                 }
             }
-            this.script         =       null
+            this.Script         =       null
             this.prepareScript  =       ()  =>  {
                 if(this.script === null) this.script = new script()//default
-                else this.script = new this.script()
+                else this.script = new this.Script()
                 this.script.cm  =       this.cm()
             }
             this.container.style.display = 'none'
@@ -1494,17 +1494,12 @@
             this.container.classList.add('jmaple')
             this.container.style.display = 'flex'        
             this.container.style.zIndex = `${this.preference.zIndex}`;
-            this.container.appendChild(this.html)
-            
-            if(this.script.hasOwnProperty('start')){
+            this.container.appendChild(this.html)                        
+            try{
                 this.script.start()
-            }else{
+            }catch(e){
                 if(config.dev) console.info('the start function was not found, executing action function...')
-                try{
-                    this.script.action(1, this.type, this.selection)
-                }catch(e){
-                    if(config.dev) console.error('action function was not found')
-                }
+                this.script.action(1, this.type, this.selection)
             }
             this.events()
             if(!this.cmExecuted && this.dispose) this.end()

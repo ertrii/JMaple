@@ -1,6 +1,5 @@
 JMaple(Alpha)
 =======================
-version: 0.11.0
 
 A library to create conversation windows in the maplestory style using the classic or current design among others.
 
@@ -62,8 +61,8 @@ Existen algunas propiedades que usted puede editar a su gusto, yo en mi caso lo 
 ```javascript
 const jmaple = new JMaple()
 const task = new jmaple.Task('element')
-task.script = function(){
-    this.start = function(){
+task.Script = class{
+    start(){
         this.cm.sendOk('This is my first conversation')
         this.cm.dispose()
     }
@@ -89,8 +88,8 @@ const task = new jmaple.Task(
     'element',
     9010000,//adding NPC id.
 )
-task.script = function(){
-    this.start = function(){
+task.Script = class{
+    start(){
         this.cm.sendOk('This is my first conversation')
         this.cm.dispose()
     }
@@ -102,7 +101,7 @@ task.start()
 Los script NPC están programado dentro de dos funciones principales:
 * __start__, es el inicio del npc, la primera muestra.
     ```javascript
-    this.start = function(){
+    start(){
         //code
     }
     ```
@@ -111,7 +110,7 @@ Los script NPC están programado dentro de dos funciones principales:
     * __type__, devuelve un valor(int) del tipo de conversación.
     * __selection__, devuelve un valor(int) de una lista de selección.
     ```javascript
-    this.action = function(mode, type, selection){
+    action(mode, type, selection){
         //code
     }
     ```
@@ -120,17 +119,19 @@ Los script NPC están programado dentro de dos funciones principales:
 const jmaple = new JMaple()
 jmaple.NPC.create(9010000, 'Maple Administrator')
 const task = new jmaple.Task('element', 9010000)
-task.script = function(){
-    this.start = function(){
+task.Script = class{
+    start(){
         this.cm.sendOk('This is the first conversation')
     }
-    this.action = function(mode, type, selection){
+    action(mode, type, selection){
         this.cm.sendOk('This is the second conversation')
         this.cm.dispose()
     }
 }
 task.start()
 ```
+Recomiendo usar class para mas comodidad.
+
 Commands
 ===========
 
@@ -153,11 +154,11 @@ Los commands(cm) son funciones que se ejecutarán dentro de las funciones princi
 const jmaple = new JMaple()
 jmaple.NPC.create(9010000, 'Maple Administrator')
 const task = new jmaple.Task('element', 9010000)
-task.script : function(){
-    this.start = function(){
+task.Script = class{
+    start(){
         this.cm.sendNext('This is a conversation window with an Next button')
     }
-    this.action = function(){
+    action(){
         this.cm.sendYesNo('This is a conversation window with an Yes and No button')
         this.cm.dispose()
     }
@@ -250,11 +251,11 @@ jmaple.Maps.create({
 })
 jmaple.NPC.create( 9010000, 'Maple Administrator', 'src/img/npc/9010000.png')
 const task = new jmaple.Task('element', 9010000)
-task.script = function(){
-    this.start = function(){
+task.Script = class{
+    start(){
         this.cm.sendOk('This is a test.')
     }
-    this.action = function(){
+    action(){
         this.cm.warp(456789, 12)//id map, id portal. Remember portal is optional
         this.cm.sendOk('warp...')
         this.cm.dispose()
@@ -293,8 +294,8 @@ Para dar color a los textos existen estas etiquetas:
 const jmaple = new JMaple()
 jmaple.NPC.create(9010000, 'Maple Administrator')
 const task = new jmaple.Task('element', 9010000)
-task.script = function(){
-    this.start = function(){
+task.Script = class{
+    start(){
         this.cm.sendOk('This is #rRed Text# and this is #ePurple#')
         this.cm.dispose()
     }
@@ -330,8 +331,8 @@ Todos forman parte de un párrafo, si desea crear uno nuevo use la etiqueta ```#
 const jmaple = new JMaple()
 jmaple.NPC.create( 9010000, 'Maple Administrator')
 const task = new jmaple.Task('element', 9010000)
-task.script : function(){
-    this.start = function(){
+task.Script = class{
+    start(){
         this.cm.sendOk('This is a List: #L1#item 1#l#L2#item2#l#L3#item3#l')
         this.cm.dispose()
     }
@@ -472,12 +473,12 @@ jmaple.NPC.create( 9010000, 'Maple Administrator')
 const character = new jmaple.Character('Erick')
 //Convesation Window
 const task = new jmaple.Task('element',9010000, character)
-task.script : function(){
-    this.start = () => {
+task.Script = class{
+    start(){
         this.cm.gainItem(4556, 2)//idItem, quantity
         this.cm.sendOk('Take two items...')
     }
-    this.action = () => {
+    action(){
         this.cm.sendOk('Ready! ^_^')
         this.cm.dispose()
     }
@@ -527,8 +528,8 @@ new jmaple.Task(
     null, //if you do not need a NPC
     new jmaple.Character('Erick'),//requerid    
 )
-task.script : function(){
-    this.start = () => {
+task.Script = class{
+    start(){
         this.cm.startQuest(1234)//starting quest
         this.cm.sendOk('Start Quest...')
         //look at the top the cm for quest

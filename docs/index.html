@@ -41,14 +41,16 @@
         jmaple.Portal.create(12, '21.5;0')
         jmaple.NPC.create(9010000,'Maple Administrator')
         const talk = new jmaple.Talk('element', 9010000, new jmaple.Character('Erick'))        
-        talk.script = function() {
-            this.status = 0
 
-            this.start = () => {
+        talk.Script = class{
+            constructor(){
+                this.status = 0
+            }
+            start(){
                 this.cm.gainItem(4000002,1)
                 this.cm.sendNext("#bThank you#n for install. #gTake a #i4000002# ^_^#n#w I'm progressing...")
             }
-            this.action  = (mode, type, selection) => {
+            action(){
                 if(this.status === 0){
                     this.cm.sendYesNo("This library is a version Alpha. #bDo you want to go read the documentation?")
                     this.status++
