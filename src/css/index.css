@@ -1,0 +1,27 @@
+body {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body main {
+    width: 100%;
+    max-width: 900px;    
+}
+
+body main h1 {
+    color: orange;
+    margin-bottom: 0.2em;
+}
+
+body main section {
+    border: 1px solid orange;
+    padding: 1em 2em;
+    border-radius: 1em;
+}
+
+body main section p {
+    margin-bottom: 1em;
+    opacity: .6;
+}

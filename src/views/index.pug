@@ -1,0 +1,14 @@
+html
+  head
+    title Maplestory NPC's
+    link(rel="stylesheet" href="./base.css")
+    link(rel="stylesheet" href="./index.css")
+  body
+    main
+        h1 Welcome Mapler's
+        section
+            p NPC List:
+            ul
+                each id in ids
+                    li
+                        a(href=id)=id

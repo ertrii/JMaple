@@ -1,35 +1,28 @@
-import server, { NPCS } from './server'
-export type Version = 'vs83' | 'vs92'
-
-export interface Config {
-    base?: string
-    version?: Version
-    port?: number
-    npcs: NPCS
-}
+import server from './server'
+import { Config } from './server/types'
 
 function initialize(config: Config) {
-    const base = config.base || 'src'
-    const version: Version = config.version || 'vs83'
-    const port: number = config.port || 83
-
-    return server(port, config.npcs)
+    return server({
+        source: 'src',
+        version: 'vs83',
+        port: 83,
+        ...config
+    })
 }
 
 const jmaple = {
     initialize
 }
 
-// // use example
-// jmaple.initialize({
-//     npcs: {
-//         1002000: {
-//             name: 'Phil',
-//             source: 'scripts/1002000.js',
-//             image: 'image.jpg'
-//         }
-//     },
-//     port: 92
-// })
+jmaple.initialize({
+    npcs: {
+        1002000: {
+            name: 'Phil',
+            source: 'scripts/1002000.js',
+            image: 'image.jpg'
+        }
+    },
+    port: 92
+})
 
 export default jmaple

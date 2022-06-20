@@ -1,27 +1,35 @@
-import { Request, Response, Express } from 'express'
-const express = require('express')
+import express, { Request, Response, Express } from 'express'
+import fs from 'fs'
+import { Config } from './types'
+import path from 'path'
 
-export interface NPCBase {
-    source: string
-    name: string
-    image: string
-}
-
-export type NPCS = Record<number, NPCBase>
-
-export default function server(port: number, npcs: NPCS) {
+export default function server(initialConfig: Config) {
     const app: Express = express()
-    app.listen(port, () => {
-        console.log(`server started at http://localhost:${port}`)
+
+    const dir = './scripts'
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir)
+    }
+
+    app.set('views', path.join(__dirname, '../views'))
+    app.set('view engine', 'pug')
+    app.use(express.static(path.join(__dirname, '../css')))
+
+    app.listen(initialConfig.port, () => {
+        console.log(`server started at http://localhost:${initialConfig.port}`)
     })
 
-    app.get('/', function (req: Request, res: Response) {
-        res.send('Hello Maplers')
+    app.get('/', function (_: Request, res: Response) {
+        res.render('index', {
+            ids: Object.keys(initialConfig.npcs)
+        })
     })
 
-    for (const key in npcs) {
-        app.get(`/${key}`, function (req: Request, res: Response) {
-            res.send(`${npcs[key].name}`)
+    for (const id in initialConfig.npcs) {
+        app.get(`/${id}`, function (_: Request, res: Response) {
+            res.render('classic', {
+                id: id
+            })
         })
     }
 
