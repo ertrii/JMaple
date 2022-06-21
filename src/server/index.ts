@@ -14,6 +14,7 @@ export default function server(initialConfig: Config) {
     app.set('views', path.join(__dirname, '../views'))
     app.set('view engine', 'pug')
     app.use(express.static(path.join(__dirname, '../css')))
+    app.use(express.static(path.join(__dirname, '../images')))
 
     app.listen(initialConfig.port, () => {
         console.log(`server started at http://localhost:${initialConfig.port}`)
@@ -27,7 +28,7 @@ export default function server(initialConfig: Config) {
 
     for (const id in initialConfig.npcs) {
         app.get(`/${id}`, function (_: Request, res: Response) {
-            res.render('classic', {
+            res.render(initialConfig.version === 'vs83' ? 'classic' : 'modern', {
                 id: id
             })
         })

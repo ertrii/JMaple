@@ -1,0 +1,37 @@
+html
+  head
+    title npc - 
+        =id
+    link(rel="stylesheet" href="./base.css")
+    link(rel="stylesheet" href="./section.css")
+    link(rel="stylesheet" href="./modern.css")
+  body
+    main
+        h1 NPC: 
+            span=id
+        .jmaple
+            .head
+            .body
+                .npc
+                    .img
+                        img(src="./9010000.png")
+                    p.name Administrator
+                .dialog
+                    .info
+                        h2.title Title Main
+                        p.text Hi everyone, this is a test message.
+                        ul.list
+                            li option 1
+                            li option 2
+                            li option 3
+                    .btns
+                        button PREV
+                        button NEXT
+            .footer
+                div
+                    button.exit ENDCHAT
+                div
+                    button.yes YES
+                    button.no NO
+
+
