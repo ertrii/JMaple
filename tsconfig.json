@@ -7,11 +7,12 @@
     "outDir": "lib",
     "sourceMap": false,
     "strict": true,
-    "target": "ES5",
+    "target": "ES2021",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "noUnusedParameters": false
   },
   "compileOnSave": true,

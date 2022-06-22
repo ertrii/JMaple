@@ -2,7 +2,7 @@ import server from './server'
 import { Config } from './server/types'
 
 function initialize(config: Config) {
-    server({
+    return server({
         source: 'src',
         version: 'vs92',
         port: 83,
