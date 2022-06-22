@@ -1,34 +1,9 @@
-import { InputTag, ColorTag } from './types'
+import { InputTag, ColorTag, Color } from './types'
 
 export default class Reader {
     private readonly inputText: string = ''
-    private tagColors: ColorTag[] = [
-        {
-            color: 'blue',
-            code: 'b'
-        },
-        {
-            color: 'purple',
-            code: 'd'
-        },
-        {
-            color: 'bold',
-            code: 'e'
-        },
-        {
-            color: 'green',
-            code: 'g'
-        },
-        {
-            color: 'black',
-            code: 'k'
-        },
-        {
-            color: 'red',
-            code: 'r'
-        }
-    ]
-    private tags: InputTag[] = ['m', 'p', 't', 'z', 'h', 'v', 'i', 'c', 'w', 'n', 'L', 'l']
+    private inputTags: InputTag[] = ['m', 'p', 't', 'z', 'h', 'v', 'i', 'c', 'w', 'n', 'L', 'l']
+    private colorTags: ColorTag[] = ['b', 'd', 'e', 'g', 'k', 'r']
 
     constructor(inputText: string) {
         this.inputText = inputText
@@ -39,7 +14,7 @@ export default class Reader {
         let inputColored = ''
         const SKIP_HASH = 'SK|P_H@SH'
 
-        for (const tag of this.tags) {
+        for (const tag of this.inputTags) {
             const regex = new RegExp(tag === 'h' ? `#${tag} #` : `#${tag}[0-9]{2,7}#`)
             const getOpenIndex = () => inputTagInterpreted.search(regex)
             const replaceAt = (index: number, replacement: string) =>
@@ -55,7 +30,7 @@ export default class Reader {
                     break
                 }
                 const id = inputTagInterpreted.slice(openIndex + 2, closeIndex)
-                const value = this.getValue(tag, id)
+                const value = this.getValueByInputTag(tag, id)
                 if (!value) {
                     inputTagInterpreted = replaceAt(openIndex, SKIP_HASH)
                     inputTagInterpreted = replaceAt(closeIndex, SKIP_HASH)
@@ -72,11 +47,12 @@ export default class Reader {
 
         for (const text of inputTagInterpretedSplited) {
             if (text === '') continue
-            const code = text[0]
-            const tagColor = this.tagColors.find((_tagColor) => _tagColor.code === code)
-            if (tagColor) {
-                const { color } = tagColor
-                inputColored = inputColored + `<span class="color-${color}">${text.slice(1)}</span>`
+            const tag = text[0]
+            const colorTag = this.colorTags.find((_colorTag) => _colorTag === tag)
+            if (colorTag) {
+                inputColored =
+                    inputColored +
+                    `<span class="color-${this.getColor(colorTag)}">${text.slice(1)}</span>`
             } else {
                 inputColored = inputColored + text
             }
@@ -85,8 +61,18 @@ export default class Reader {
         return inputColored.replaceAll(SKIP_HASH, '#')
     }
 
-    private getValue(tag: InputTag, id: string) {
+    getValueByInputTag(tag: InputTag, id: string) {
         if (tag === 'h') return 'You'
         return tag + id // in progress...
+    }
+
+    getColor(tag: ColorTag): Color {
+        if (tag === 'b') return 'blue'
+        if (tag === 'd') return 'purple'
+        if (tag === 'e') return 'bold'
+        if (tag === 'g') return 'green'
+        if (tag === 'k') return 'black'
+        if (tag === 'r') return 'red'
+        return tag
     }
 }

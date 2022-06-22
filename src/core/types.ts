@@ -1,15 +1,4 @@
-export interface ColorTag {
-    color: Color
-    code: ColorCode
-}
-
-export type ColorCode =
-    | 'b' // Blue text
-    | 'd' // Purple text
-    | 'e' // Bold Text
-    | 'g' // Green text
-    | 'k' // Black text
-    | 'r' // Red text
+export type ColorTag = 'b' | 'd' | 'e' | 'g' | 'k' | 'r'
 export type Color = 'blue' | 'purple' | 'bold' | 'green' | 'black' | 'red'
 
 export type InputTag =
