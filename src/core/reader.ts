@@ -1,8 +1,9 @@
-import { InputTag, ColorTag, Color } from './types'
+import { InputTag, ColorTag, Color, ListTag } from './types'
 
 export default class Reader {
     private readonly inputText: string = ''
-    private inputTags: InputTag[] = ['m', 'p', 't', 'z', 'h', 'v', 'i', 'c', 'w', 'n', 'L', 'l']
+    private inputTags: InputTag[] = ['m', 'p', 't', 'z', 'h', 'v', 'i', 'c', 'w', 'n']
+    private listTags: ListTag[] = ['L', 'l']
     private colorTags: ColorTag[] = ['b', 'd', 'e', 'g', 'k', 'r']
 
     constructor(inputText: string) {
@@ -10,8 +11,7 @@ export default class Reader {
     }
 
     interpret(): string {
-        let inputTagInterpreted = this.inputText
-        let inputColored = ''
+        let inputTagInterpreted = this.toList(this.inputText)
         const SKIP_HASH = 'SK|P_H@SH'
 
         for (const tag of this.inputTags) {
@@ -40,12 +40,45 @@ export default class Reader {
             }
         }
 
-        const inputTagInterpretedSplited = inputTagInterpreted.split('#')
-        if (inputTagInterpretedSplited.length === 0) {
-            return inputTagInterpreted.replaceAll(SKIP_HASH, '#')
+        return this.colorize(inputTagInterpreted).replaceAll(SKIP_HASH, '#')
+    }
+
+    private toList(inputText: string) {
+        let inputListed = inputText
+        const [L, l] = this.listTags
+        const openIndex = inputText.search(new RegExp(`#${L}[0-9]{1,2}#.*#${l}`))
+        let closeIndex = 0
+
+        if (openIndex === -1) return inputText
+
+        inputListed =
+            inputListed.substring(0, openIndex) +
+            '<ul class="list">' +
+            inputListed.substring(openIndex)
+
+        const regexItemOpen = new RegExp(`#${L}[0-9]{1,2}#`)
+        while (inputListed.search(regexItemOpen) > -1) {
+            inputListed = inputListed.replace(regexItemOpen, '<li>')
         }
 
-        for (const text of inputTagInterpretedSplited) {
+        const getCloseItemIndex = () => inputListed.search(new RegExp(`#${l}`))
+        while (getCloseItemIndex() > -1) {
+            closeIndex = getCloseItemIndex() + 5
+            inputListed = inputListed.replace(new RegExp(`#${l}`), '</li>')
+        }
+
+        return inputListed.substring(0, closeIndex) + '</ul>' + inputListed.substring(closeIndex)
+    }
+
+    private colorize(inputText: string) {
+        const inputSplited = inputText.split('#')
+        let inputColored = ''
+
+        if (inputSplited.length === 0) {
+            return inputText
+        }
+
+        for (const text of inputSplited) {
             if (text === '') continue
             const tag = text[0]
             const colorTag = this.colorTags.find((_colorTag) => _colorTag === tag)
@@ -58,7 +91,7 @@ export default class Reader {
             }
         }
 
-        return inputColored.replaceAll(SKIP_HASH, '#')
+        return inputColored
     }
 
     getValueByInputTag(tag: InputTag, id: string) {
