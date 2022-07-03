@@ -6,16 +6,16 @@ import { Version } from './types'
 
 export default function routingScript(app: Express, script: Script, version: Version = 'vs83') {
     script.start()
-    app.get(`/${script.id}`, async function (_: Request, res: Response) {
+    app.get(`/${script.uid}`, async function (_: Request, res: Response) {
         const fileName = version === 'vs83' ? 'classic' : 'modern'
-        const [image, name] = await Promise.all([getNpcImg(script.id), getNpcName(script.id)])
-        const { html, cm } = script.getResult()
+        const [image, name] = await Promise.all([getNpcImg(script.uid), getNpcName(script.uid)])
+        const { htmls, windowType } = script.getResult()
         res.render(fileName, {
-            id: script.id,
+            uid: script.uid,
             image,
             name,
-            html,
-            cm,
+            html: htmls[0],
+            windowType,
             handler
         })
     })

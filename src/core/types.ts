@@ -21,7 +21,7 @@ export enum Command {
     Warp
 }
 
-export enum TypeWindow {
+export enum WindowType {
     Ok, // 0
     Next, // 0
     Prev, // 0?
@@ -33,12 +33,19 @@ export enum TypeWindow {
 }
 
 export interface CmResult {
-    cm: Command
+    windowType: WindowType
     html: string
     parameters: Array<string | number>
+    dispose: boolean
 }
 
 export interface ScriptFile {
     fileName: string
     textNode: string
+}
+
+export interface ResultExecutedScript {
+    windowType: WindowType
+    dispose: boolean
+    htmls: [string, string, string]
 }

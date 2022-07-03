@@ -9,7 +9,7 @@ html
     main
         h1 NPC: 
             span=id
-        .jmaple
+        .jmaple(npc-uid=uid dispose=false type=windowType)
             .head
             .body
                 .npc
@@ -19,7 +19,7 @@ html
                 .dialog
                     .info !{html}
                     .btns
-                        case cm
+                        case windowType
                             when 1
                                 button.next NEXT
                             when 2
@@ -31,7 +31,7 @@ html
                 div
                     button.exit ENDCHAT
                 div
-                    case cm
+                    case windowType
                         when 0
                             button.yes OK
                         when 4
@@ -41,5 +41,5 @@ html
                             button.yes ACCEPT
                             button.no DECLINE
     script(type="text/javascript").
-        #{handler}
+        !{handler}
         handler(document.querySelector('div.jmaple'))

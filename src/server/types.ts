@@ -7,7 +7,7 @@ export interface Config {
 }
 
 export interface ActionBody {
-    id: string
+    uid: string
     mode: number
     type: number
     selection: number

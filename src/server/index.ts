@@ -19,7 +19,7 @@ export default async function server(initialConfig: Config) {
 
     app.get('/', function (_: Request, res: Response) {
         res.render('index', {
-            ids: scripts.map((script) => script.id)
+            ids: scripts.map((script) => script.uid)
         })
     })
 
@@ -29,7 +29,7 @@ export default async function server(initialConfig: Config) {
 
     app.post('/action', function (req: Request, res: Response) {
         const body = req.body as ActionBody
-        const script = scripts.find((_script) => _script.id === body.id) as Script
+        const script = scripts.find((_script) => _script.uid === body.uid) as Script
         script.action(body.mode, body.type, body.selection)
         res.json(script.getResult())
     })
