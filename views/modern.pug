@@ -17,15 +17,29 @@ html
                         img(src=image)
                     p.name=name
                 .dialog
-                    .info=html
+                    .info !{html}
                     .btns
-                        button PREV
-                        button NEXT
+                        case cm
+                            when 1
+                                button.next NEXT
+                            when 2
+                                button.prev PREV
+                            when 3
+                                button.prev PREV
+                                button.next NEXT
             .footer
                 div
                     button.exit ENDCHAT
                 div
-                    button.yes YES
-                    button.no NO
-
-
+                    case cm
+                        when 0
+                            button.yes OK
+                        when 4
+                            button.yes YES
+                            button.no NO
+                        when 5
+                            button.yes ACCEPT
+                            button.no DECLINE
+    script(type="text/javascript").
+        #{handler}
+        handler(document.querySelector('div.jmaple'))

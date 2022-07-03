@@ -10,7 +10,9 @@ describe('Reader', function () {
     it('text listed', function () {
         const val = '#L1#item 1#l#L2#item 2#l'
         const reader = new Reader(val)
-        expect(reader.interpret()).toBe('<ul class="list"><li>item 1</li><li>item 2</li></ul>')
+        expect(reader.interpret()).toBe(
+            '<ul class="list"><li value="1">item 1</li><li value="2">item 2</li></ul>'
+        )
     })
 
     it('colorize text', function () {

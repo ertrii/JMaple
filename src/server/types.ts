@@ -6,7 +6,9 @@ export interface Config {
     port: number
 }
 
-export interface ScriptFile {
-    fileName: string
-    textNode: string
+export interface ActionBody {
+    id: string
+    mode: number
+    type: number
+    selection: number
 }

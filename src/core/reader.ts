@@ -57,8 +57,13 @@ export default class Reader {
             inputListed.substring(openIndex)
 
         const regexItemOpen = new RegExp(`#${L}[0-9]{1,2}#`)
-        while (inputListed.search(regexItemOpen) > -1) {
-            inputListed = inputListed.replace(regexItemOpen, '<li>')
+        const getIndexItemOpen = () => inputListed.search(regexItemOpen)
+        while (getIndexItemOpen() > -1) {
+            const index = getIndexItemOpen()
+            const match = inputListed.match(regexItemOpen)
+            const length = match ? match[0].length : 4
+            const value = inputListed.substring(index + 2, index + length - 1)
+            inputListed = inputListed.replace(regexItemOpen, `<li value="${value}">`)
         }
 
         const getCloseItemIndex = () => inputListed.search(new RegExp(`#${l}`))

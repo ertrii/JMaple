@@ -21,8 +21,24 @@ export enum Command {
     Warp
 }
 
+export enum TypeWindow {
+    Ok, // 0
+    Next, // 0
+    Prev, // 0?
+    NextPrev, // 0
+    YesNo, // 1
+    AcceptDecline, // 12
+    Simple, // 4
+    GetNumber // 3
+}
+
 export interface CmResult {
     cm: Command
     html: string
     parameters: Array<string | number>
+}
+
+export interface ScriptFile {
+    fileName: string
+    textNode: string
 }

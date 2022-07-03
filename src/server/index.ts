@@ -1,12 +1,14 @@
 import express, { Request, Response, Express } from 'express'
-import { Config } from './types'
+import { ActionBody, Config } from './types'
 import * as path from 'path'
-import getScripts from './getScripts'
-import createScriptRoute from './createScriptRoute'
+import readScripts from '../core/readScripts'
+import routingScript from './routingScript'
+import Script from '../core/script'
 
 export default async function server(initialConfig: Config) {
     const app: Express = express()
-    const scripts = await getScripts(initialConfig.source)
+    app.use(express.json())
+    const scripts = await readScripts(initialConfig.source)
 
     app.set('views', path.join(__dirname, '../../views'))
     app.set('view engine', 'pug')
@@ -17,11 +19,18 @@ export default async function server(initialConfig: Config) {
 
     app.get('/', function (_: Request, res: Response) {
         res.render('index', {
-            ids: scripts.map((script) => script.fileName.replace('.js', ''))
+            ids: scripts.map((script) => script.id)
         })
     })
 
     for (const script of scripts) {
-        createScriptRoute(app, script, initialConfig.version)
+        routingScript(app, script, initialConfig.version)
     }
+
+    app.post('/action', function (req: Request, res: Response) {
+        const body = req.body as ActionBody
+        const script = scripts.find((_script) => _script.id === body.id) as Script
+        script.action(body.mode, body.type, body.selection)
+        res.json(script.getResult())
+    })
 }

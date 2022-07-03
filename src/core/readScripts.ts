@@ -1,24 +1,26 @@
 import * as fs from 'fs'
-import { ScriptFile } from './types'
+import Script from './script'
 
-export default async function getScripts(source: string) {
+export default async function readScripts(source: string) {
     if (!fs.existsSync(source)) {
         fs.mkdirSync(source)
     }
 
-    return new Promise<ScriptFile[]>((resolve, reject) => {
+    return new Promise<Script[]>((resolve, reject) => {
         fs.readdir(source, (error, fileNames) => {
             if (error) reject(error)
-            const fileData: ScriptFile[] = []
+            const fileData: Script[] = []
 
             for (const fileName of fileNames) {
                 if (!fileName.match(/^[0-9]{5,8}.js/)) continue
 
                 const textNode = fs.readFileSync(`${source}/${fileNames}`, 'utf8')
-                fileData.push({
-                    fileName,
-                    textNode
-                })
+                fileData.push(
+                    new Script({
+                        fileName,
+                        textNode
+                    })
+                )
             }
 
             resolve(fileData)
