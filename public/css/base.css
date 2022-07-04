@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css?family=Encode+Sans:300|Open+Sans:300,700|Roboto:300");
 * {
     padding: 0;
     margin: 0;
@@ -8,4 +9,19 @@
 *:after, *:before {
     margin: 0;
     padding: 0;
+}
+
+.color-blue{color:#201EFF}
+.color-purple{color:purple}
+.color-bold{color:#000}
+.color-green{color:green}
+.color-black{color:#000}
+.color-red{color:red}
+
+.jmaple.hidden {
+    display: none;
+}
+
+.jmaple content span{
+    font-family: "Open Sans", sans-serif;
 }

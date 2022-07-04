@@ -70,4 +70,13 @@ export default class Cm {
             parameters: [idMap, portal]
         })
     }
+    getJobId() {
+        return 0
+    }
+    getMeso() {
+        return 100
+    }
+    gainMeso(mesos: number) {
+        console.log(mesos)
+    }
 }

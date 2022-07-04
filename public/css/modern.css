@@ -97,19 +97,20 @@
     align-items: flex-start;
 }
 
+.jmaple .body .dialog content{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
 .jmaple .body .dialog .info {
     font-size: 9pt;
     padding-left: 12px;
     padding-right: 12px;
     font-family: "Open Sans", sans-serif;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    max-height: 200px;
-    overflow-y: auto;
 }
 
 .jmaple .body .dialog .info .text {

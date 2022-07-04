@@ -14,7 +14,10 @@ export default class Script {
 
     constructor(private readonly scriptFile: ScriptFile) {
         this.uid = scriptFile.fileName.replace('.js', '')
-        this.cmResult.dispose = false
+        this.readScript()
+    }
+
+    private readScript() {
         const hasStartFunc = this.scriptFile.textNode.search(/function start\(\)/) > -1
         const hasActionFunc = this.scriptFile.textNode.search(/function action\(/) > -1
         const scriptFunctions = new Function(
@@ -24,17 +27,9 @@ export default class Script {
             }]`
         )
         const cm = new Cm(this.setCmResult)
-        this.scriptStart = scriptFunctions(cm)[0]
-        this.scriptAction = scriptFunctions(cm)[1]
-    }
-
-    start() {
-        this.cmResult.dispose = false
-        this.scriptStart && this.scriptStart()
-    }
-
-    action(mode: number, type: number, selection: number) {
-        this.scriptAction && this.scriptAction(mode, type, selection)
+        const [scriptStart, scriptAction] = scriptFunctions(cm)
+        this.scriptStart = scriptStart
+        this.scriptAction = scriptAction
     }
 
     private setCmResult = (result: Partial<CmResult>) => {
@@ -44,10 +39,25 @@ export default class Script {
         }
     }
 
+    start() {
+        this.cmResult.dispose = false
+        this.readScript()
+        if (this.scriptStart) {
+            this.scriptStart()
+        } else {
+            this.action(1, 4, 0)
+        }
+    }
+
+    action(mode: number, type: number, selection: number) {
+        this.scriptAction && this.scriptAction(mode, type, selection)
+    }
+
     getResult(): ResultExecutedScript {
         const htmls = [this.cmResult.html, '', ''] as [string, string, string]
+        const windowType = this.cmResult.windowType
 
-        switch (this.cmResult.windowType) {
+        switch (windowType) {
             case WindowType.Ok:
                 htmls[2] = `<button class="yes">OK</button>`
                 break
@@ -58,7 +68,7 @@ export default class Script {
                 htmls[1] = `<button class="prev">PREV</button>`
                 break
             case WindowType.NextPrev:
-                htmls[1] = `<button class="next">NEXT</button><button class="prev">PREV</button>`
+                htmls[1] = `<button class="prev">PREV</button><button class="next">NEXT</button>`
                 break
             case WindowType.YesNo:
                 htmls[2] = `<button class="yes">YES</button><button class="no">NO</button>`
@@ -68,8 +78,12 @@ export default class Script {
                 break
         }
 
+        // restart
+        this.cmResult.html = ''
+        this.cmResult.windowType = WindowType.Simple
+
         return {
-            windowType: this.cmResult.windowType,
+            windowType,
             dispose: this.cmResult.dispose,
             htmls
         }

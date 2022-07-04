@@ -27,6 +27,13 @@ export default async function server(initialConfig: Config) {
         routingScript(app, script, initialConfig.version)
     }
 
+    app.post('/start', function (req: Request, res: Response) {
+        const body = req.body as { uid: string }
+        const script = scripts.find((_script) => _script.uid === body.uid) as Script
+        script.start()
+        res.json(script.getResult())
+    })
+
     app.post('/action', function (req: Request, res: Response) {
         const body = req.body as ActionBody
         const script = scripts.find((_script) => _script.uid === body.uid) as Script

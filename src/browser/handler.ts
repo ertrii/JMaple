@@ -17,7 +17,21 @@ export default function handler(mapleWindow: HTMLDivElement) {
     const type = Number(mapleWindow.getAttribute('type'))
     const uid = mapleWindow.getAttribute('npc-uid')
 
-    async function request(mode: number, selection: number) {
+    async function start() {
+        const response = await fetch('/start', {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({ uid })
+        })
+        processResponse(response)
+    }
+
+    async function action(mode: number, selection: number) {
+        const isDispose = mapleWindow.hasAttribute('dispose')
+        if (isDispose) {
+            close()
+            return
+        }
         const body = JSON.stringify({
             uid,
             mode,
@@ -30,8 +44,15 @@ export default function handler(mapleWindow: HTMLDivElement) {
             headers,
             body
         })
+        processResponse(response)
+    }
 
+    async function processResponse(response: Response) {
         const data: ResultExecutedScript = await response.json()
+        if (data.htmls[0] === '' && data.dispose) {
+            close()
+            return
+        }
 
         if (content && dialogBtns && footerBtns) {
             content.innerHTML = data.htmls[0]
@@ -51,46 +72,52 @@ export default function handler(mapleWindow: HTMLDivElement) {
 
     if (prev) {
         prev.onclick = function () {
-            request(0, 0)
+            action(0, 0)
         }
     }
 
     if (next) {
         next.onclick = function () {
-            request(1, 0)
+            action(1, 0)
         }
     }
 
     if (exit) {
         exit.onclick = function () {
-            request(type === 4 ? 0 : -1, 0)
+            action(type === 4 ? 0 : -1, 0)
         }
     }
 
     if (yes) {
         yes.onclick = function () {
-            request(1, 0)
+            action(1, 0)
         }
     }
 
     if (no) {
         no.onclick = function () {
-            request(0, 0)
+            action(0, 0)
         }
     }
 
     list.forEach(function (li) {
         li.onclick = function () {
             const value = parseInt(li.getAttribute('value') || '0')
-            request(1, value)
+            action(1, value)
         }
     })
 
-    function open() {
-        mapleWindow.classList.add('open')
+    function close() {
+        mapleWindow.classList.add('hidden')
+    }
+
+    async function open() {
+        await start()
+        mapleWindow.classList.remove('hidden')
     }
 
     return {
-        open
+        open,
+        close
     }
 }

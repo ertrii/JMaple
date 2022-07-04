@@ -1,15 +1,16 @@
 html
   head
     title npc - 
-        =id
+        =uid
     link(rel="stylesheet" href="./css/base.css")
     link(rel="stylesheet" href="./css/section.css")
     link(rel="stylesheet" href="./css/modern.css")
   body
     main
         h1 NPC: 
-            span=id
-        .jmaple(npc-uid=uid dispose=false type=windowType)
+            span=uid
+        button#btn-show Open #{name}
+        .jmaple.hidden(npc-uid=uid dispose=false type=windowType)
             .head
             .body
                 .npc
@@ -17,29 +18,16 @@ html
                         img(src=image)
                     p.name=name
                 .dialog
-                    .info !{html}
+                    content
+                        .info
                     .btns
-                        case windowType
-                            when 1
-                                button.next NEXT
-                            when 2
-                                button.prev PREV
-                            when 3
-                                button.prev PREV
-                                button.next NEXT
             .footer
                 div
                     button.exit ENDCHAT
                 div
-                    case windowType
-                        when 0
-                            button.yes OK
-                        when 4
-                            button.yes YES
-                            button.no NO
-                        when 5
-                            button.yes ACCEPT
-                            button.no DECLINE
     script(type="text/javascript").
         !{handler}
-        handler(document.querySelector('div.jmaple'))
+        const mapleWindow = handler(document.querySelector('div.jmaple'))
+        document.getElementById('btn-show').onclick = function(){
+            mapleWindow.open()
+        }
