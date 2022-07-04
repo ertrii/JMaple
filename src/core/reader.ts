@@ -11,36 +11,7 @@ export default class Reader {
     }
 
     interpret(): string {
-        let inputTagInterpreted = this.toList(this.inputText)
-        const SKIP_HASH = 'SK|P_H@SH'
-
-        for (const tag of this.inputTags) {
-            const regex = new RegExp(tag === 'h' ? `#${tag} #` : `#${tag}[0-9]{2,7}#`)
-            const getOpenIndex = () => inputTagInterpreted.search(regex)
-            const replaceAt = (index: number, replacement: string) =>
-                inputTagInterpreted.substring(0, index) +
-                replacement +
-                inputTagInterpreted.substring(index + replacement.length)
-
-            while (getOpenIndex() > -1) {
-                const openIndex = getOpenIndex()
-                const closeIndex = inputTagInterpreted.slice(openIndex + 2).search('#') + 2
-                if (closeIndex < 2) {
-                    inputTagInterpreted = replaceAt(openIndex, SKIP_HASH)
-                    break
-                }
-                const id = inputTagInterpreted.slice(openIndex + 2, closeIndex)
-                const value = this.getValueByInputTag(tag, id)
-                if (!value) {
-                    inputTagInterpreted = replaceAt(openIndex, SKIP_HASH)
-                    inputTagInterpreted = replaceAt(closeIndex, SKIP_HASH)
-                    break
-                }
-                inputTagInterpreted = inputTagInterpreted.replace(regex, value)
-            }
-        }
-
-        return this.colorize(inputTagInterpreted).replaceAll(SKIP_HASH, '#')
+        return this.colorize(this.resolveInput(this.toList(this.inputText)))
     }
 
     private toList(inputText: string) {
@@ -75,25 +46,51 @@ export default class Reader {
         return inputListed.substring(0, closeIndex) + '</ul>' + inputListed.substring(closeIndex)
     }
 
-    private colorize(inputText: string) {
-        const inputSplited = inputText.split('#')
-        let inputColored = ''
+    private resolveInput(inputText: string) {
+        let inputResolved = inputText
+        for (const tag of this.inputTags) {
+            const regex = new RegExp(tag === 'h' ? `#${tag} #` : `#${tag}[0-9]{2,7}#`)
+            const getOpenIndex = () => inputResolved.search(regex)
+            while (getOpenIndex() > -1) {
+                const openIndex = getOpenIndex()
+                const closeIndex = inputResolved.slice(openIndex + 2).search('#') + 2
+                if (closeIndex < 2) break
+                const id = inputResolved.slice(openIndex + 2, closeIndex)
+                const value = this.getValueByInputTag(tag, id)
+                if (!value) break
+                inputResolved = inputResolved.replace(regex, value)
+            }
+        }
+        return inputResolved
+    }
 
-        if (inputSplited.length === 0) {
-            return inputText
+    private colorize(inputText: string) {
+        let inputColored = inputText
+        const reg = new RegExp(`#[${this.colorTags.join('')}]`)
+        let cursor = 0
+        const tags: ColorTag[] = []
+
+        const search = () => inputText.slice(cursor).search(reg)
+
+        while (search() > -1) {
+            const match = inputText.slice(cursor).match(reg) as RegExpMatchArray
+            tags.push(match[0].slice(1) as ColorTag)
+            cursor = cursor + search() + 2
         }
 
-        for (const text of inputSplited) {
-            if (text === '') continue
-            const tag = text[0]
-            const colorTag = this.colorTags.find((_colorTag) => _colorTag === tag)
-            if (colorTag) {
-                inputColored =
-                    inputColored +
-                    `<span class="color-${this.getColor(colorTag)}">${text.slice(1)}</span>`
-            } else {
-                inputColored = inputColored + text
-            }
+        tags.forEach((tag, i) => {
+            const index = inputColored.search(`#${tag}`)
+            const divClose = i === 0 ? '' : '</div>'
+            inputColored =
+                inputColored.slice(0, index) +
+                divClose +
+                inputColored
+                    .slice(index)
+                    .replace(`#${tag}`, `<div class="color color-${this.getColor(tag)}">`)
+        })
+
+        if (tags.length > 0) {
+            inputColored = `${inputColored}</div>`
         }
 
         return inputColored

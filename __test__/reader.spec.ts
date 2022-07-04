@@ -18,14 +18,14 @@ describe('Reader', function () {
     it('colorize text', function () {
         const val = '#babc'
         const reader = new Reader(val)
-        expect(reader.interpret()).toBe('<span class="color-blue">abc</span>')
+        expect(reader.interpret()).toBe('<div class="color color-blue">abc</div>')
     })
 
     it('multi colorize text', function () {
         const val = '#babc #dabcd'
         const reader = new Reader(val)
         expect(reader.interpret()).toBe(
-            '<span class="color-blue">abc </span><span class="color-purple">abcd</span>'
+            '<div class="color color-blue">abc </div><div class="color color-purple">abcd</div>'
         )
     })
 })

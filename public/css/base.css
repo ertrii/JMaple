@@ -11,12 +11,16 @@
     padding: 0;
 }
 
-.color-blue{color:#201EFF}
-.color-purple{color:purple}
-.color-bold{color:#000}
-.color-green{color:green}
-.color-black{color:#000}
-.color-red{color:red}
+.color{
+    display: inline;
+}
+
+.color.color-blue{color:#201EFF}
+.color.color-purple{color:purple}
+.color.color-bold{color:#000}
+.color.color-green{color:green}
+.color.color-black{color:#000}
+.color.color-red{color:red}
 
 .jmaple.hidden {
     display: none;
