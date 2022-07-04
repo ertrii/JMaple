@@ -10,11 +10,10 @@ export default async function readScripts(source: string) {
         fs.readdir(source, (error, fileNames) => {
             if (error) reject(error)
             const fileData: Script[] = []
-
             for (const fileName of fileNames) {
                 if (!fileName.match(/^[0-9]{5,8}.js/)) continue
 
-                const textNode = fs.readFileSync(`${source}/${fileNames}`, 'utf8')
+                const textNode = fs.readFileSync(`${source}/${fileName}`, 'utf8')
                 fileData.push(
                     new Script({
                         fileName,

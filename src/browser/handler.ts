@@ -51,38 +51,38 @@ export default function handler(mapleWindow: HTMLDivElement) {
 
     if (prev) {
         prev.onclick = function () {
-            console.log('prev')
+            request(0, 0)
         }
     }
 
     if (next) {
         next.onclick = function () {
-            request(1, -1)
+            request(1, 0)
         }
     }
 
     if (exit) {
         exit.onclick = function () {
-            request(type === 4 ? 0 : -1, -1)
+            request(type === 4 ? 0 : -1, 0)
         }
     }
 
     if (yes) {
         yes.onclick = function () {
-            request(1, -1)
+            request(1, 0)
         }
     }
 
     if (no) {
         no.onclick = function () {
-            request(0, -1)
+            request(0, 0)
         }
     }
 
     list.forEach(function (li) {
         li.onclick = function () {
             const value = parseInt(li.getAttribute('value') || '0')
-            request(0, value)
+            request(1, value)
         }
     })
 

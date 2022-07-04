@@ -14,25 +14,26 @@ export default class Script {
 
     constructor(private readonly scriptFile: ScriptFile) {
         this.uid = scriptFile.fileName.replace('.js', '')
+        this.cmResult.dispose = false
+        const hasStartFunc = this.scriptFile.textNode.search(/function start\(\)/) > -1
+        const hasActionFunc = this.scriptFile.textNode.search(/function action\(/) > -1
+        const scriptFunctions = new Function(
+            'cm',
+            `${this.scriptFile.textNode}; return [${hasStartFunc ? 'start' : 'null'}, ${
+                hasActionFunc ? 'action' : 'null'
+            }]`
+        )
+        const cm = new Cm(this.setCmResult)
+        this.scriptStart = scriptFunctions(cm)[0]
+        this.scriptAction = scriptFunctions(cm)[1]
     }
 
     start() {
-        const hasStartFunc = this.scriptFile.textNode.search(/function start\(\)/) > -2
-        if (hasStartFunc && !this.scriptStart) {
-            const start = new Function('cm', `${this.scriptFile.textNode}; return start`)
-            const cm = new Cm(this.setCmResult)
-            this.scriptStart = start(cm)
-        }
+        this.cmResult.dispose = false
         this.scriptStart && this.scriptStart()
     }
 
     action(mode: number, type: number, selection: number) {
-        const hasActionFunc = this.scriptFile.textNode.search(/function action\(/) > -1
-        if (hasActionFunc && !this.scriptAction) {
-            const action = new Function('cm', `${this.scriptFile.textNode}; return action`)
-            const cm = new Cm(this.setCmResult)
-            this.scriptAction = action(cm)
-        }
         this.scriptAction && this.scriptAction(mode, type, selection)
     }
 
