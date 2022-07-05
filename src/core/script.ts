@@ -1,13 +1,14 @@
-import { ScriptFile, CmResult, WindowType, ResultExecutedScript } from './types'
+import { ScriptFile, CmResult, SendWindow, ResultExecutedScript } from './types'
 import Cm from './cm'
 
 export default class Script {
     readonly uid: string
     private cmResult: CmResult = {
-        windowType: WindowType.Simple,
+        sendWindow: SendWindow.Simple,
         html: '',
         parameters: [],
-        dispose: false
+        dispose: false,
+        sendWindowExecuted: false
     }
     private scriptStart: null | (() => void) = null
     private scriptAction: null | ((number: number, type: number, selection: number) => void) = null
@@ -15,6 +16,31 @@ export default class Script {
     constructor(private readonly scriptFile: ScriptFile) {
         this.uid = scriptFile.fileName.replace('.js', '')
         this.readScript()
+    }
+
+    static sendWindowToType(mapleWindow: SendWindow) {
+        let type = 0
+        switch (mapleWindow) {
+            case SendWindow.Ok:
+            case SendWindow.Next:
+            case SendWindow.Prev:
+            case SendWindow.NextPrev:
+                // default type=0
+                break
+            case SendWindow.YesNo:
+                type = 1
+                break
+            case SendWindow.AcceptDecline:
+                type = 12
+                break
+            case SendWindow.Simple:
+                type = 4
+                break
+            case SendWindow.GetNumber:
+                type = 3
+                break
+        }
+        return type
     }
 
     private readScript() {
@@ -40,50 +66,53 @@ export default class Script {
     }
 
     start() {
+        this.cmResult.html = ''
         this.cmResult.dispose = false
+        this.cmResult.sendWindow = SendWindow.Simple
         this.readScript()
         if (this.scriptStart) {
             this.scriptStart()
         } else {
-            this.action(1, 4, 0)
+            this.action(1, Script.sendWindowToType(SendWindow.Simple), 0)
         }
     }
 
     action(mode: number, type: number, selection: number) {
         this.scriptAction && this.scriptAction(mode, type, selection)
+        if (this.cmResult.dispose && !this.cmResult.sendWindowExecuted) {
+            this.cmResult.html = ''
+        }
     }
 
     getResult(): ResultExecutedScript {
         const htmls = [this.cmResult.html, '', ''] as [string, string, string]
-        const windowType = this.cmResult.windowType
+        const mapleWindow = this.cmResult.sendWindow
 
-        switch (windowType) {
-            case WindowType.Ok:
+        switch (mapleWindow) {
+            case SendWindow.Ok:
                 htmls[2] = `<button class="yes">OK</button>`
                 break
-            case WindowType.Next:
+            case SendWindow.Next:
                 htmls[1] = `<button class="next">NEXT</button>`
                 break
-            case WindowType.Prev:
+            case SendWindow.Prev:
                 htmls[1] = `<button class="prev">PREV</button>`
                 break
-            case WindowType.NextPrev:
+            case SendWindow.NextPrev:
                 htmls[1] = `<button class="prev">PREV</button><button class="next">NEXT</button>`
                 break
-            case WindowType.YesNo:
+            case SendWindow.YesNo:
                 htmls[2] = `<button class="yes">YES</button><button class="no">NO</button>`
                 break
-            case WindowType.AcceptDecline:
+            case SendWindow.AcceptDecline:
                 htmls[2] = `<button class="yes">ACCEPT</button><button class="no">DECLINE</button>`
                 break
         }
 
-        // restart
-        this.cmResult.html = ''
-        this.cmResult.windowType = WindowType.Simple
+        this.cmResult.sendWindowExecuted = false
 
         return {
-            windowType,
+            type: Script.sendWindowToType(this.cmResult.sendWindow),
             dispose: this.cmResult.dispose,
             htmls
         }

@@ -1,6 +1,6 @@
 import { ResultExecutedScript } from '../core/types'
 
-export default function handler(mapleWindow: HTMLDivElement) {
+export default function handler(mapleWindowElement: HTMLDivElement) {
     const prev: HTMLButtonElement | null = document.querySelector('button.prev')
     const next: HTMLButtonElement | null = document.querySelector('button.next')
     const exit: HTMLButtonElement | null = document.querySelector('button.exit')
@@ -14,8 +14,8 @@ export default function handler(mapleWindow: HTMLDivElement) {
     const headers = new Headers()
     headers.append('Content-Type', 'application/json')
 
-    const type = Number(mapleWindow.getAttribute('type'))
-    const uid = mapleWindow.getAttribute('npc-uid')
+    const type = Number(mapleWindowElement.getAttribute('type'))
+    const uid = mapleWindowElement.getAttribute('npc-uid')
 
     async function start() {
         const response = await fetch('/start', {
@@ -27,7 +27,7 @@ export default function handler(mapleWindow: HTMLDivElement) {
     }
 
     async function action(mode: number, selection: number) {
-        const isDispose = mapleWindow.hasAttribute('dispose')
+        const isDispose = mapleWindowElement.hasAttribute('dispose')
         if (isDispose) {
             close()
             return
@@ -58,13 +58,13 @@ export default function handler(mapleWindow: HTMLDivElement) {
             content.innerHTML = data.htmls[0]
             dialogBtns.innerHTML = data.htmls[1]
             footerBtns.innerHTML = data.htmls[2]
-            mapleWindow.setAttribute('type', data.windowType.toString())
+            mapleWindowElement.setAttribute('type', data.type.toString())
             if (data.dispose) {
-                mapleWindow.setAttribute('dispose', '')
+                mapleWindowElement.setAttribute('dispose', '')
             } else {
-                mapleWindow.removeAttribute('dispose')
+                mapleWindowElement.removeAttribute('dispose')
             }
-            handler(mapleWindow)
+            handler(mapleWindowElement)
         } else {
             console.log('error template')
         }
@@ -108,12 +108,12 @@ export default function handler(mapleWindow: HTMLDivElement) {
     })
 
     function close() {
-        mapleWindow.classList.add('hidden')
+        mapleWindowElement.classList.add('hidden')
     }
 
     async function open() {
         await start()
-        mapleWindow.classList.remove('hidden')
+        mapleWindowElement.classList.remove('hidden')
     }
 
     return {

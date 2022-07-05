@@ -1,63 +1,71 @@
 import Reader from './reader'
-import { CmResult, WindowType } from './types'
+import { CmResult, SendWindow } from './types'
 
 export default class Cm {
     constructor(private observer: (result: Partial<CmResult>) => void) {}
 
     sendOk(text: string) {
         this.observer({
-            windowType: WindowType.Ok,
+            sendWindow: SendWindow.Ok,
             html: new Reader(text).interpret(),
-            parameters: []
+            parameters: [],
+            sendWindowExecuted: true
         })
     }
     sendNext(text: string) {
         this.observer({
-            windowType: WindowType.Next,
+            sendWindow: SendWindow.Next,
             html: new Reader(text).interpret(),
-            parameters: []
+            parameters: [],
+            sendWindowExecuted: true
         })
     }
     sendPrev(text: string) {
         this.observer({
-            windowType: WindowType.Prev,
+            sendWindow: SendWindow.Prev,
             html: new Reader(text).interpret(),
-            parameters: []
+            parameters: [],
+            sendWindowExecuted: true
         })
     }
     sendNextPrev(text: string) {
         this.observer({
-            windowType: WindowType.NextPrev,
+            sendWindow: SendWindow.NextPrev,
             html: new Reader(text).interpret(),
-            parameters: []
+            parameters: [],
+            sendWindowExecuted: true
         })
     }
     sendYesNo(text: string) {
         this.observer({
-            windowType: WindowType.YesNo,
+            sendWindow: SendWindow.YesNo,
             html: new Reader(text).interpret(),
-            parameters: []
+            parameters: [],
+            sendWindowExecuted: true
         })
     }
     sendAcceptDecline(text: string) {
         this.observer({
-            windowType: WindowType.AcceptDecline,
+            sendWindow: SendWindow.AcceptDecline,
             html: new Reader(text).interpret(),
-            parameters: []
+            parameters: [],
+            sendWindowExecuted: true
         })
     }
     sendSimple(text: string) {
         this.observer({
-            windowType: WindowType.Simple,
+            sendWindow: SendWindow.Simple,
             html: new Reader(text).interpret(),
-            parameters: []
+            parameters: [],
+            sendWindowExecuted: true
         })
     }
     sendGetNumber(text: string, valueDefault: string, min: number, max: number) {
         this.observer({
-            windowType: WindowType.GetNumber,
+            sendWindow: SendWindow.GetNumber,
             html: new Reader(text).interpret(),
-            parameters: [valueDefault, min, max]
+            parameters: [valueDefault, min, max],
+            sendWindowExecuted: true
         })
     }
     dispose() {
@@ -78,5 +86,54 @@ export default class Cm {
     }
     gainMeso(mesos: number) {
         console.log(mesos)
+    }
+    openShop(shopid: string) {
+        return shopid
+    }
+    haveItem(itemid: string) {
+        return !!itemid
+    }
+    gainItem(itemid: string, amount = 1) {
+        return [itemid, amount]
+    }
+    changeJob(jobid: number) {
+        return jobid
+    }
+    getJob() {
+        return ''
+    }
+    startQuest() {
+        return true
+    }
+    completeQuest() {
+        return true
+    }
+    forfeitQuest() {
+        return true
+    }
+    gainExp(amount: number) {
+        return amount
+    }
+    getLevel() {
+        return 8
+    }
+    teachSkill(skillid: string, skilllevel: number, maxskilllevel: number) {
+        // thinking
+        return [skillid, skilllevel, maxskilllevel]
+    }
+    get(stat: string) {
+        return stat
+    }
+    modifyNX(amount: number) {
+        return amount
+    }
+    getPlayer() {
+        return 0
+    }
+    getChar() {
+        return {
+            isDonator: () => false,
+            getGendee: () => 1
+        }
     }
 }

@@ -81,16 +81,22 @@ export default class Reader {
         tags.forEach((tag, i) => {
             const index = inputColored.search(`#${tag}`)
             const divClose = i === 0 ? '' : '</div>'
+            let leftText = inputColored.slice(0, index)
+            leftText =
+                leftText.length > 0 && i === 0
+                    ? `<div class="color color-${this.getColor('k')}">${leftText}</div>`
+                    : leftText
+            const rightText = inputColored.slice(index)
             inputColored =
-                inputColored.slice(0, index) +
+                leftText +
                 divClose +
-                inputColored
-                    .slice(index)
-                    .replace(`#${tag}`, `<div class="color color-${this.getColor(tag)}">`)
+                rightText.replace(`#${tag}`, `<div class="color color-${this.getColor(tag)}">`)
         })
 
         if (tags.length > 0) {
             inputColored = `${inputColored}</div>`
+        } else {
+            inputColored = `<div class="color color-${this.getColor('k')}">${inputColored}</div>`
         }
 
         return inputColored

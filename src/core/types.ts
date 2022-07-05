@@ -8,35 +8,23 @@ export type NewLineTag = 'w'
  */
 export type ListTag = 'L' | 'l'
 
-export enum Command {
-    Ok,
-    Next,
-    Prev,
-    NextPrev,
-    YesNo,
-    AcceptDecline,
-    Simple,
-    GetNumber,
-    Dispose,
-    Warp
-}
-
-export enum WindowType {
-    Ok, // 0
-    Next, // 0
-    Prev, // 0?
-    NextPrev, // 0
-    YesNo, // 1
-    AcceptDecline, // 12
-    Simple, // 4
-    GetNumber // 3
+export enum SendWindow {
+    Ok, // type=0
+    Next, // type=0
+    Prev, // type=0?
+    NextPrev, // type=0
+    YesNo, // type=1
+    AcceptDecline, // type=12
+    Simple, // type=4
+    GetNumber // type=3
 }
 
 export interface CmResult {
-    windowType: WindowType
+    sendWindow: SendWindow
     html: string
     parameters: Array<string | number>
     dispose: boolean
+    sendWindowExecuted: boolean
 }
 
 export interface ScriptFile {
@@ -45,7 +33,7 @@ export interface ScriptFile {
 }
 
 export interface ResultExecutedScript {
-    windowType: WindowType
+    type: number
     dispose: boolean
     htmls: [string, string, string]
 }

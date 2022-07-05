@@ -8,12 +8,11 @@ export default function routingScript(app: Express, script: Script, version: Ver
     app.get(`/${script.uid}`, async function (_: Request, res: Response) {
         const fileName = version === 'vs83' ? 'classic' : 'modern'
         const [image, name] = await Promise.all([getNpcImg(script.uid), getNpcName(script.uid)])
-        const { windowType } = script.getResult()
         res.render(fileName, {
             uid: script.uid,
             image,
             name,
-            windowType,
+            type: script.getResult().type,
             handler
         })
     })
