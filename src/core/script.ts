@@ -18,9 +18,9 @@ export default class Script {
         this.readScript()
     }
 
-    static sendWindowToType(mapleWindow: SendWindow) {
+    static sendWindowToType(sendWindow: SendWindow) {
         let type = 0
-        switch (mapleWindow) {
+        switch (sendWindow) {
             case SendWindow.Ok:
             case SendWindow.Next:
             case SendWindow.Prev:
@@ -86,9 +86,9 @@ export default class Script {
 
     getResult(): ResultExecutedScript {
         const htmls = [this.cmResult.html, '', ''] as [string, string, string]
-        const mapleWindow = this.cmResult.sendWindow
+        const sendWindow = this.cmResult.sendWindow
 
-        switch (mapleWindow) {
+        switch (sendWindow) {
             case SendWindow.Ok:
                 htmls[2] = `<button class="yes">OK</button>`
                 break

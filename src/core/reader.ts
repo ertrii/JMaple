@@ -85,12 +85,17 @@ export default class Reader {
             leftText =
                 leftText.length > 0 && i === 0
                     ? `<div class="color color-${this.getColor('k')}">${leftText}</div>`
-                    : leftText
+                    : leftText + divClose
             const rightText = inputColored.slice(index)
             inputColored =
                 leftText +
-                divClose +
                 rightText.replace(`#${tag}`, `<div class="color color-${this.getColor(tag)}">`)
+            const indexList = inputColored.search('<ul class="list">')
+            if (indexList > -1) {
+                inputColored = `${inputColored.slice(0, index)}</div>${inputColored.slice(
+                    index
+                )}<div class="color color-${this.getColor(tag)}">`
+            }
         })
 
         if (tags.length > 0) {
