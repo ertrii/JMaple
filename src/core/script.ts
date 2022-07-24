@@ -5,7 +5,7 @@ export default class Script {
     readonly uid: string
     private cmResult: CmResult = {
         sendWindow: SendWindow.Simple,
-        html: '',
+        interpreted: null,
         parameters: [],
         dispose: false,
         sendWindowExecuted: false
@@ -66,7 +66,7 @@ export default class Script {
     }
 
     start() {
-        this.cmResult.html = ''
+        this.cmResult.interpreted = null
         this.cmResult.dispose = false
         this.cmResult.sendWindow = SendWindow.Simple
         this.readScript()
@@ -80,13 +80,23 @@ export default class Script {
     action(mode: number, type: number, selection: number) {
         this.scriptAction && this.scriptAction(mode, type, selection)
         if (this.cmResult.dispose && !this.cmResult.sendWindowExecuted) {
-            this.cmResult.html = ''
+            this.cmResult.interpreted = null
         }
     }
 
-    getResult(): ResultExecutedScript {
-        const htmls = [this.cmResult.html, '', ''] as [string, string, string]
+    async getResult(): Promise<ResultExecutedScript> {
         const sendWindow = this.cmResult.sendWindow
+        let html = ''
+        if (this.cmResult.interpreted) {
+            html = this.cmResult.interpreted.html
+            const resolved = await Promise.all(
+                this.cmResult.interpreted.toResolve.map((toResolve) => toResolve.promise)
+            )
+            this.cmResult.interpreted.toResolve.forEach((toResolve, i) => {
+                html = html.replace(toResolve.key, resolved[i])
+            })
+        }
+        const htmls = [html, '', ''] as [string, string, string]
 
         switch (sendWindow) {
             case SendWindow.Ok:

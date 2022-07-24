@@ -4,6 +4,7 @@ import * as path from 'path'
 import readScripts from '../core/readScripts'
 import routingScript from './routingScript'
 import Script from '../core/script'
+import Preload from '../api/preload'
 
 export default async function server(initialConfig: Config) {
     const app: Express = express()
@@ -17,6 +18,8 @@ export default async function server(initialConfig: Config) {
         console.log(`server started at http://localhost:${initialConfig.port}`)
     })
 
+    await Preload.load()
+
     app.get('/', function (_: Request, res: Response) {
         res.render('index', {
             ids: scripts.map((script) => script.uid)
@@ -27,17 +30,19 @@ export default async function server(initialConfig: Config) {
         routingScript(app, script, initialConfig.version)
     }
 
-    app.post('/start', function (req: Request, res: Response) {
+    app.post('/start', async function (req: Request, res: Response) {
         const body = req.body as { uid: string }
         const script = scripts.find((_script) => _script.uid === body.uid) as Script
         script.start()
-        res.json(script.getResult())
+        const result = await script.getResult()
+        res.json(result)
     })
 
-    app.post('/action', function (req: Request, res: Response) {
+    app.post('/action', async function (req: Request, res: Response) {
         const body = req.body as ActionBody
         const script = scripts.find((_script) => _script.uid === body.uid) as Script
         script.action(body.mode, body.type, body.selection)
-        res.json(script.getResult())
+        const result = await script.getResult()
+        res.json(result)
     })
 }

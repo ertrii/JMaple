@@ -1,4 +1,6 @@
-import { InputTag, ColorTag, Color, ListTag } from './types'
+import { getMapName } from '../api/map'
+import { toResolveInputTag, Interpreted, InputTag, ColorTag, Color, ListTag } from './types'
+import { generateId } from '../utilities/generateId'
 
 export default class Reader {
     private readonly inputText: string = ''
@@ -10,8 +12,13 @@ export default class Reader {
         this.inputText = inputText
     }
 
-    interpret(): string {
-        return this.colorize(this.resolveInput(this.toList(this.inputText)))
+    interpret(): Interpreted {
+        const inputResolved = this.resolveInput(this.toList(this.inputText))
+        const html = this.colorize(inputResolved.text)
+        return {
+            toResolve: inputResolved.listDataForResolve,
+            html
+        }
     }
 
     private toList(inputText: string) {
@@ -47,21 +54,28 @@ export default class Reader {
     }
 
     private resolveInput(inputText: string) {
+        const listDataForResolve: toResolveInputTag[] = []
         let inputResolved = inputText
         for (const tag of this.inputTags) {
-            const regex = new RegExp(tag === 'h' ? `#${tag} #` : `#${tag}[0-9]{2,7}#`)
+            const regex = new RegExp(tag === 'h' ? `#${tag} #` : `#${tag}[0-9]{2,9}#`)
             const getOpenIndex = () => inputResolved.search(regex)
             while (getOpenIndex() > -1) {
                 const openIndex = getOpenIndex()
-                const closeIndex = inputResolved.slice(openIndex + 2).search('#') + 2
+                const [math] = inputResolved.match(regex) as RegExpMatchArray
+                const closeIndex = openIndex + math.length - 1
                 if (closeIndex < 2) break
-                const id = inputResolved.slice(openIndex + 2, closeIndex)
-                const value = this.getValueByInputTag(tag, id)
+                const uid = inputResolved.slice(openIndex + 2, closeIndex)
+                const value = this.getValueByInputTag(tag, uid, (dataForResolve) =>
+                    listDataForResolve.push(dataForResolve)
+                )
                 if (!value) break
                 inputResolved = inputResolved.replace(regex, value)
             }
         }
-        return inputResolved
+        return {
+            listDataForResolve,
+            text: inputResolved
+        }
     }
 
     private colorize(inputText: string) {
@@ -107,9 +121,22 @@ export default class Reader {
         return inputColored
     }
 
-    getValueByInputTag(tag: InputTag, id: string) {
+    getValueByInputTag(
+        tag: InputTag,
+        uid: string,
+        forResolve: (forResolveData: toResolveInputTag) => void
+    ) {
         if (tag === 'h') return 'You'
-        return tag + id // in progress...
+        if (tag === 'm') {
+            const key = generateId()
+            const promise = getMapName(uid)
+            forResolve({
+                key,
+                promise
+            })
+            return key
+        }
+        return `${tag}${uid}` // in progress...
     }
 
     getColor(tag: ColorTag): Color {

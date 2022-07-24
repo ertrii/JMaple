@@ -7,7 +7,7 @@ export default class Cm {
     sendOk(text: string) {
         this.observer({
             sendWindow: SendWindow.Ok,
-            html: new Reader(text).interpret(),
+            interpreted: new Reader(text).interpret(),
             parameters: [],
             sendWindowExecuted: true
         })
@@ -15,7 +15,7 @@ export default class Cm {
     sendNext(text: string) {
         this.observer({
             sendWindow: SendWindow.Next,
-            html: new Reader(text).interpret(),
+            interpreted: new Reader(text).interpret(),
             parameters: [],
             sendWindowExecuted: true
         })
@@ -23,7 +23,7 @@ export default class Cm {
     sendPrev(text: string) {
         this.observer({
             sendWindow: SendWindow.Prev,
-            html: new Reader(text).interpret(),
+            interpreted: new Reader(text).interpret(),
             parameters: [],
             sendWindowExecuted: true
         })
@@ -31,7 +31,7 @@ export default class Cm {
     sendNextPrev(text: string) {
         this.observer({
             sendWindow: SendWindow.NextPrev,
-            html: new Reader(text).interpret(),
+            interpreted: new Reader(text).interpret(),
             parameters: [],
             sendWindowExecuted: true
         })
@@ -39,7 +39,7 @@ export default class Cm {
     sendYesNo(text: string) {
         this.observer({
             sendWindow: SendWindow.YesNo,
-            html: new Reader(text).interpret(),
+            interpreted: new Reader(text).interpret(),
             parameters: [],
             sendWindowExecuted: true
         })
@@ -47,7 +47,7 @@ export default class Cm {
     sendAcceptDecline(text: string) {
         this.observer({
             sendWindow: SendWindow.AcceptDecline,
-            html: new Reader(text).interpret(),
+            interpreted: new Reader(text).interpret(),
             parameters: [],
             sendWindowExecuted: true
         })
@@ -55,7 +55,7 @@ export default class Cm {
     sendSimple(text: string) {
         this.observer({
             sendWindow: SendWindow.Simple,
-            html: new Reader(text).interpret(),
+            interpreted: new Reader(text).interpret(),
             parameters: [],
             sendWindowExecuted: true
         })
@@ -63,7 +63,7 @@ export default class Cm {
     sendGetNumber(text: string, valueDefault: string, min: number, max: number) {
         this.observer({
             sendWindow: SendWindow.GetNumber,
-            html: new Reader(text).interpret(),
+            interpreted: new Reader(text).interpret(),
             parameters: [valueDefault, min, max],
             sendWindowExecuted: true
         })

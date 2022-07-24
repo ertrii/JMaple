@@ -70,35 +70,11 @@ export default function handler(mapleWindowElement: HTMLDivElement) {
         }
     }
 
-    if (prev) {
-        prev.onclick = function () {
-            action(0, 0)
-        }
-    }
-
-    if (next) {
-        next.onclick = function () {
-            action(1, 0)
-        }
-    }
-
-    if (exit) {
-        exit.onclick = function () {
-            action(type === 4 ? 0 : -1, 0)
-        }
-    }
-
-    if (yes) {
-        yes.onclick = function () {
-            action(1, 0)
-        }
-    }
-
-    if (no) {
-        no.onclick = function () {
-            action(0, 0)
-        }
-    }
+    if (prev) prev.onclick = () => action(0, 0)
+    if (next) next.onclick = () => action(1, 0)
+    if (exit) exit.onclick = () => action(type === 4 ? 0 : -1, 0)
+    if (yes) yes.onclick = () => action(1, 0)
+    if (no) no.onclick = () => action(0, 0)
 
     list.forEach(function (li) {
         li.onclick = function () {

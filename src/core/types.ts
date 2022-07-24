@@ -21,7 +21,7 @@ export enum SendWindow {
 
 export interface CmResult {
     sendWindow: SendWindow
-    html: string
+    interpreted: Interpreted | null
     parameters: Array<string | number>
     dispose: boolean
     sendWindowExecuted: boolean
@@ -36,4 +36,14 @@ export interface ResultExecutedScript {
     type: number
     dispose: boolean
     htmls: [string, string, string]
+}
+
+export interface toResolveInputTag {
+    key: string
+    promise: Promise<string>
+}
+
+export interface Interpreted {
+    html: string
+    toResolve: toResolveInputTag[]
 }
