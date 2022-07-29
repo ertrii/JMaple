@@ -133,7 +133,7 @@ export default class Cm {
     getChar() {
         return {
             isDonator: () => false,
-            getGendee: () => 1
+            getGender: () => 1
         }
     }
 }

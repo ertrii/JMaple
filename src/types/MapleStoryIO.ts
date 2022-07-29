@@ -8,4 +8,10 @@ export namespace MapleStoryIO {
         type: number
         value: string
     }
+
+    export interface Directory {
+        path: string
+        identifier: RegExp
+        children?: Directory[]
+    }
 }

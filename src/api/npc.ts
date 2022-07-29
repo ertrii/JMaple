@@ -1,15 +1,17 @@
 import { MapleStoryIO } from '../types/MapleStoryIO'
-import fetch from 'cross-fetch'
 import { Base64 } from '../constants'
+import Http from './http'
 
 export async function getNpcImg(id: string | number) {
-    const response = await fetch(`https://maplestory.io/api/wz/GMS/83/Npc/${id}.img/stand/0`)
-    const data: MapleStoryIO.ParametersWithValue = await response.json()
+    const data = await Http.get<MapleStoryIO.ParametersWithValue>(
+        `https://maplestory.io/api/wz/GMS/83/Npc/${id}.img/stand/0`
+    )
     return `${Base64}${data.value}`
 }
 
 export async function getNpcName(id: string | number) {
-    const response = await fetch(`https://maplestory.io/api/wz/GMS/83/String/Npc.img/${id}/name`)
-    const data: MapleStoryIO.ParametersWithValue = await response.json()
+    const data = await Http.get<MapleStoryIO.ParametersWithValue>(
+        `https://maplestory.io/api/wz/GMS/83/String/Npc.img/${id}/name`
+    )
     return data.value
 }

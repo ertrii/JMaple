@@ -1,6 +1,8 @@
 import { getMapName } from '../api/map'
 import { toResolveInputTag, Interpreted, InputTag, ColorTag, Color, ListTag } from './types'
 import { generateId } from '../utilities/generateId'
+import { getNpcName } from '../api/npc'
+import { getItemImg, getItemName } from '../api/item'
 
 export default class Reader {
     private readonly inputText: string = ''
@@ -127,16 +129,39 @@ export default class Reader {
         forResolve: (forResolveData: toResolveInputTag) => void
     ) {
         if (tag === 'h') return 'You'
+        const key = generateId()
         if (tag === 'm') {
-            const key = generateId()
-            const promise = getMapName(uid)
             forResolve({
                 key,
-                promise
+                promise: getMapName(uid)
             })
             return key
         }
-        return `${tag}${uid}` // in progress...
+        if (tag === 'p') {
+            forResolve({
+                key,
+                promise: getNpcName(uid)
+            })
+            return key
+        }
+        if (tag === 't' || tag === 'z') {
+            forResolve({
+                key,
+                promise: getItemName(uid)
+            })
+            return key
+        }
+        if (tag === 'v' || tag === 'i') {
+            forResolve({
+                key,
+                promise: getItemImg(uid)
+            })
+            return `<img src="${key}"/>`
+        }
+        if (tag === 'c') {
+            return '0'
+        }
+        return `${tag}${uid}`
     }
 
     getColor(tag: ColorTag): Color {
