@@ -1,15 +1,25 @@
-import { ResultExecutedScript } from '../core/types'
-
-export default function handler(mapleWindowElement: HTMLDivElement) {
-  const prev: HTMLButtonElement | null = document.querySelector('button.prev')
-  const next: HTMLButtonElement | null = document.querySelector('button.next')
-  const exit: HTMLButtonElement | null = document.querySelector('button.exit')
-  const yes: HTMLButtonElement | null = document.querySelector('button.yes')
-  const no: HTMLButtonElement | null = document.querySelector('button.no')
-  const content: HTMLDivElement | null = document.querySelector('div.info')
-  const list: NodeListOf<HTMLLIElement> = document.querySelectorAll('ul.list li')
-  const dialogBtns: HTMLDivElement | null = document.querySelector('div.dialog div.btns')
-  const footerBtns: HTMLDivElement | null = document.querySelector('div.footer div:nth-child(2)')
+/**
+ * @param {HTMLDivElement} mapleWindowElement
+ */
+function handler(mapleWindowElement) {
+  /** @type {HTMLButtonElement} */
+  const prev = document.querySelector('button.prev')
+  /** @type {HTMLButtonElement} */
+  const next = document.querySelector('button.next')
+  /** @type {HTMLButtonElement} */
+  const exit = document.querySelector('button.exit')
+  /** @type {HTMLButtonElement} */
+  const yes = document.querySelector('button.yes')
+  /** @type {HTMLButtonElement} */
+  const no = document.querySelector('button.no')
+  /** @type {HTMLDivElement} */
+  const content = document.querySelector('div.info')
+  /** @type {NodeListOf<HTMLLIElement>} */
+  const list = document.querySelectorAll('ul.list li')
+  /** @type {HTMLDivElement} */
+  const dialogBtns = document.querySelector('div.dialog div.btns')
+  /** @type {HTMLDivElement} */
+  const footerBtns = document.querySelector('div.footer div:nth-child(2)')
 
   const headers = new Headers()
   headers.append('Content-Type', 'application/json')
@@ -26,7 +36,11 @@ export default function handler(mapleWindowElement: HTMLDivElement) {
     processResponse(response)
   }
 
-  async function action(mode: number, selection: number) {
+  /**
+   * @param {number} mode
+   * @param {number} selection
+   */
+  async function action(mode, selection) {
     const isDispose = mapleWindowElement.hasAttribute('dispose')
     if (isDispose) {
       close()
@@ -47,8 +61,14 @@ export default function handler(mapleWindowElement: HTMLDivElement) {
     processResponse(response)
   }
 
-  async function processResponse(response: Response) {
-    const data: ResultExecutedScript = await response.json()
+  /**
+   * @param {Response} response
+   */
+  async function processResponse(response) {
+    /**
+     * @type {import('../../core/types').ResultExecutedScript}
+     */
+    const data = await response.json()
     if (data.htmls[0] === '' && data.dispose) {
       close()
       return
@@ -64,6 +84,7 @@ export default function handler(mapleWindowElement: HTMLDivElement) {
       } else {
         mapleWindowElement.removeAttribute('dispose')
       }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       handler(mapleWindowElement)
     } else {
       console.log('error template')

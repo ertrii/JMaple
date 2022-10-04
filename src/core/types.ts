@@ -9,41 +9,41 @@ export type NewLineTag = 'w'
 export type ListTag = 'L' | 'l'
 
 export enum SendWindow {
-    Ok, // type=0
-    Next, // type=0
-    Prev, // type=0?
-    NextPrev, // type=0
-    YesNo, // type=1
-    AcceptDecline, // type=12
-    Simple, // type=4
-    GetNumber // type=3
+  Ok, // type=0
+  Next, // type=0
+  Prev, // type=0?
+  NextPrev, // type=0
+  YesNo, // type=1
+  AcceptDecline, // type=12
+  Simple, // type=4
+  GetNumber // type=3
 }
 
 export interface CmResult {
-    sendWindow: SendWindow
-    interpreted: Interpreted | null
-    parameters: Array<string | number>
-    dispose: boolean
-    sendWindowExecuted: boolean
+  sendWindow: SendWindow
+  interpreted: Interpreted | null
+  parameters: Array<string | number>
+  dispose: boolean
+  sendWindowExecuted: boolean
 }
 
 export interface ScriptFile {
-    fileName: string
-    textNode: string
+  fileName: string
+  textNode: string
 }
 
 export interface ResultExecutedScript {
-    type: number
-    dispose: boolean
-    htmls: [string, string, string]
+  type: number
+  dispose: boolean
+  htmls: [string, string, string]
 }
 
 export interface toResolveInputTag {
-    key: string
-    promise: Promise<string>
+  key: string
+  promise: Promise<string>
 }
 
 export interface Interpreted {
-    html: string
-    toResolve: toResolveInputTag[]
+  html: string
+  toResolve: toResolveInputTag[]
 }

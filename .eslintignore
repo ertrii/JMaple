@@ -5,4 +5,3 @@ build
 babel.config.js
 types
 jest.config.js
-scripts

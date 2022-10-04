@@ -17,7 +17,8 @@
   },
   "compileOnSave": true,
   "include": [
-    "src"
+    "src",
+    "cm.d.ts"
   ],
   "exclude": [
     "node_modules",

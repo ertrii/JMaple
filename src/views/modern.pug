@@ -7,29 +7,29 @@ html
     link(rel="stylesheet" href="./css/modern.css")
   body
     main
-        h1 NPC: 
-            span=uid
-        button#btn-show Open #{name}
-        div
-            a(href="/") Back
-        .jmaple.hidden(npc-uid=uid dispose=false type=type)
-            .head
-            .body
-                .npc
-                    .img
-                        img(src=image)
-                    p.name=name
-                .dialog
-                    content
-                        .info
-                    .btns
-            .footer
-                div
-                    button.exit ENDCHAT
-                div
+      h1 NPC: 
+        span=uid
+      button#btn-show Open #{name}
+      div
+        a(href="/") Back
+      .jmaple.hidden(npc-uid=uid dispose=false type=type)
+        .head
+        .body
+          .npc
+            .img
+              img(src=image)
+            p.name=name
+          .dialog
+            content
+              .info
+            .btns
+        .footer
+          div
+            button.exit ENDCHAT
+          div
+    script(type="text/javascript", src="./js/handler.js")
     script(type="text/javascript").
-        !{handler}
-        const mapleWindow = handler(document.querySelector('div.jmaple'))
-        document.getElementById('btn-show').onclick = function(){
-            mapleWindow.open()
-        }
+      const mapleWindow = handler(document.querySelector('div.jmaple'))
+      document.getElementById('btn-show').onclick = function(){
+          mapleWindow.open()
+      }

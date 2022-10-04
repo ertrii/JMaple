@@ -1,4 +1,4 @@
 export interface MapleMap {
-    value: string
-    uid: string
+  value: string
+  uid: string
 }

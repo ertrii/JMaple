@@ -1,6 +1,6 @@
 {
   "files.eol": "\r\n",
-  "editor.tabSize": 4,
+  "editor.tabSize": 2,
   "editor.detectIndentation": false,
   "prettier.semi": false,
   "editor.codeActionsOnSave": {
@@ -9,6 +9,6 @@
   "prettier.trailingComma": "all",
   "prettier.singleQuote": true,
   "prettier.printWidth": 120,
-  "prettier.tabWidth": 4,
+  "prettier.tabWidth": 2,
   "prettier.endOfLine": "crlf"
 }
